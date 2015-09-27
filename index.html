@@ -1,44 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>verdverm, they call me Dr. Worm</title>
-
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-</head>
-<body>
-
-  <!-- {% include titlebar.html %} -->
-
-
-  <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="/" class="brand-logo">verdverm</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="/projects/">Projects</a></li>
-        <li><a href="/aboutme/">About Me</a></li>
-     </ul>
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="/projects/">Projects</a></li>
-        <li><a href="/aboutme/">About Me</a></li>
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-    </div>
-  </nav>
-
+---
+layout: default
+title: Home
+---
 
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
       <br><br>
-      <h1 class="header center orange-text">verdverm</h1>
+      <h1 class="header center blue-text">verdverm</h1>
       <div class="row center">
         <h5 class="header col s12 light">they call me Dr. Worm</h5>
       </div>
       <div class="row center">
-        <a href="mailto:verdverm@gmail.com?subject=Job%20Search&amp;body=Hi%Tony%2C%0A%0AI%20want%20to%20talk%20with%20you%20about%20opportunity%20at%20[company%20name].%0A%0A...%20add%20personal%20message%20here%20...%0A%0AThanks%2C%0A...%20your%20name%20..." id="download-button" class="btn-large waves-effect waves-light orange">Get an awesome new hire</a>
+        <a href="mailto:verdverm@gmail.com?subject=Job%20Search&amp;body=Hi%20Tony%2C%0A%0AI%20want%20to%20talk%20with%20you%20about%20opportunity%20at%20[company%20name].%0A%0A...%20add%20personal%20message%20here%20...%0A%0AThank%20you%2C%0A...%20your%20name%20..." id="download-button" class="btn-large waves-effect waves-light orange">Get an awesome new hire</a>
       </div>
       <br><br>
     </div>
@@ -52,7 +25,7 @@
       <div class="row">
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">flash_on</i></h2>
             <h5 class="center">Full-Stack Developer</h5>
 
             <p class="light">AngularJS, Python, Golang, APIs, Databases, Testing, Continuous Integration. Machine Learning and Data Science. Automate anything done more than twice and build great products. </p>
@@ -61,7 +34,7 @@
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">group</i></h2>
             <h5 class="center">User Experience Focused</h5>
 
             <p class="light">Lives the philosophy of continual improvement through rapid iteration. Student of human experience, behavior, and decision making. Believes in Libertarian Paternalism.</p>
@@ -70,11 +43,20 @@
 
         <div class="col s12 m4">
           <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">loyalty</i></h2>
+            <h2 class="center blue-text"><i class="material-icons">loyalty</i></h2>
             <h5 class="center">Superior Work Ethics</h5>
 
             <p class="light">Your business is treated as if it is mine own. Open, responsive communications, respect for humans, and always mindful. Never had anything but a happy employer.</p>
           </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s6 offset-m3 m3 center">
+            <a href="/projects/" class="btn-large waves-effect waves-light blue">Projects</a>
+        </div>
+        <div class="col s6 m3 center">
+            <a href="/aboutme/" class="btn-large waves-effect waves-light green">About Me</a>
         </div>
       </div>
 
@@ -83,44 +65,3 @@
 
 
 
-  <footer class="page-footer orange">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">verdverm</h5>
-          <p class="grey-text text-lighten-4">Currently finishing my dissertation in computer science and looking to start down an interesting and rewarding career path. A.k.a., looking for a J.O.B.</p>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Links</h5>
-          <ul>
-            <li><a class="white-text" href="/projects/">Projects</a></li>
-            <li><a class="white-text" href="/aboutme/">About Me</a></li>
-            <li><a class="white-text" href="https://www.youtube.com/watch?v=TkVHdUkMJdk">they call me Dr. Worm</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="https://github.com/verdverm">GitHub</a></li>
-            <li><a class="white-text" href="https://www.linkedin.com/pub/tony-worm/36/933/542">LinkedIn</a></li>
-            <li><a class="white-text" href="mailto:verdverm@gmail.com">Email</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      &copy; 2015 <span class="orange-text text-lighten-3">Tony Worm</span>
-      </div>
-    </div>
-  </footer>
-
-
-
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="js/materialize.js"></script>
-  <script src="js/init.js"></script>
-
-  </body>
-</html>
