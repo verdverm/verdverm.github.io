@@ -1,0 +1,19 @@
+- name: "Flipped Machine Learning"
+  date: "Spring 2015"
+  description: "Managed and educated student interns in modern web technologies. Planned and ran weekly meetings and remote working sessions. Built open source modules for the Revel web framework. Guided and edited group presentation on the experience."
+
+- name: "Virtual Binghamton"
+  date: "Fall 2014"
+  description: "Collaboration with university faculty and the local United Way to create an interactive portal to publicly available data. Enable United Way staff in analyzing, understanding, and justifying the allocation of limited resources in order to have the greatest impact."
+
+- name: "Internship Advisor"
+  date: "Spring/Fall 2014"
+  description: "Managed and educated student interns in modern web technologies. Planned and ran weekly meetings and remote working sessions. Built open source modules for MVC web framework. Guided and edited group presentation on the experience."
+
+- name: "Voter Donations"
+  date: "Fall 2013"
+  description: "Collaborated with Political Science researchers to develop a website, enabling user behavior data collection. Post­processed data and generated reports for use in publications."
+
+# - name: "GLEON"
+#   date: "..."
+#   description: "collaboration, ipython notebook, all-hands-meeting & communications working group"
