@@ -78,12 +78,12 @@ title: About Me
                 <span class="hide-on-small-only right">{{job.place}}</span>
                 {% if job.description %}
                   <br class="hide-on-small-only">
-                  <span>{{job.description}}</span>
+                  <span><i>{{job.description}}</i></span>
                   <br class="hide-on-med-and-up">
                 {% endif %}
                 {% for item in job.subitems %}
-                  <span>{{item.name}}</span>
-                  <p class="hide-on-med-and-up">{{item.date}}</p>
+                  <span><i>{{item.name}}</i></span>
+                  <p class="hide-on-med-and-up"> &nbsp; {{item.date}}</p>
                   <span class="hide-on-small-only right">{{item.date}}</span>
                   <br class="hide-on-small-only">
                 {% endfor %}
@@ -134,43 +134,13 @@ title: About Me
               <span class="card-title grey-text text-darken-4">Activities </span> 
               <br><br>
 
-              <span><b>Flipped Machine Learning</b></span>
-              <span class="right">Spring/Fall 2014</span>
-              <br>
-              <span>
-              Managed and educated student interns in modern web technologies. Planned and ran weekly meetings and remote working sessions. Built open source modules for the Revel web framework. Guided and edited group presentation on the experience.
-              </span>
-              <br><br>
-
-              <span><b>Internship Advisor</b></span>
-              <span class="right">Spring/Fall 2014</span>
-              <br>
-              <span>
-              Managed and educated student interns in modern web technologies. Planned and ran weekly meetings and remote working sessions. Built open source modules for the Revel web framework. Guided and edited group presentation on the experience.
-              </span>
-              <br><br>
-
-              <span><b>Virtual Binghamton</b></span>
-              <span class="right">Fall 2014</span>
-              <br>
-              <span>
-              Collaboration with university faculty and the local United Way to create an interactive portal to publicly available data. Enable United Way staff in analyzing, understanding, and justifying the allocation of limited resources in order to have the greatest impact.
-              </span>
-              <br><br>
-
-              <span><b>Voter Donations</b></span>
-              <span class="right">Fall 2013</span>
-              <br>
-              <span>
-              Collaborated with Political Science researchers to develop a website, enabling user behavior data collection. Post­processed data and generated reports for publications.
-              </span>
-              <br><br>
-            
-              <span><b>GLEON</b></span>
-              <br>
-              <span>collaboration, ipython notebook, all-hands-meeting & communications working group</span><br>
-              <br><br>
-
+              {% for item in site.data.activities %}
+                <span><b>{{item.name}}</b></span>
+                <span class="right">{{item.date}}</span>
+                <br>
+                <span><i>{{item.description}}</i></span>
+                <br><br>
+              {% endfor %}
 
             </div>
           </div>
