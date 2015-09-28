@@ -1,0 +1,106 @@
+- name: "Fundementals"
+  items:
+    - name: "Algorithms"
+      stars: 4
+    - name: "Data Structures"
+      stars: 4
+    - name: "OOP"
+      stars: 4
+    - name: "Linux"
+      stars: 4
+    - name: "Mac"
+      stars: 3
+
+- name: "Languages"
+  items:
+    - name: "Python"
+      stars: 4
+    - name: "Golang"
+      stars: 4
+    - name: "C/C++"
+      stars: 4
+    - name: "Bash"
+      stars: 4
+    - name: "Javascript"
+      stars: 3
+    - name: "Java"
+      stars: 3
+    - name: "Haskell"
+      stars: 2
+
+- name: "Frontend"
+  items:
+    - name: "AngularJS"
+      stars: 3
+    - name: "JQuery"
+      stars: 3
+    - name: "Less, Sass, CSS"
+      stars: 3
+    - name: "Responsive Frameworks"
+      stars: 3
+    - name: "Webpack, Grunt, Browserfy"
+      stars: 2
+  
+- name: "Backend"
+  items:
+    - name: "Flask"
+      stars: 4
+    - name: "REST APIs"
+      stars: 4
+    - name: "Reddis, Memcache"
+      stars: 3
+    - name: "Google App Engine"
+      stars: 3
+    - name: "RabbitMQ, Kafka"
+      stars: 2
+
+- name: "Databases"
+  items:
+    - name: "Postgres"
+      stars: 3
+    - name: "MySQL, SQLite"
+      stars: 3
+    - name: "NoSQL"
+      stars: 2
+    - name: "Graph, Neo4J"
+      stars: 2
+
+- name: "End-to-end"
+  items:
+    - name: "Automated Testing"
+      stars: 3
+    - name: "CI, TravisCI"
+      stars: 3
+    - name: "Git, Github"
+      stars: 3
+    - name: "Docker"
+      stars: 3
+    - name: "Code Instrumentation"
+      stars: 3
+    - name: "Security Best Practices"
+      stars: 3
+
+- name: "Data Science"
+  items:
+    - name: "Machine Learning"
+      stars: 3
+    - name: "Hadoop / Spark"
+      stars: 3
+    - name: "IPython"
+      stars: 3
+    - name: "NLP"
+      stars: 3
+    - name: "Extract, Transform, Load"
+      stars: 2
+    - name: "Visualizations, D3"
+      stars: 2
+
+- name: "Entrepreneurship"
+  items:
+    - name: "User Experience"
+      stars: 3
+    - name: "Financials"
+      stars: 2
+
+
+

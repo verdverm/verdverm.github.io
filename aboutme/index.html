@@ -35,48 +35,19 @@ title: About Me
               <span><i>Lifelong learning.</i><span>
               <br><br>
 
-              <span><b>Doctorate of Computer Science</b></span>
-              <p class="hide-on-med-and-up">Expected Fall 2015</p>
-              <span class="hide-on-small-only right">Expected Fall 2015</span>
-              <br class="hide-on-small-only">
-              <span>Binghamton University</span>
-              <br><br>
-              
-              <span><b>Masters of Computer Science</b></span>
-              <p class="hide-on-med-and-up">December 2012</p>
-              <span class="hide-on-small-only right">December 2012</span>
-              <br class="hide-on-small-only">
-              <span>Binghamton University</span>
-              <p class="hide-on-med-and-up">Cum Laude</p>
-              <span class="hide-on-small-only right">Cum Laude</span>
-              <br><br class="hide-on-small-only">
-              
-              <span><b>Bachelor of Computer Science</b></span>
-              <p class="hide-on-med-and-up">December 2010</p>
-              <span class="hide-on-small-only right">December 2010</span>
-              <br class="hide-on-small-only">
-              <span>Binghamton University</span>
-              <p class="hide-on-med-and-up">Cum Laude</p>
-              <span class="hide-on-small-only right">Cum Laude</span>
-              <br><br class="hide-on-small-only">
-              
-              <span><b>Bachelor of Mathematics</b></span>
-              <p class="hide-on-med-and-up">December 2010</p>
-              <span class="hide-on-small-only right">December 2010</span>
-              <br class="hide-on-small-only">
-              <span>Binghamton University</span>
-              <p class="hide-on-med-and-up">Cum Laude</p>
-              <span class="hide-on-small-only right">Cum Laude</span>
-              <br><br class="hide-on-small-only">
-              
-              <span><b>Business Administration</b></span>
-              <p class="hide-on-med-and-up">May 2003</p>
-              <span class="hide-on-small-only right">May 2003</span>
-              <br class="hide-on-small-only">
-              <span>Clarkson University</span>
-              <br><br class="hide-on-small-only">
-              
+              {% for degree in site.data.degrees %}
 
+                <span><b>{{degree.name}}</b></span>
+                <p class="hide-on-med-and-up">{{degree.date}}</p>
+                <span class="hide-on-small-only right">{{degree.date}}</span>
+                <br class="hide-on-small-only">
+                <span>{{degree.place}}</span>
+                <p class="hide-on-med-and-up">{{degree.grade}}</p>
+                <span class="hide-on-small-only right">{{degree.grade}}</span>
+                <br>
+                <br class="hide-on-small-only">
+                
+              {% endfor %}
 
             </div>
           </div>
@@ -96,66 +67,31 @@ title: About Me
               <span><i>Seeking career opportunities.</i><span>
               <br><br>
 
-              <span><b>Graduate Research Assistant</b></span>
-              <span class="right">Binghamton University</span>
-              <br>
-              <span>Advisor: Kenneth Chiu</span>
-              <span class="right">Sept 2010 - May 2015</span>
-              <br>
-              <span>Devised and implemented an algorithm to automatically discover equations from data.</span>
-              <br><br>
+              {% for job in site.data.employment %}
+              
+                <span><b>{{job.name}}</b></span>
+                <p class="hide-on-med-and-up">{{job.date}}</p>
+                <span class="hide-on-small-only right">{{job.date}}</span>
+                <br class="hide-on-small-only">
+                <span>{{job.person}}</span>
+                <p class="hide-on-med-and-up">{{job.place}}</p>
+                <span class="hide-on-small-only right">{{job.place}}</span>
+                {% if job.description %}
+                  <br class="hide-on-small-only">
+                  <span>{{job.description}}</span>
+                  <br class="hide-on-med-and-up">
+                {% endif %}
+                {% for item in job.subitems %}
+                  <span>{{item.name}}</span>
+                  <p class="hide-on-med-and-up">{{item.date}}</p>
+                  <span class="hide-on-small-only right">{{item.date}}</span>
+                  <br class="hide-on-small-only">
+                {% endfor %}
 
-              <span><b>Undergraduate Research Assistant</b></span>
-              <span class="right">Binghamton University</span>
-              <br>
-              <span>Advisor: Lijun Yin</span>
-              <span class="right">Sept 2007 - May 2010</span>
-              <br>
-              <span>Devised and implemented methods to automatically repair 3D meshes.</span>
-              <br><br>
-
-              <span><b>Graduate Teaching Assistant</b></span>
-              <span class="right">Binghamton University</span>
-              <br>
-              <span>Machine Learning</span>
-              <span class="right">Spring 2015</span>
-              <br>
-              <span>Computer Architecture</span>
-              <span class="right">Spring/Fall 2014</span>
-              <br>
-              <span>Programming Languages</span>
-              <span class="right">Fall 2013</span>
-              <br>
-              <span>Introduction to Programming</span>
-              <span class="right">Spring 2013</span>
-              <br>
-              <span>Programming Systems and Tools</span>
-              <span class="right">Fall 2012</span>
-              <br><br>
-
-              <span><b>Software Developer Internship</b></span>
-              <span class="right">Bloomberg LP, Summer 2009</span>
-              <br>
-              <span>Developed a full-stack spreadsheet for currency transactions.</span>
-              <br><br>
-
-              <span><b>Undergraduate Research</b></span>
-              <span class="right">Binghamton Univ, Summer 2008</span>
-              <br>
-              <span>Developed methods for repairing 3D meshes from stereoscopic camera videos.</span>
-              <br><br>
-
-              <span><b>Chip Fabrication Tester</b></span>
-              <span class="right">IBM, March - Aug 2007</span>
-              <br>
-              <span>Monitored, diagnosed, and solved process issues in the development of processor wafers.</span>
-              <br><br>
-
-              <span><b>Restaurant Cook</b></span>
-              <span class="right">Burlington, VT, May 2004 - Feb 2007</span>
-              <br>
-              <span>Progressed from dishwasher, to prep cook, to line cook while looking in three restaurants.</span>
-              <br><br>
+                <br class="hide-on-small-only">
+                <br>
+                
+              {% endfor %}
 
             </div>
           </div>
@@ -173,23 +109,14 @@ title: About Me
               <span class="card-title grey-text text-darken-4">Publications </span> 
               <br><br>
 
-              <span><b>Scaling up Prioritized Grammar Enumeration for Scientific for Discovery in the Cloud</b></span>
-              <br>
-              <span>BigData 2014</span>
-              <span class="right">Authors: T. Worm, K. Chiu</span>
-              <br><br>
-
-              <span><b>Prioritized Grammar Enumeration: Symbolic Regression by Dynamic Programming</b></span>
-              <br>
-              <span>GECCO 2013 (Best Paper)</span>
-              <span class="right">Authors: T. Worm, K. Chiu</span>
-              <br><br>
-
-              <span><b>A High­Resolution 3D Dynamic Facial Expression Database</b></span>
-              <br>
-              <span>FGR 2008</span>
-              <span class="right">Authors: L. Yin, X. Chen, Y. Sun, T. Worm, and M. Reale</span>
-              <br><br>
+              {% for pub in site.data.publications %}
+                <span><b>{{pub.name}}</b></span><br>
+                <span>{{pub.conference}}</span>
+                <br class="hide-on-med-and-up">
+                <span class="hide-on-med-and-up">{{pub.authors}}</span>
+                <span class="hide-on-small-only right">{{pub.authors}}</span>
+                <br><br>
+              {% endfor %}
 
             </div>
           </div>
@@ -259,208 +186,19 @@ title: About Me
               <span class="card-title grey-text text-darken-4">Skills </span> 
               <br><br>
 
-              <span><b>Fundementals</b></span>
-              <br>
-              <span>Algorithms</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Data Structures</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>OOP</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
+              {% for group in site.data.skills %}
+                <span><b>{{group.name}}</b></span><br>
+                {% for item in group.items %}
+                  <span>{{item.name}}</span>
+                  <span class="right">
+                  {% for i in (1..item.stars) %}
+                    <i class="material-icons tiny blue-text">stars</i>
+                  {% endfor %}
+                  </span><br>
+                {% endfor %}
+                <br>
+              {% endfor %}
 
-              <span><b>Languages</b></span>
-              <br>
-              <span>Python</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Golang</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>C/C++</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Bash</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Javascript</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Java</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Haskell</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-              <span><b>Frontend</b></span>
-              <br>
-              <span>AngularJS</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>JQuery</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Less, Sass, CSS</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Webpack, Grunt, Browserfy</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-              <span><b>Backend</b></span>
-              <br>
-              <span>Flask</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>REST APIs</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Reddis, Memcache</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>RabbitMQ, Kafka</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Google App Engine</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-              <span><b>Databases</b></span>
-              <br>
-              <span>Postgres</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>NoSQL</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Graph / Neo4J</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-              <span><b>End-to-end</b></span>
-              <br>
-              <span>Automated Testing</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Continuous Integration</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Docker</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-             <span><b>Data Science</b></span>
-              <br>
-              <span>Machine Learning</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>IPython</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>NLP</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Hadoop / Spark</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Extract,Transform,Load</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Visualizations</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
-
-             <span><b>Other</b></span>
-              <br>
-              <span>Code Instrumentation</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Security Best Practices</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <br>
 
               <span><b><i>Legend</i></b></span>
               <br><i>
@@ -482,13 +220,6 @@ title: About Me
                 <i class="material-icons tiny blue-text">stars</i>
                 <i class="material-icons tiny blue-text">stars</i>
               </span><br>
-              <!-- <span>Advanced</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                </span><br> -->
               <span>Expert</span><span class="right">no claims :]</span><br>
               </i><br>
 

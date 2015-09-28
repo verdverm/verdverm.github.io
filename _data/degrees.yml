@@ -1,0 +1,30 @@
+- name: "Doctorate of Computer Science"
+  date: "Expected Dec 2015"
+  place: "Binghamton University"
+  grade: ""
+  gpa: ""
+
+- name: "Masters of Computer Science"
+  date: "December 2012"
+  place: "Binghamton University"
+  grade: "Cum Laude"
+  gpa: ""
+
+- name: "Bachelors of Computer Science"
+  date: "December 2010"
+  place: "Binghamton University"
+  grade: "Cum Laude"
+  gpa: ""
+
+- name: "Bachelors of Mathematics"
+  date: "December 2010"
+  place: "Binghamton University"
+  grade: "Cum Laude"
+  gpa: ""
+
+- name: "Business Administration"
+  date: "May 2003"
+  place: "Clarkson University"
+  grade: ""
+  gpa: ""
+
