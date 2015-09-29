@@ -1,4 +1,4 @@
-- name: "Fundementals"
+- name: "Basics"
   items:
     - name: "Algorithms"
       stars: 4
@@ -26,6 +26,8 @@
     - name: "Java"
       stars: 3
     - name: "Haskell"
+      stars: 2
+    - name: "R"
       stars: 2
 
 - name: "Frontend"
@@ -79,6 +81,8 @@
       stars: 3
     - name: "Security Best Practices"
       stars: 3
+    - name: "User Experience"
+      stars: 3
 
 - name: "Data Science"
   items:
@@ -95,12 +99,14 @@
     - name: "Visualizations, D3"
       stars: 2
 
-- name: "Entrepreneurship"
-  items:
-    - name: "User Experience"
-      stars: 3
-    - name: "Financials"
-      stars: 2
+# - name: "Entrepreneurship"
+#   items:
+#     - name: "User Experience"
+#       stars: 3
+#     - name: "User Experience"
+#       stars: 3
+#     - name: "Financials"
+#       stars: 2
 
 
 
