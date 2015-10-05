@@ -40,6 +40,8 @@
       stars: 3
     - name: "Responsive Frameworks"
       stars: 3
+    - name: "React / Flux"
+      stars: 2
     - name: "Webpack, Grunt, Browserfy"
       stars: 2
   
@@ -49,10 +51,14 @@
       stars: 4
     - name: "REST APIs"
       stars: 4
+    - name: "Django"
+      stars: 3
     - name: "Reddis, Memcache"
       stars: 3
     - name: "Google App Engine"
       stars: 3
+    - name: "Amazon Web Services"
+      stars: 2
     - name: "RabbitMQ, Kafka"
       stars: 2
 
@@ -99,12 +105,12 @@
     - name: "Visualizations, D3"
       stars: 2
 
-# - name: "Entrepreneurship"
+# - name: "Businessy Things"
 #   items:
 #     - name: "User Experience"
 #       stars: 3
-#     - name: "User Experience"
-#       stars: 3
+#     - name: "Marketing"
+#       stars: 2
 #     - name: "Financials"
 #       stars: 2
 
