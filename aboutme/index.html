@@ -4,7 +4,7 @@ title: About Me
 ---
 
 
-  <div class="section no-pad-bot" id="index-banner">
+  <div class="section no-pad-bot" id="top">
     <div class="container">
 
       <div class="row">
@@ -74,7 +74,8 @@ title: About Me
             <div class="card-content">
               <span class="card-title grey-text text-darken-4">Education </span> 
               <span><i>Lifelong learning.</i><span>
-              <br><br>
+              <span class="right"><a href="#top">top</a></span>
+             <br><br>
 
               {% for degree in site.data.degrees %}
 
@@ -106,6 +107,7 @@ title: About Me
 
               <span class="card-title grey-text text-darken-4">Employment </span> 
               <span><i>Seeking career opportunities.</i><span>
+              <span class="right"><a href="#top">top</a></span>
               <br><br>
 
               {% for job in site.data.employment %}
@@ -148,6 +150,7 @@ title: About Me
             <div class="card-content">
 
               <span class="card-title grey-text text-darken-4">Publications </span> 
+              <span class="right"><a href="#top">top</a></span>
               <br><br>
 
               {% for pub in site.data.publications %}
@@ -173,6 +176,7 @@ title: About Me
             <div class="card-content">
 
               <span class="card-title grey-text text-darken-4">Activities </span> 
+              <span class="right"><a href="#top">top</a></span>
               <br><br>
 
               {% for item in site.data.activities %}
@@ -195,7 +199,36 @@ title: About Me
           <div class="card">
             <div class="card-content">
               <span class="card-title grey-text text-darken-4">Skills </span> 
-              <br><br>
+              <span class="right"><a href="#top">top</a></span>
+              <br>
+
+              <hr size=1>
+              <span><b><i>Legend</i></b></span>
+              <br>
+              <i>
+              <span>Have tried</span><span class="right">
+                <i class="material-icons tiny blue-text">stars</i>
+              </span><br>
+              <span>Familiar with</span><span class="right">
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+              </span><br>
+              <span>Can get around</span><span class="right">
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+              </span><br>
+              <span>Get things done</span><span class="right">
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+                <i class="material-icons tiny blue-text">stars</i>
+              </span><br>
+              <span>Expert</span><span class="right">no claims :]</span><br>
+              </i>
+              <hr size=1>
+              <br>
+
 
               {% for group in site.data.skills %}
                 <span><b>{{group.name}}</b></span><br>
@@ -211,28 +244,6 @@ title: About Me
               {% endfor %}
 
 
-              <span><b><i>Legend</i></b></span>
-              <br><i>
-              <span>Have Used</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Familiar</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Get Around</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Get Stuff Done</span><span class="right">
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-                <i class="material-icons tiny blue-text">stars</i>
-              </span><br>
-              <span>Expert</span><span class="right">no claims :]</span><br>
-              </i><br>
 
             </div>
           </div>

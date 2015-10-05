@@ -1,124 +1,70 @@
-- name: "Basics"
+- name: "Symbolic Regression"
+  description: "An online version of my research and dissertation"
   items:
-    - name: "Algorithms"
-      stars: 4
-    - name: "Data Structures"
-      stars: 4
-    - name: "OOP"
-      stars: 4
-    - name: "Linux"
-      stars: 4
-    - name: "Mac"
-      stars: 3
-
-- name: "Languages"
-  items:
-    - name: "Python"
-      stars: 4
-    - name: "Golang"
-      stars: 4
-    - name: "C/C++"
-      stars: 4
-    - name: "Bash"
-      stars: 4
-    - name: "Javascript"
-      stars: 3
-    - name: "Java"
-      stars: 3
-    - name: "Haskell"
-      stars: 2
-    - name: "R"
-      stars: 2
+    - name: "Introduction"
+    - name: "Prioritized Grammar Enumeration"
+    - name: "A Python Package"
+    - name: "Results"
 
 - name: "Frontend"
+  description: "Things I've learned upfront"
   items:
     - name: "AngularJS"
-      stars: 3
     - name: "JQuery"
-      stars: 3
     - name: "Less, Sass, CSS"
-      stars: 3
     - name: "Responsive Frameworks"
-      stars: 3
-    - name: "React, Flux"
-      stars: 2
+    - name: "React / Flux"
     - name: "Webpack, Grunt, Browserfy"
-      stars: 2
   
 - name: "Backend"
+  description: "The supporting infrastructure"
   items:
     - name: "Flask"
-      stars: 4
     - name: "REST APIs"
-      stars: 4
     - name: "Django"
-      stars: 3
     - name: "Reddis, Memcache"
-      stars: 3
     - name: "Google App Engine"
-      stars: 3
     - name: "Amazon Web Services"
-      stars: 2
     - name: "RabbitMQ, Kafka"
-      stars: 2
 
 - name: "Databases"
+  description: "Save it for later"
   items:
     - name: "Postgres"
-      stars: 3
     - name: "MySQL, SQLite"
-      stars: 3
     - name: "NoSQL"
-      stars: 2
     - name: "Graph, Neo4J"
-      stars: 2
 
 - name: "End-to-end"
+  description: "Automate everything"
   items:
     - name: "Automated Testing"
-      stars: 3
     - name: "CI, TravisCI"
-      stars: 3
     - name: "Git, Github"
-      stars: 3
     - name: "Docker"
-      stars: 3
     - name: "Code Instrumentation"
-      stars: 3
     - name: "Security Best Practices"
-      stars: 3
     - name: "User Experience"
-      stars: 3
 
 - name: "Data Science"
+  description: "remember the human element."
   items:
     - name: "Machine Learning"
-      stars: 3
     - name: "Hadoop / Spark"
-      stars: 3
     - name: "IPython"
-      stars: 3
     - name: "NLP"
-      stars: 3
     - name: "Extract, Transform, Load"
-      stars: 2
     - name: "Visualizations, D3"
-      stars: 2
 
 - name: "Business & Startup"
+  description: "things I've learned along the way."
   items:
     - name: "Build, Measure, Learn"
-      stars: 2
     - name: "Branding"
-      stars: 2
     - name: "Financials"
-      stars: 2
     - name: "Legal"
-      stars: 2
     - name: "Marketing"
-      stars: 1
     - name: "Management"
-      stars: 1
 
 
 
