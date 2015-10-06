@@ -110,33 +110,88 @@ i.e. equations.
 #### Motivation
 
 <google-chart
+	type='scatter'
+	options='{
+	    "title": "Effort vs Score, linear?",
+	    "legend": "none",
+	    "crosshair": { "trigger": "both", "orientation": "both" },
+	    "hAxis": {"title": "Study Hours"},
+	    "vAxis": {"title": "Test Score"},
+	    "trendlines": { 
+	    	"0": {
+		     	"color": "green",
+		        "lineWidth": 6,
+		        "opacity": 0.4,
+		        "visibleInLegend": true
+	    	}
+	    }
+    }'
+	data='/sr/data/linreg.json'>
+</google-chart>
+
+
+<google-chart
     type='scatter'
-    options='{"legend": "none"}'
-    data='[["A", "B"],
-           [20, 45],
-           [31, 66],
-           [50, 80],
-           [77, 50],
-           [68, 15]]'>
+    options='{
+	    "title": "Effort vs Score, polynomial-2?",
+	    "legend": "none",
+	    "crosshair": { "trigger": "both", "orientation": "both" },
+	    "hAxis": {"title": "Study Hours", "maxValue": 40},
+	    "vAxis": {"title": "Test Score"},
+	    "trendlines": { 
+	    	"0": {
+		     	"type": "polynomial",
+		     	"degree": "2",
+		        "color": "green",
+		        "lineWidth": 6,
+		        "opacity": 0.4
+	    	}
+	    }
+    }'
+    data='/sr/data/linreg.json'>
 </google-chart>
-
 
 <google-chart
-	type='line'
-	options='{"title": "Days in a month"}'
-	cols='[{"label": "Month", "type": "string"},{"label": "Days", "type": "number"}]'
-	rows='[["Jan", 31],["Feb", 28],["Mar", 31],["Apr", 30],["May", 31],["Jun", 30]]'>
+    type='scatter'
+    options='{
+	    "title": "Effort vs Score, polynomial-3?",
+	    "legend": "none",
+	    "crosshair": { "trigger": "both", "orientation": "both" },
+	    "hAxis": {"title": "Study Hours"},
+	    "vAxis": {"title": "Test Score"},
+	    "trendlines": { 
+	    	"0": {
+		     	"type": "polynomial",
+		     	"degree": "3",
+		        "color": "green",
+		        "lineWidth": 6,
+		        "opacity": 0.4
+	    	}
+	    }
+    }'
+    data='/sr/data/linreg.json'>
 </google-chart>
-
 
 <google-chart
-	type='pie'
-	options='{"title": "Distribution of days in 2001H1"}'
-	cols='[{"label": "Month", "type": "string"},{"label": "Days", "type": "number"}]'
-	rows='[["Jan", 31],["Feb", 28],["Mar", 31],["Apr", 30],["May", 31],["Jun", 30]]'>
+    type='scatter'
+    options='{
+	    "title": "Effort vs Score, polynomial, really?",
+	    "legend": "none",
+	    "crosshair": { "trigger": "both", "orientation": "both" },
+	    "hAxis": {"title": "Study Hours", "maxValue": 40},
+	    "vAxis": {"title": "Test Score"},
+	    "trendlines": { 
+	    	"0": {
+		     	"type": "polynomial",
+		     	"degree": "3",
+		        "color": "green",
+		        "lineWidth": 6,
+		        "opacity": 0.4
+	    	}
+	    }
+    }'
+    data='/sr/data/linreg.json'>
 </google-chart>
-
-
 
 
 Data science has become a significant theme

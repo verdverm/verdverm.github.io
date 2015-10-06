@@ -32,6 +32,8 @@
 
 - name: "Frontend"
   items:
+    - name: "React, Flux"
+      stars: 3
     - name: "AngularJS"
       stars: 3
     - name: "JQuery"
@@ -40,9 +42,9 @@
       stars: 3
     - name: "Responsive Frameworks"
       stars: 3
-    - name: "React, Flux"
-      stars: 2
     - name: "Webpack, Grunt, Browserfy"
+      stars: 2
+    - name: "Polymer"
       stars: 2
   
 - name: "Backend"

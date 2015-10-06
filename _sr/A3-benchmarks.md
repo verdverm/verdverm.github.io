@@ -4,6 +4,34 @@ title: Appendix C - Benchmark Problems
 brief: The system classes and equations used for benchmarking
 ---
 
+<google-chart
+    type='scatter'
+    options='{"legend": "none"}'
+    data='[["A", "B"],
+           [20, 45],
+           [31, 66],
+           [50, 80],
+           [77, 50],
+           [68, 15]]'>
+</google-chart>
+
+
+<google-chart
+	type='line'
+	options='{"title": "Days in a month"}'
+	cols='[{"label": "Month", "type": "string"},{"label": "Days", "type": "number"}]'
+	rows='[["Jan", 31],["Feb", 28],["Mar", 31],["Apr", 30],["May", 31],["Jun", 30]]'>
+</google-chart>
+
+
+<google-chart
+	type='pie'
+	options='{"title": "Distribution of days in 2001H1"}'
+	cols='[{"label": "Month", "type": "string"},{"label": "Days", "type": "number"}]'
+	rows='[["Jan", 31],["Feb", 28],["Mar", 31],["Apr", 30],["May", 31],["Jun", 30]]'>
+</google-chart>
+
+
 
 % \section*{Explicit Benchmarks}
 \begin{table}[h!]
