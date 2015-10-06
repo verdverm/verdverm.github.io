@@ -136,7 +136,7 @@ i.e. equations.
 	    "title": "Effort vs Score, polynomial-2?",
 	    "legend": "none",
 	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "Study Hours", "maxValue": 40},
+	    "hAxis": {"title": "Study Hours"},
 	    "vAxis": {"title": "Test Score"},
 	    "trendlines": { 
 	    	"0": {
