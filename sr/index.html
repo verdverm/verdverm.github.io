@@ -1,0 +1,52 @@
+---
+layout: default 
+title: Symbolic Regression 
+---
+
+<div class="section no-pad-bot" id="toc">
+    <div class="container">
+        <br>
+        <h1 class="header center orange-text">Symbolic Regression</h1>
+        <div class="row center">
+            <h5 class="header col s12 light">
+            the search for mathematics
+            </h5>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col s12 offset-m1 m10">
+
+
+
+        <ul class="collection with-header">
+            <li class="collection-header blue">
+                <h4 class="white-text">Table of Contents</h4>
+            </li>
+
+            {% for chapter in site.sr %}
+
+            <li class="collection-item">
+                <h5 class="title"><a href="{{ chapter.url }}">{{ chapter.title }}</a></h5>
+                <p><i>{{ chapter.brief }}</i></p>
+
+                {% for section in chapter.sections %}
+                    <span class="truncate" style="line-height: 1.2em;">
+                        <a style="padding-left: 16px; font-size: 1.2em;" href="{{chapter.url}}#{{section.tag}}">{{section.name}}</a>
+                        {% if section.brief %}
+                             - {{section.brief}} 
+                         {% endif %}
+                    </span>
+                    <br>
+                {% endfor %}
+            </li>
+
+            {% endfor %}
+
+        </ul>
+
+
+    </div>
+</div>

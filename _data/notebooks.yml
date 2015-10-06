@@ -1,11 +1,3 @@
-- name: "Symbolic Regression"
-  description: "An online version of my research and dissertation"
-  items:
-    - name: "Introduction"
-    - name: "Prioritized Grammar Enumeration"
-    - name: "A Python Package"
-    - name: "Results"
-
 - name: "Frontend"
   description: "Things I've learned upfront"
   items:

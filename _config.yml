@@ -1,0 +1,22 @@
+collections:
+  sr:
+    output: true
+    permalink: /sr/:path/
+  notebooks:
+    output: true
+    permalink: /notebooks/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: sr
+    values:
+      layout: sr
+
+defaults:
+  - scope:
+      path: ""
+      type: notebooks
+    values:
+      layout: notebook
+

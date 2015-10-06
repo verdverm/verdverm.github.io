@@ -22,11 +22,8 @@ title: Notebooks
         <div class="card">
             <div class="card-content">
 		        {% for group in site.data.notebooks %}
-
-                <h5><b><a href="#{{group.name}}">{{group.name}}</a></b></h5>
-                <p style="padding-left: 16px;">{{group.description}}</p>
-                
-
+                    <h5><b><a href="#{{group.name}}">{{group.name}}</a></b></h5>
+                    <p style="padding-left: 16px;">{{group.description}}</p>
 		        {% endfor %}
             </div>
         </div>
@@ -38,9 +35,17 @@ title: Notebooks
 
                 <span><b>{{group.name}}</b></span>
                 <span class="right"><a href="#toc">top</a></span>
-                <br> {% for item in group.items %}
-                <span>{{item.name}}</span>
-                <br> {% endfor %}
+                <br> 
+
+                {% for item in group.items %}
+                    {% if item.url %}
+                        <a href="/notebooks/{{item.url}}">{{item.name}}</a>
+                    {% else %}
+                        <span>{{item.name}}</span>
+                    {% endif %}
+                    
+                <br> 
+                {% endfor %}
 
 	            </div>
 	        </div>
