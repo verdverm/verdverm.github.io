@@ -21,14 +21,11 @@ For more than 4000 years,
 humans have been using
 mathematical formulae
 to understand and study the world.
-
-
 Mathematics is our bridge
 between the world and science.
 It is through this language
 that we communicate our discoveries
 with each other.
-
 With the invention of calculus
 and the start of the Industrial Revolution,
 equations became centric to progress.
@@ -36,7 +33,7 @@ By discovering a formulaic description
 of a problem, scientists and engineers
 gained insights and created solutions.
 
-During World War 2, in became apparent
+During World War II, in became apparent
 that humans were reaching the limit of 
 their calculation abilities.
 The military was employing hundreds
@@ -58,48 +55,47 @@ to use calculating weather models,
 making financial predictions,
 and simulating complex systems.
 
-As computers have permeated our society
-and become our personal assistants,
+As computers have permeated our society,
 we have experienced waves of automation
-in every domain.
+and analytics in every domain.
 The thousands of engineering and scientific
-breakthroughs that define the world we live in today,
+breakthroughs that define the world we live in today
 were only possible with the progress of computers.
-In particular, 
-the use of equations and simulation
-has grown with adoption of
-multi-core, GPGPU, and cloud technologies.
-Our ability to simulate complex systems
-and increasing lower costs has
-created an exponential growth
-in scientific and engineering progress.
-Still, it has remained the humans
+While data science and machine learning
+have made great contributions and are
+acheiving incredible feats,
+it has remained humans'
 responsibility for discovering
 the models and mathematics 
-which we put into computers
-and simulate.
+which we put into computers.
 
-It is also no coincidence that 
-with the rise of computers
-there has been a simultaneous
-explosion in data.
-While we have kept pace with
-the collection and storage,
-turning this data into
-actionable knowledge has
-remain elusive.
+Enter Symbolic Regression (SR), 
+a machine learning algorithm
+for discovering the mathematics, 
+the equations and formula,
+that define the behavior
+described in the data.
+The Symbolic Regression method
+is much like Newton writing down his
+Law of Universal Gravitation
+by analyzing the movement of the planets.
+Scientists observe the world around them
+and write down mathematical formula
+which accurately and concisely
+explain behavior to other humans.
+Symbolic Regression automates this process,
+from observation to mathematical formula.
 
-Data mining and machine learning
-have made great contributions...
-Still no math
+The main contribution of this work
+is a method called
+*Prioritized Grammar Enumeration*
+which can derive mathematical formula
+in an **efficient and reproducible** way.
 
-SR is a machine learning algorithm
-for discovering the hidden math, 
-i.e. equations.
+...
 
-
-
-
+a generalization of linear and non-linear regression,
+when the model is unknown.
 
 
 
@@ -107,22 +103,43 @@ i.e. equations.
 <a class="right" href="#top">top</a>
 
 
-#### Motivation
+#### A Motivating Example
+
+Let's start with some data
+which compares hours studied
+to test scores.
 
 <google-chart
 	type='scatter'
 	options='{
-	    "title": "Effort vs Score, linear?",
+	    "title": "Effort vs Score",
 	    "legend": "none",
+	    "crosshair": { "trigger": "both", "orientation": "both" }
+    }'
+	data='/sr/data/linreg.json'>
+</google-chart>
+
+
+
+This looks like a strong linear relationship,
+as we would expect scores to go up with
+hours spent studying.
+
+
+<google-chart
+	type='scatter'
+	options='{
+	    "title": "Effort vs Score, linear?  (R2 = 0.872)",
 	    "crosshair": { "trigger": "both", "orientation": "both" },
 	    "hAxis": {"title": "Study Hours"},
 	    "vAxis": {"title": "Test Score"},
 	    "trendlines": { 
 	    	"0": {
 		     	"color": "green",
-		        "lineWidth": 6,
+		        "lineWidth": 4,
 		        "opacity": 0.4,
-		        "visibleInLegend": true
+		        "visibleInLegend": true,
+		        "showR2": true
 	    	}
 	    }
     }'
@@ -130,11 +147,15 @@ i.e. equations.
 </google-chart>
 
 
+But we know that you can only study so much
+before the law of diminishing returns sets in.
+So what does a 2nd-order polynomial look like?
+
+
 <google-chart
     type='scatter'
     options='{
-	    "title": "Effort vs Score, polynomial-2?",
-	    "legend": "none",
+	    "title": "Effort vs Score, polynomial degree-2?  (R2 = 0.945)",
 	    "crosshair": { "trigger": "both", "orientation": "both" },
 	    "hAxis": {"title": "Study Hours"},
 	    "vAxis": {"title": "Test Score"},
@@ -143,19 +164,23 @@ i.e. equations.
 		     	"type": "polynomial",
 		     	"degree": "2",
 		        "color": "green",
-		        "lineWidth": 6,
-		        "opacity": 0.4
+		        "lineWidth": 4,
+		        "opacity": 0.4,
+		        "visibleInLegend": true,
+		        "showR2": true
 	    	}
 	    }
     }'
     data='/sr/data/linreg.json'>
 </google-chart>
 
+This model looks more accurate and the R2 value has improved as well.
+How about a 3rd-order polynomial?
+
 <google-chart
     type='scatter'
     options='{
-	    "title": "Effort vs Score, polynomial-3?",
-	    "legend": "none",
+	    "title": "Effort vs Score, polynomial degree-3?  (R2 = 0.950)",
 	    "crosshair": { "trigger": "both", "orientation": "both" },
 	    "hAxis": {"title": "Study Hours"},
 	    "vAxis": {"title": "Test Score"},
@@ -164,65 +189,64 @@ i.e. equations.
 		     	"type": "polynomial",
 		     	"degree": "3",
 		        "color": "green",
-		        "lineWidth": 6,
-		        "opacity": 0.4
+		        "lineWidth": 4,
+		        "opacity": 0.4,
+		        "visibleInLegend": true,
+		        "showR2": true
 	    	}
 	    }
     }'
     data='/sr/data/linreg.json'>
 </google-chart>
+
+Even better, though only a marginal improvement.
+
+So which is it? Which model should we choose as 
+our final model? Typically a model selection
+technique is used in conjunction with 
+proper data handling techniques.
+_[more detail here]_
+In the end, it is up to a domain expert
+to make the final determination.
+
+Here is a complex example from a real life system
+involving seven interacting variables. 
+Do you have some ideas for what the models should look like?
+
 
 <google-chart
     type='scatter'
     options='{
-	    "title": "Effort vs Score, polynomial, really?",
-	    "legend": "none",
+	    "title": "What is this one all about?",
 	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "Study Hours", "maxValue": 40},
-	    "vAxis": {"title": "Test Score"},
-	    "trendlines": { 
-	    	"0": {
-		     	"type": "polynomial",
-		     	"degree": "3",
-		        "color": "green",
-		        "lineWidth": 6,
-		        "opacity": 0.4
-	    	}
-	    }
+	    "hAxis": {"title": "time"},
+	    "height": 333,
+        "pointSize": 0.1
     }'
-    data='/sr/data/linreg.json'>
+    data='/sr/data/yeast.json'>
 </google-chart>
 
+It took humans years of study and analysis
+to formulate the differential equations for
+yeast metabolism.
+Later, we will see how to solve this problem
+in minutes with the PGE algorithm.
 
-Data science has become a significant theme
-in the sciences and engineering.
-With ever increasing technological capabilities,
-humanity's ability to observe the world
-grows to new levels of complexity and granularity.
-New sensing devices and methods
-are producing new types of data and
-creating challenges that did not exist before.
-Fields ranging from astronomy and ecology to
-genetics and cell biology, in fact almost all fields,
-have been experiencing a data revolution.
-Often, researchers in these fields attempt
-to derive an equation or formula
-which accurately models observational data,
-while at the same time, provides insight into the system of study.
-The capability to store and search this data has kept pace,
-however, the ability to decipher this data
-into knowledge has not.
-Until recently, the process
-of uncovering mathematics
-has been the sole responsibility
-of a domain expert.
 
-The main thesis of this work
-is that computers can be programmed
-to derive mathematical formula
-and relationships from data
-in an efficient and reproducible way.
 
+
+
+
+
+
+
+
+
+
+<div id="contributions"></div>
+<a class="right" href="#top">top</a>
+
+#### Contributions
 
 The primary setting for this paper is Symbolic Regression (SR),
 the task of deriving mathematical formula
@@ -243,20 +267,6 @@ In this way, an expert is freed
 to think about the larger and more complex
 aspects of that system,
 gaining insights from the results of SR.
-
-
-
-
-
-
-
-
-
-<div id="contributions"></div>
-<a class="right" href="#top">top</a>
-
-#### Contributions
-
 
 We propose
 Prioritized Grammar Enumeration (PGE)

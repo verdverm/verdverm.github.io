@@ -21,6 +21,28 @@ sections:
 ---
 
 
+##### A chart
+
+
+<google-chart
+    type='scatter'
+    options='{
+        "title": "Pareto Non-dominated sort",
+        "legend": "none",
+        "pointSize": 2,
+        "crosshair": { "trigger": "both", "orientation": "both" },
+        "hAxis": {"title": "Size"},
+        "vAxis": {"title": "Error", "viewWindow": {"min": 0.25, "max": 1.25} },
+        "series": {
+          "1": {
+            "pointSize": 5
+          }
+        }
+      }'
+    data='/sr/data/pareto.json'>
+</google-chart>
+
+
 
 ##### A definition
 
@@ -860,7 +882,7 @@ which model the data accurately.
 The Pareto non-dominated sort,
 usually just called the Pareto front,
 addresses this trade-off between opposing objectives 
-\cite{luke:2002:lexicographic,smits:2005:pareto,van:1998:evolutionary,fonseca:1993:genetic,horn:1994:niched}.
+\cite{luke:2002:lexicographic, smits:2005:pareto, van:1998:evolutionary, fonseca:1993:genetic, horn:1994:niched}.
 The Pareto front is a non-dominated sorting.
 That is, no other solution is better than the solutions of the
 Pareto front in both complexity and performance.
@@ -1104,13 +1126,13 @@ remove sub-expressions which evaluate
 to a constant value ($\sin\pi$, $\frac{x}{x}$, or $x-x$),
 and reduce unnecessarily complex expressions such as $\frac{1}{\frac{1}{x}}$.
 These algorithms, known as tree rewriting systems 
-\cite{Joshi:1975:TAG,dershowitz:1982:orderings,huet:1980:equations},
+\cite{Joshi:1975:TAG, dershowitz:1982:orderings, huet:1980:equations},
 convert one parse tree to an equivalent and simpler tree.
 Simplifications cut out areas of the search space
 and remove some paths to expressions such as $\frac{x}{1+x}$.
 
 There is debate as to how
-simplification effects the SR process \cite{kinzett:2008:using,kinzett:2009:online,mcree:2010:symbolic}.
+simplification effects the SR process \cite{kinzett:2008:using, kinzett:2009:online, mcree:2010:symbolic}.
 Simplifications effect the structure of the AST
 through its manipulation, which in turn
 effects the areas of the overall search space
@@ -1183,7 +1205,7 @@ The most common implementation of SR
 has been the evolutionarily inspired method
 called Genetic Programming (GP) \cite{koza:1992:gen_prog}.
 GP is part of the larger family
-of Genetic Algorithms (GA) \cite{holland:1962:outline,goldberg:1988:genetic},
+of Genetic Algorithms (GA) \cite{holland:1962:outline, goldberg:1988:genetic},
 a class of algorithms 
 inspired by `survival of the fittest'.
 GP differs from GAs by solution representation.
@@ -1306,7 +1328,7 @@ the difficult points.
 \noindent
 Tree-Adjunct Grammar Guided Genetic Programming (TAG3P)
 uses a grammar to enforce syntactical constraints on a solution
-\cite{hoai:2001:framework,hoai:2002:solving,hoai:2003:tree}.
+\cite{hoai:2001:framework, hoai:2002:solving, hoai:2003:tree}.
 TAG3P is basically the same as GP,
 having the same representation and components.
 However, TAG3P differs is a couple of ways.
@@ -1319,7 +1341,7 @@ substituted into the parse tree.
 TAG3P can also incorporate the use of
 tree rewriting systems \cite{Joshi:1975:TAG}.
 By produces only syntactically valid solutions,
-TAG3P biases the search towards those solutions\cite{hoai:2001:framework,hoai:2002:solving}.
+TAG3P biases the search towards those solutions \cite{hoai:2001:framework, hoai:2002:solving}.
 \newline
 
 
