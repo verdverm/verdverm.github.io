@@ -42,27 +42,5 @@
   <script src="/js/materialize.js"></script>
   <script src="/js/init.js"></script>
 
-    <script>
-      // 3. To ensure that elements are ready on polyfilled browsers, 
-      // wait for WebComponentsReady. 
-      document.addEventListener('WebComponentsReady', function() {
-       });
-
-         // functions for redrawing charts on window resize
-          function resizedw(){
-              // Haven't resized in ###ms!
-              var elems = document.querySelectorAll("google-chart");
-              for (var i = elems.length - 1; i >= 0; i--) {
-                elems[i].drawChart();
-              };
-          }
-          var doit;
-          window.onresize = function(){
-            clearTimeout(doit);
-            doit = setTimeout(resizedw, 100);
-          };
-
-    </script>
-
   </body>
 </html>

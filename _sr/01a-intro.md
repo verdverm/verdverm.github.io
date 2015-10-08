@@ -106,18 +106,10 @@ when the model is unknown.
 #### A Motivating Example
 
 Let's start with some data
-which compares hours studied
-to test scores.
+which compares test scores
+to hours studied.
 
-<google-chart
-	type='scatter'
-	options='{
-	    "title": "Effort vs Score",
-	    "legend": "none",
-	    "crosshair": { "trigger": "both", "orientation": "both" }
-    }'
-	data='/sr/data/linreg.json'>
-</google-chart>
+<img class="responsive-img" src="/sr/img/intro/linreg-no.png">
 
 
 
@@ -125,79 +117,21 @@ This looks like a strong linear relationship,
 as we would expect scores to go up with
 hours spent studying.
 
-
-<google-chart
-	type='scatter'
-	options='{
-	    "title": "Effort vs Score, linear?  (R2 = 0.872)",
-	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "Study Hours"},
-	    "vAxis": {"title": "Test Score"},
-	    "trendlines": { 
-	    	"0": {
-		     	"color": "green",
-		        "lineWidth": 4,
-		        "opacity": 0.4,
-		        "visibleInLegend": true,
-		        "showR2": true
-	    	}
-	    }
-    }'
-	data='/sr/data/linreg.json'>
-</google-chart>
+<img class="responsive-img" src="/sr/img/intro/linreg-p1.png">
 
 
 But we know that you can only study so much
 before the law of diminishing returns sets in.
 So what does a 2nd-order polynomial look like?
 
+<img class="responsive-img" src="/sr/img/intro/linreg-p2.png">
 
-<google-chart
-    type='scatter'
-    options='{
-	    "title": "Effort vs Score, polynomial degree-2?  (R2 = 0.945)",
-	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "Study Hours"},
-	    "vAxis": {"title": "Test Score"},
-	    "trendlines": { 
-	    	"0": {
-		     	"type": "polynomial",
-		     	"degree": "2",
-		        "color": "green",
-		        "lineWidth": 4,
-		        "opacity": 0.4,
-		        "visibleInLegend": true,
-		        "showR2": true
-	    	}
-	    }
-    }'
-    data='/sr/data/linreg.json'>
-</google-chart>
 
 This model looks more accurate and the R2 value has improved as well.
 How about a 3rd-order polynomial?
 
-<google-chart
-    type='scatter'
-    options='{
-	    "title": "Effort vs Score, polynomial degree-3?  (R2 = 0.950)",
-	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "Study Hours"},
-	    "vAxis": {"title": "Test Score"},
-	    "trendlines": { 
-	    	"0": {
-		     	"type": "polynomial",
-		     	"degree": "3",
-		        "color": "green",
-		        "lineWidth": 4,
-		        "opacity": 0.4,
-		        "visibleInLegend": true,
-		        "showR2": true
-	    	}
-	    }
-    }'
-    data='/sr/data/linreg.json'>
-</google-chart>
+<img class="responsive-img" src="/sr/img/intro/linreg-p3.png">
+
 
 Even better, though only a marginal improvement.
 
@@ -214,17 +148,10 @@ involving seven interacting variables.
 Do you have some ideas for what the models should look like?
 
 
-<google-chart
-    type='scatter'
-    options='{
-	    "title": "What is this one all about?",
-	    "crosshair": { "trigger": "both", "orientation": "both" },
-	    "hAxis": {"title": "time"},
-	    "height": 333,
-        "pointSize": 0.1
-    }'
-    data='/sr/data/yeast.json'>
-</google-chart>
+
+
+<img class="responsive-img" src="/sr/img/yeast.png">
+
 
 It took humans years of study and analysis
 to formulate the differential equations for
