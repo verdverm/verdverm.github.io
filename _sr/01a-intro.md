@@ -17,30 +17,32 @@ sections:
 
 ##### A Brief Computational History
 
-For more than 4000 years,
-humans have been using
-mathematical formulae
+For many thousands of years,
+humans have been using mathematics
 to understand and study the world.
 Mathematics is our bridge
-between the world and science.
-It is through this language
-that we communicate our discoveries
+between the world, the science, and each other.
+It is through communications in this language,
+the writing of formulaic descriptions,
+that we share our discoveries and understandings
 with each other.
-With the invention of calculus
-and the start of the Industrial Revolution,
-equations became centric to progress.
-By discovering a formulaic description
-of a problem, scientists and engineers
-gained insights and created solutions.
+Without a doubt, 
+mathematics has been an integral
+part of human growth and progress.
 
-During World War II, in became apparent
+With the invention of calculus,
+and the start of the Industrial Revolution,
+equations became synonymous with progress.
+Machines and math brought order to chaos.
+During World War II
+it was becoming apparent
 that humans were reaching the limit of 
 their calculation abilities.
-The military was employing hundreds
+The US military was employing hundreds
 of women, known as "computers," to perform
 calculations for artillery aiming tables.
 Completing the table for a single artillery gun 
-would take several months and was error prone.
+would take several months and was prone to errors.
 It was during these dark times
 that the first electronic computers were used
 to replace the human calculators.
@@ -63,14 +65,14 @@ breakthroughs that define the world we live in today
 were only possible with the progress of computers.
 While data science and machine learning
 have made great contributions and are
-acheiving incredible feats,
+achieving incredible feats,
 it has remained humans'
 responsibility for discovering
 the models and mathematics 
-which we put into computers.
+which we put into our computers.
 
 Enter Symbolic Regression (SR), 
-a machine learning algorithm
+a machine learning problem
 for discovering the mathematics, 
 the equations and formula,
 that define the behavior
@@ -93,51 +95,68 @@ from observation to mathematical formula.
 <a class="right" href="#top">top</a>
 
 
-##### A Motivating Example
+##### A First Example
 
-Let's begin with an example.
+Let's begin with a simple example
+to motivate the need for 
+Symbolic Regression tools.
+We'll then follow with a
+real and complex example 
+that will follow us throughout.
+
+
 Below, you will see a plot
 which compares test scores
 to hours studied.
-
-<img class="responsive-img" src="/sr/img/intro/linreg-no.png">
-
-
-
-This looks like a strong linear relationship,
-as we would expect scores to go up with
+As one would expect,
+this looks like a strong linear relationship,
+scores to go up with
 hours spent studying.
 
 <img class="responsive-img" src="/sr/img/intro/linreg-p1.png">
 
 
-But we know that you can only study so much
-before the law of diminishing returns sets in.
-So what does a 2nd-order polynomial look like?
+We know that you can only study so much
+before the law of diminishing returns 
+and burnout sets in.
+So how does a 2nd-order polynomial
+fit with the data?
 
 <img class="responsive-img" src="/sr/img/intro/linreg-p2.png">
 
 
-This model looks more accurate and the R2 value has improved as well.
+This model looks much better and the $$R^2$$ value has improved as well.
 How about a 3rd-order polynomial?
 
 <img class="responsive-img" src="/sr/img/intro/linreg-p3.png">
 
 
 Even better, though only a marginal improvement.
+If we continue down this path,
+we will likely start overfitting.
 
-So which is it? Which model should we choose as 
-our final model? Typically a model selection
-technique is used in conjunction with 
-proper data handling techniques.
-_[more detail here]_
+So which is it? 
+Which model should we choose as our final model?
+The automated answer lies within model selection,
+a deep and complex problem. 
+The breadth of model selection
+is largely beyond the scope of this work,
+however,
+PGE and SR implementations
+have an internal model selection
+scheme which is integral to their success.
 In the end, it is up to a domain expert
 to make the final determination.
 
-Here is a complex example from a real life system
-involving seven interacting variables. 
-Do you have some ideas for what the models should look like?
+##### A Motivating Example
 
+Now for our complex example from a real life system.
+The following chart shows the time-series for
+seven variables related to yeast processing sugar.
+Mmmmmm beer! 
+
+(or more generally, 
+[The Art of Fermentation](http://www.amazon.com/The-Art-Fermentation-Exploration-Essential-ebook/dp/B0083JQCF2))
 
 
 
@@ -146,9 +165,33 @@ Do you have some ideas for what the models should look like?
 
 It took humans years of study and analysis
 to formulate the differential equations for
-yeast metabolism.
-Later, we will see how to solve this problem
-in minutes with the PGE algorithm.
+yeast metabolism 
+[[Wolf:2000:BiochemJ](http://www.ncbi.nlm.nih.gov/pubmed/10702114)].
+The set of equations 
+help scientists to understand the
+interactions and complex cellular behaviors.
+They also
+allow for increased accuracy in simulation
+under a greater diversity of situations.
+These capabilities
+enables researchers to rapidly
+prototype before moving to 
+laboratory tests.
+
+In 2011, machines recovered the equations
+for the first time 
+[[Schmidt:2011:PhysBiol](http://www.ncbi.nlm.nih.gov/pubmed/21832805)]. 
+With Symbolic Regression technology,
+we can help scientists find useful models
+that shed light on the problems they study.
+The Genetic Programming methods first employed
+on this problem required computational time
+on the order of hours.
+This is an incredible feat.
+Later we will see how 
+Prioritized Grammar Enumeration
+can solve this same task
+on the order of minutes.
 
 
 
