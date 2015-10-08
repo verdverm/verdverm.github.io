@@ -54,6 +54,28 @@ The process which an SR implementation employs,
 mirrors our human notions for 
 mathematical discovery in science and engineering.
 
+
+The primary setting for this work is Symbolic Regression (SR),
+the task of deriving mathematical formula
+from observational data without any fore-knowledge
+of the domain or problem.
+In essence, this is the scientific process
+performed by a computer.
+Hypotheses are formulated,
+tested against the observations,
+and compared for explanatory value.
+The overall goal of SR is to produce
+expressions which find a balance in the
+trade-off between accuracy and complexity.
+The best models will therefore be
+both simple and explanatory,
+elucidating the dynamics of the system under study.
+In this way, an expert is freed
+to think about the larger and more complex
+aspects of that system,
+gaining insights from the results of SR.
+
+
 ##### Where it fits in
 
 SR is a generalization of

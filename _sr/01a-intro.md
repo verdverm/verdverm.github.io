@@ -86,16 +86,6 @@ explain behavior to other humans.
 Symbolic Regression automates this process,
 from observation to mathematical formula.
 
-The main contribution of this work
-is a method called
-*Prioritized Grammar Enumeration*
-which can derive mathematical formula
-in an **efficient and reproducible** way.
-
-...
-
-a generalization of linear and non-linear regression,
-when the model is unknown.
 
 
 
@@ -105,7 +95,8 @@ when the model is unknown.
 
 #### A Motivating Example
 
-Let's start with some data
+Let's begin with an example.
+Below, you will see a plot
 which compares test scores
 to hours studied.
 
@@ -175,39 +166,17 @@ in minutes with the PGE algorithm.
 
 #### Contributions
 
-The primary setting for this paper is Symbolic Regression (SR),
-the task of deriving mathematical formula
-from observational data without any fore-knowledge
-of the domain or problem.
-In essence, this is the scientific process
-performed by a computer.
-Hypotheses are formulated,
-tested against the observations,
-and compared for explanatory value.
-The overall goal of SR is to produce
-expressions which find a balance in the
-trade-off between accuracy and complexity.
-The best models will therefore be
-both simple and explanatory,
-elucidating the dynamics of the system under study.
-In this way, an expert is freed
-to think about the larger and more complex
-aspects of that system,
-gaining insights from the results of SR.
+The main contribution of this work is 
+*Prioritized Grammar Enumeration*
+a method 
+which can derive mathematical formula
+in an **efficient and reproducible** way.
 
-We propose
-Prioritized Grammar Enumeration (PGE)
-as a deterministic machine learning
-algorithm for solving Symbolic Regression.
-Working with a grammar’s production rules, PGE prioritizes
-the enumeration of expressions in that language.
-By making large reductions to the search space
-and introducing mechanisms for memoization,
-PGE can exploring the space of all equations efficiently.
-Most notably, PGE provides
-reproducibility of results,
-a key aspect to any system
-used by scientists at large.
+...
+
+a generalization of linear and non-linear regression,
+when the model is unknown.
+
 
 We then enhance the PGE algorithm
 in several ways.
