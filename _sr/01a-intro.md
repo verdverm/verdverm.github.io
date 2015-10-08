@@ -7,9 +7,9 @@ sections:
     tag: motivation
   - name: Contributions
     tag: contributions
-  - name: As a Technology
-    tag: technology
-  - name: On Reproducibility
+  - name: Results
+    tag: results
+  - name: Reproducibility
     tag: reproducibility
 ---
 
@@ -93,7 +93,7 @@ from observation to mathematical formula.
 <a class="right" href="#top">top</a>
 
 
-#### A Motivating Example
+##### A Motivating Example
 
 Let's begin with an example.
 Below, you will see a plot
@@ -164,7 +164,7 @@ in minutes with the PGE algorithm.
 <div id="contributions"></div>
 <a class="right" href="#top">top</a>
 
-#### Contributions
+##### Contributions
 
 The main contribution of this work is 
 *Prioritized Grammar Enumeration*
@@ -217,10 +217,6 @@ which enables users to effectively interpret the results.
 
 
 
-<div id="technology"></div>
-<a class="right" href="#top">top</a>
-
-#### Technology
 
 The first major theme of this work is 
 creating a Symbolic Regression technology.
@@ -275,6 +271,10 @@ woven throughout Godel, Escher, Bach \cite{hofstadter:2000:geb}.
 
 
 
+<div id="results"></div>
+<a class="right" href="#top">top</a>
+
+##### Results
 
 
 
@@ -283,7 +283,7 @@ woven throughout Godel, Escher, Bach \cite{hofstadter:2000:geb}.
 <a class="right" href="#top">top</a>
 
 
-#### On Reproducibility
+##### Reproducibility
 
 The second major theme to this work is Reproducibility.
 
@@ -317,59 +317,4 @@ Their purpose is to discuss the many facets of reproducibility
 
 
 
-
-\newpage
-\noindent
-We include two quotes from recent publications
-in the hope that it will frame this work in the 
-larger context of producing a usable SR tool.
-Much of the research in SR aims at improving
-the GP implementation, with only limited results and inconsistent comparisons.
-By reconsidering the definition of the SR problem,
-we believe that PGE is an evolution in perspective and approach.
-Through determinism 
-about the way to create such a technology. \\[2ex]
-
-	\begin{quotation}
-	``Genetic programming (GP) is not a field noted for the rigor
-	of its benchmarking. Some of its benchmark problems are
-	popular purely through historical contingency, and they can
-	be criticized as too easy or as providing misleading information 
-	concerning real-world performance, but they persist
-	largely because of inertia and the lack of good alternatives.
-	Even where the problems themselves are impeccable, comparisons 
-	between studies are made more difficult by the lack
-	of standardization. We argue that the definition of standard
-	benchmarks is an essential step in the maturation of the
-	field. We make several contributions towards this goal. We
-	motivate the development of a benchmark suite and define
-	its goals; we survey existing practice; we enumerate many
-	candidate benchmarks; we report progress on reference 
-	implementations; and we set out a concrete plan for gathering
-	feedback from the GP community that would, if adopted,
-	lead to a standard set of benchmarks.''
-	\end{quotation}
-	\hfill \cite{McDermott:2012:benchmarks}
-
-\newpage
-
-\begin{quotation}
-
-	Outside the GP literature, SR is rare; there are only scattered references such
-	as (Langley et al., 1987). In contrast, the GP literature has dozens of papers on
-	SR every year; even the previous GPTP had seven papers involving SR (Riolo
-	et al., 2010). In a sense, the home field of SR is GP. This means, of course,
-	that when authors aim at SR, they start with GP, and look to modify GP to
-	improve speed, scalability, reliability, interpretability, etc. The improvements
-	are typically 2x to 10x, but fall short of performance that would makes SR a
-	“technology” the way LS or linear programming is.
-	We are aiming for SR as a technology. What if we did not constrain ourselves
-	to using GP? To GP researchers, this may seem heretical at first glance. But if
-	the aim is truly to improve SR, then this should pose no issue. And in fact, we
-	argue that the GP literature is still an appropriate home for such work, because
-	(a) GP authors doing SR deeply care about SR problems, and (b) as already
-	mentioned, GP is where all the SR publications are. Of course, we can draw
-	inspiration from GP literature, but also many other potentially-useful fields.
-	\end{quotation}
-	\hfill \cite{McConaghy:2011:FFX}
 
