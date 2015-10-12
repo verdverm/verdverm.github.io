@@ -1,0 +1,114 @@
+- name: "Bacteria Respiration"
+  tag: "bacresp"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = 20 - x - \\frac{xy}{1+0.5x^2}"
+    - "\\dot{y} = 10 - \\frac{xy}{1+0.5x^2}"
+
+
+- name: "Bar Magnets"
+  tag: "barmags"
+  nvars: 2
+  latex: 
+    - "\\dot{\\theta_1} = 0.5\\sin(\\theta_1-\\theta_2)-\\sin(\\theta_1)"
+    - "\\dot{\\theta_2} = 0.5\\sin(\\theta_2-\\theta_1)-\\sin(\\theta_2)"
+
+
+- name: "Glider"
+  tag: "glider"
+  nvars: 2
+  latex: 
+    - "\\dot{v} = -0.05v^2 - \\sin(\\theta)"
+    - "\\dot{\\theta} = v - \\frac{\\cos(\\theta)}{v}"
+
+
+- name: "Ecoli Lac Operation"
+  tag: "ecolilac"
+  nvars: 3
+  latex: 
+    - "\\dot{G} = \\frac{L^2}{1+L^2}-0.01G+0.001"
+    - "\\dot{A} = G \\left( \\frac{L}{1+L} - \\frac{A}{1+L}  \\right) "
+    - "\\dot{L} = \\frac{-GL}{1+L}"
+
+
+- name: "Lorenz"
+  tag: "lorenz"
+  nvars: 3
+  latex: 
+    - "\\dot{x} = 10(y-x)"
+    - "\\dot{y} = x(C-z)-y"
+    - "\\dot{z} = xy - \\frac{8}{9}z"
+
+
+- name: "Shear Flow"
+  tag: "shearflow"
+  nvars: 2
+  latex: 
+    - "\\dot{\\theta} = \\cot(\\phi)\\cos(\\theta) = \\frac{\\cos\\phi}{\\sin\\phi}\\cos\\theta"
+    - "\\dot{\\phi} = (\\cos^2\\phi - 0.1\\sin^2\\phi)\\sin(\\theta)"
+
+
+- name: "van Der Pol"
+  tag: "vanderpol"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = 10 \\left( y-\\left(\\frac{1}{3}x^3 - x \\right)\\right) "
+    - "\\dot{y} = -0.1x"
+
+
+- name: "Preditor-Prey 1"
+  tag: "predprey_1"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = x \\left( 4-x-\\frac{y}{1+x} \\right)"
+    - "\\dot{y} = y \\left( \\frac{x}{1+x} -0.075y \\right)"
+
+
+- name: "Preditor-Prey 2"
+  tag: "predprey_2"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = (-0.2+0.001y)x"
+    - "\\dot{y} = (0.1 - 0.001x)y"
+
+
+- name: "Lotka-Volterra"
+  tag: "lotka"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = 3x - 2xy - x^2"
+    - "\\dot{y} = 2y - xy - y^2"
+
+
+- name: "Pendulum"
+  tag: "pendulum"
+  nvars: 2
+  latex: 
+    - "\\dot{\\theta} = v"
+    - "\\dot{v} = \\frac{-g}{L}\\sin \\theta"
+
+
+- name: "Double Pendulum"
+  tag: "dblpendulum"
+  nvars: 2
+  latex: 
+    - "n/a"
+    - "n/a"
+
+
+- name: "Single Spring"
+  tag: "spring"
+  nvars: 2
+  latex: 
+    - "\\dot{x} = v"
+    - "\\dot{v} = - \\frac{k}{m}x - \\frac{b}{m}v"
+
+- name: "Double Spring"
+  tag: "dblspring"
+  nvars: 2
+  latex: 
+    - "\\dot{v_1} = -\\frac{k_1}{m_1}(x_1-R_1) + \\frac{k_2}{m_1}(x_2-x_1-w_1-R_2)"
+    - "\\dot{v_2} = -\\frac{x_2}{m_2}(x_2-x_1-w_1-R_2)"
+
+
+

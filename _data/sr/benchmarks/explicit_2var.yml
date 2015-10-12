@@ -1,0 +1,20 @@
+- name: "Nguyen 09"
+  tag: "nguyen_09"
+  latex: "\\sin{x} + \\sin{ y^{2} }"
+  nvars: 2
+
+- name: "Nguyen 10"
+  tag: "nguyen_10"
+  latex: "2 \\sin(x) \\cos(y)"
+  nvars: 2
+
+- name: "Nguyen 11"
+  tag: "nguyen_11"
+  latex: "x^{y}"
+  nvars: 2
+
+- name: "Nguyen 12"
+  tag: "nguyen_12"
+  latex: "x^{4} - x^{3} + \frac{1}{2}y^{2} - y"
+  nvars: 2
+

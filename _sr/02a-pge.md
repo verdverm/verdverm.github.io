@@ -26,32 +26,27 @@ sections:
 
 
 
-
-
-
-
-
-
-% \tony{separate problem from implementation}
-
-This chapter describes our rethinking of Symbolic Regression.
+This chapter describes the rethinking of Symbolic Regression.
 Prioritized Grammar Enumeration (PGE) is the result
 built on ideas from dynamic programming. 
-To our knowledge, PGE is the first,
-deterministic tree-based SR implementation.
+To our knowledge, PGE is the first
+deterministic, tree-based SR implementation.
 PGE solves the SR problem by 
 working with a grammar to prioritize
 the expression enumeration of that language.
 Where as GP works within a grammar,
-PGE works \textit{with} that grammar.
+PGE works _with_ that grammar.
 
-\begin{quotation}
-``A dynamic-programming algorithm solves each subsubproblem
+
+<blockquote>
+  
+A dynamic-programming algorithm solves each subsubproblem
 just once and then saves its answer in a table, 
 thereby avoiding the work of recomputing the answer 
 every time it solves each subsubproblem''
-\end{quotation}
-\hfill  \cite{cormen:2009:algos}.
+
+<br><span class="right">~ Cormen:2009:algorithms</span>
+</blockquote>
 
 PGE using dynamic programming techniques
 to consider an equation form only once.

@@ -1,0 +1,75 @@
+- name: "Koza 01"
+  tag: "koza_01"
+  latex: "x + x^{2} + x^{3} + x^{4}"
+  nvars: 1
+
+- name: "Koza 02"
+  tag: "koza_02"
+  latex: "x + x^{5} -2*x^{3}"
+  nvars: 1
+
+- name: "Koza 03"
+  tag: "koza_03"
+  latex: "x^{2} + x^{6} -2*x^{4}"
+  nvars: 1
+
+
+
+- name: "Lipson 01"
+  tag: "lipson_01"
+  latex: "1.5x^2 - x^3"
+  nvars: 1
+
+- name: "Lipson 02"
+  tag: "lipson_02"
+  latex: "e^{|x|}\\sin(x)"
+  nvars: 1
+
+- name: "Lipson 03"
+  tag: "lipson_03"
+  latex: "x^2e^{\\sin(x)} + x + \\sin(\\frac{\\pi}{4}-x^3)"
+  nvars: 1
+
+
+
+- name: "Nguyen 01"
+  tag: "nguyen_01"
+  latex: "x + x^{2} + x^{3} "
+  nvars: 1
+
+- name: "Nguyen 02"
+  tag: "nguyen_02"
+  latex: "x + x^{2} + x^{3} + x^{4} "
+  nvars: 1
+
+- name: "Nguyen 03"
+  tag: "nguyen_03"
+  latex: "x + x^{2} + x^{3} + x^{4} + x^{5} "
+  nvars: 1
+
+- name: "Nguyen 04"
+  tag: "nguyen_04"
+  latex: "x + x^{2} + x^{3} + x^{4} + x^{5} + x^{6} "
+  nvars: 1
+
+- name: "Nguyen 05"
+  tag: "nguyen_05"
+  latex: "\\sin(x^{2}) * \\cos(x) - 1"
+  nvars: 1
+
+- name: "Nguyen 06"
+  tag: "nguyen_06"
+  latex: "\\sin(x) + \\sin( x + x^{2} ) "
+  nvars: 1
+
+- name: "Nguyen 07"
+  tag: "nguyen_07"
+  latex: "\\log( 1 + x ) + \\log( 1 + x^{2} )"
+  nvars: 1
+
+- name: "Nguyen 08"
+  tag: "nguyen_08"
+  latex: "\\sqrt{x}"
+  nvars: 1
+
+

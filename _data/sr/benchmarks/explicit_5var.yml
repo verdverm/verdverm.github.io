@@ -1,0 +1,64 @@
+- name: "Korns 01"
+  tag: "korns_01"
+  latex: "1.57 + 24.30v"
+  nvars: 5
+
+- name: "Korns 02"
+  tag: "korns_02"
+  latex: "0.23 + \\frac{ y + v }{w}"
+  nvars: 5
+
+- name: "Korns 03"
+  tag: "korns_03"
+  latex: "-5.41 + \\frac{ v + -x + \\frac{y}{w} }{w}"
+  nvars: 5
+
+- name: "Korns 04"
+  tag: "korns_04"
+  latex: "-2.30 + 0.13 \\sin(z)"
+  nvars: 5
+
+- name: "Korns 05"
+  tag: "korns_05"
+  latex: "3.00 + 2.13 \\log(w)"
+  nvars: 5
+
+- name: "Korns 06"
+  tag: "korns_06"
+  latex: "1.30 + 0.13 \\sqrt{x}"
+  nvars: 5
+
+- name: "Korns 07"
+  tag: "korns_07"
+  latex: "213.81 ( 1 - e^x ) "
+  nvars: 5
+
+- name: "Korns 08"
+  tag: "korns_08"
+  latex: "6.87 + 11\\sqrt{7.23xvw}"
+  nvars: 5
+
+- name: "Korns 09"
+  tag: "korns_09"
+  latex: "\\frac{e^z \\sqrt{x}}{\\log(y) v^{2}}"
+  nvars: 5
+
+- name: "Korns 10"
+  tag: "korns_10"
+  latex: "0.81 + \\frac{24.3 ( 2y + 3z^{2} )}{ 4v^{3} + 5w^{4} }"
+  nvars: 5
+
+- name: "Korns 11"
+  tag: "korns_11"
+  latex: "6.87 + 11 \\cos(7.23x^{3})"
+  nvars: 5
+
+- name: "Korns 12"
+  tag: "korns_12"
+  latex: "2.00 -2.1 \\sin(1.30w)\\cos(9.80x)"
+  nvars: 5
+
+- name: "Korns 13"
+  tag: "korns_13"
+  latex: "32.00 - \\frac{3\\tan(x)\\tan(z)}{\\tan(y)\\tan(v)}"
+  nvars: 5

@@ -160,7 +160,7 @@ Mmmmmm beer!
 
 
 
-<img class="responsive-img" src="/sr/img/yeast.png">
+<img class="responsive-img" src="/sr/img/intro/yeast.png">
 
 
 It took humans years of study and analysis
@@ -210,105 +210,41 @@ on the order of minutes.
 ##### Contributions
 
 The main contribution of this work is 
-*Prioritized Grammar Enumeration*
-a method 
-which can derive mathematical formula
-in an **efficient and reproducible** way.
+Prioritized Grammar Enumeration (PGE),
+a method which can derive
+mathematical formula from data
+in an efficient and reproducible way.
+We step back from mainstream 
+Genetic Programming (GP) thinking,
+to fundamentally change the way we
+approach the Symbolic Regression (SR) problem.
+The overall goal of SR is to produce
+equations which find a balance in the
+trade-off between accuracy and complexity,
+the method of getting there need 
+not be fixed.
+By reconsidering the fundamental approach to SR problem,
+we believe that PGE is an evolution in thought,
+leading the way to a reliable SR technology.
 
-...
 
-a generalization of linear and non-linear regression,
-when the model is unknown.
+PGE brief
+
+PGE basic
+
+1. Redefining the problem
+1. Creating a deterministic and reproducible algorithm
 
 
 We then enhance the PGE algorithm
 in several ways.
 
-- we extend PGE to discover equations in a spectrum of domains.
+1. More application domains through differential equations.
+1. Deeper abstractions and richer relationships.
+1. Scaling the algorithm by decoupling into services
+1. Combine multiple experiments to return more symbolic expressions
 
 
-- we enhance the algorithm with
-deeper equation abstractions,
-richer relationships,
-and a persistent formula library.
-
-
-- to deal with data and problem complexities...
- - feature selection
- - waterfall evaluation and prioritization
- - combine multiple experiments to provide greater view of problem space
-
-
-
-- we enable the PGE algorithm to scale by
-decoupling the subroutines
-into a set of services which are 
-distributed to the cloud environment.
-
-- we create an interactive visualization interface
-which enables users to effectively interpret the results.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-The first major theme of this work is 
-creating a Symbolic Regression technology.
-This involves \# parts.
-
-1. Redefining the problem
-2. Creating a deterministic and reproducible algorithm
-3. Redesigning the algorithm as a scalable platform
-4. Creating an interactive visualization for domain experts
-   to gain insights and understand how the models were derived.
-
-The overall goal of SR is to produce
-equations which find a balance in the
-trade-off between accuracy and complexity.
-The method of getting there does not need 
-to be fixed.
-We step back from mainstream SR and GP thinking,
-to fundamentally change the way we
-approach regressing symbolic expressions.
-By reconsidering how to tackle the SR problem,
-we believe that PGE is an evolution in thought
-about the way to create such a technology.
-
-The difference is in how grammar is interacted with.
-GP uses a grammar to define building blocks
-and ensure valid expressions are constructed.
-PGE uses a grammar to order search space,
-growing expressions through the production rules.
-This idea alters the direction of search,
-from narrowing in on solutions
-to reaching out in an attempt to encounter 
-the solution. PGE works well because
-it traverses the best paths towards 
-the most promising areas of the search space.
-It does this by treating grammar enumeration,
-and subsequently Symbolic Regression,
-as a dynamic programming problem.
-
-PGE pushes (or pops?) SR into the realm of language theory.
-Programming languages are searched 
-by programs written in the same or a different language.
-Finite automatons can regress 
-and recognize finite automatons.
-Parse trees in one grammar
-derive parse trees in another.
-They can all do unto others
-as they can do unto themselves.
-These ideas are quite reminiscent of themes
-woven throughout Godel, Escher, Bach \cite{hofstadter:2000:geb}. 
 
 
 
@@ -319,7 +255,7 @@ woven throughout Godel, Escher, Bach \cite{hofstadter:2000:geb}.
 
 ##### Results
 
-
+Will fill this in later after the chapter(s) are written.
 
 
 <div id="reproducibility"></div>
@@ -328,28 +264,22 @@ woven throughout Godel, Escher, Bach \cite{hofstadter:2000:geb}.
 
 ##### Reproducibility
 
-The second major theme to this work is Reproducibility.
+The running theme to this work is Reproducibility.
 
 There have been many controversies recently...
 
-Estimates of irreproducibility...
-
-[citations]()
+Estimates of irreproducibility...[citations]()
 
 
-Each chapter will conclude with a section on reproducibility.
-Their purpose is to discuss the many facets of reproducibility
+We champion reproducibility by
 
-- its importance
-- the complexities, the causes
-- where things have gone wrong
-- how it can be achieved algorithmically
-- experimentation and comparisons
-- sharing of code and data and logs
-- distributing in a reproducible way
+1. Deterministic algorithm which will reproduce itself
+1. Open source Python project (PyPGE)
+1. Accurate portrayal of results
 
 
-
+Each chapter will end with a section on reproducibility
+and the ideas relevant to that chapter.
 
 
 
