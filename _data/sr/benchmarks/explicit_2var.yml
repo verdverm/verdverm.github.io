@@ -15,6 +15,6 @@
 
 - name: "Nguyen 12"
   tag: "nguyen_12"
-  latex: "x^{4} - x^{3} + \frac{1}{2}y^{2} - y"
+  latex: "x^{4} - x^{3} + \\frac{1}{2}y^{2} - y"
   nvars: 2
 

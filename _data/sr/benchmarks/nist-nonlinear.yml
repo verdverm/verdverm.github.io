@@ -1,0 +1,251 @@
+- name: "Misra1a"
+  tag: "misra1a"
+  class: "exponential"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/misra1a.shtml"
+  latex: 
+    - "y = b1*(1-exp[-b2*x])  +  e"
+
+- name: "Chwirut2"
+  tag: "chwirut2"
+  class: "exponential"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/chwirut2.shtml"
+  latex: 
+    - "y = exp(-b1*x)/(b2+b3*x)  +  e"
+
+- name: "Chwirut1"
+  tag: "chwirut1"
+  class: "exponential"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/chwirut1.shtml"
+  latex: 
+    - "y = exp[-b1*x]/(b2+b3*x)  +  e"
+
+- name: "Lanczos3"
+  tag: "lanczos3"
+  class: "exponential"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/lanczos3.shtml"
+  latex: 
+    - "y = b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x)  +  e"
+
+- name: "Gauss1"
+  tag: "gauss1"
+  class: "exponential"
+  source: "generated"
+  params: 8
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/gauss1.shtml"
+  latex: 
+    - "y = b1*exp( -b2*x ) + b3*exp( -(x-b4)**2 / b5**2 ) + b6*exp( -(x-b7)**2 / b8**2 ) + e"
+
+- name: "Gauss2"
+  tag: "gauss2"
+  class: "exponential"
+  source: "generated"
+  params: 8
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/gauss2.shtml"
+  latex: 
+    - "y = b1*exp( -b2*x ) + b3*exp( -(x-b4)**2 / b5**2 ) + b6*exp( -(x-b7)**2 / b8**2 ) + e"
+
+- name: "DanWood"
+  tag: "danwood"
+  class: "miscellaneous"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/danwood.shtml"
+  latex: 
+    - "y = b1*x**b2  +  e"
+
+- name: "Misra1b"
+  tag: "misra1b"
+  class: "miscellaneous"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/misra1b.shtml"
+  latex: 
+    - "y = b1 * (1-(1+b2*x/2)**(-2))  +  e"
+
+
+
+
+- name: "Kirby2"
+  tag: "kirby2"
+  class: "rational"
+  source: "observed"
+  params: 5
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/kirby2.shtml"
+  latex: 
+    - "y = (b1 + b2*x + b3*x**2) / (1 + b4*x + b5*x**2)  +  e"
+
+- name: "Hahn1"
+  tag: "hahn1"
+  class: "rational"
+  source: "observed"
+  params: 7
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/hahn1.shtml"
+  latex: 
+    - "y = (b1+b2*x+b3*x**2+b4*x**3) / (1+b5*x+b6*x**2+b7*x**3)  +  e"
+
+- name: "Nelson"
+  tag: "nelson"
+  class: "exponential"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/nelson.shtml"
+  latex: 
+    - "log[y] = b1 - b2*x1 * exp[-b3*x2]  +  e"
+
+- name: "MGH17"
+  tag: "mgh17"
+  class: "exponential"
+  source: "generated"
+  params: 5
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/mgh17.shtml"
+  latex: 
+    - "y = b1 + b2*exp[-x*b4] + b3*exp[-x*b5]  +  e"
+
+- name: "Lanczos1"
+  tag: "lanczos1"
+  class: "exponential"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/lanczos1.shtml"
+  latex: 
+    - "y = b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x)  +  e"
+
+- name: "Lanczos2"
+  tag: "lanczos2"
+  class: "exponential"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/lanczos2.shtml"
+  latex: 
+    - "y = b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x)  +  e"
+
+- name: "Gauss3"
+  tag: "gauss3"
+  class: "exponential"
+  source: "generated"
+  params: 8
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/gauss3.shtml"
+  latex: 
+    - "y = b1*exp( -b2*x ) + b3*exp( -(x-b4)**2 / b5**2 ) + b6*exp( -(x-b7)**2 / b8**2 ) + e"
+
+- name: "Misra1c"
+  tag: "misra1c"
+  class: "miscellaneous"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/misra1c.shtml"
+  latex: 
+    - "y = b1 * (1-(1+2*b2*x)**(-0.5))  +  e"
+
+- name: "Misra1d"
+  tag: "misra1d"
+  class: "miscellaneous"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/misra1d.shtml"
+  latex: 
+    - "y = b1*b2*x*((1+b2*x)**(-1))  +  e"
+
+- name: "Roszman1"
+  tag: "roszman1"
+  class: "miscellaneous"
+  source: "observed"
+  params: 4
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/roszman1.shtml"
+  latex: 
+    - "y =  b1 - b2*x - arctan[b3/(x-b4)]/pi  +  e"
+
+- name: "ENSO"
+  tag: "enso"
+  class: "miscellaneous"
+  source: "omitted, missing data"
+  params: 9
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/enso.shtml"
+  latex: 
+    - ""
+
+
+
+
+
+- name: "MGH09"
+  tag: "mgh09"
+  class: "rational"
+  source: "generated"
+  params: 4
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/mgh09.shtml"
+  latex: 
+    - "y = b1*(x**2+x*b2) / (x**2+x*b3+b4)  +  e"
+
+- name: "Thurber"
+  tag: "thurber"
+  class: "rational"
+  source: "observed"
+  params: 7
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/thurber.shtml"
+  latex: 
+    - "y = (b1 + b2*x + b3*x**2 + b4*x**3) / (1 + b5*x + b6*x**2 + b7*x**3)  +  e"
+
+- name: "BoxBOD"
+  tag: "boxbod"
+  class: "exponential"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/boxbod.shtml"
+  latex: 
+    - "y = b1*(1-exp[-b2*x])  +  e"
+
+- name: "Rat42"
+  tag: "rat42"
+  class: "exponential"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/rat42.shtml"
+  latex: 
+    - "y = b1 / (1+exp[b2-b3*x])  +  e"
+
+- name: "MGH10"
+  tag: "mgh10"
+  class: "exponential"
+  source: "generated"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/mgh10.shtml"
+  latex: 
+    - "y = b1 * exp[b2/(x+b3)]  +  e"
+
+- name: "Eckerle4"
+  tag: "eckerle4"
+  class: "exponential"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/eckerle4.shtml"
+  latex: 
+    - "y = (b1/b2) * exp[-0.5*((x-b3)/b2)**2]  +  e"
+
+- name: "Rat43"
+  tag: "rat43"
+  class: "exponential"
+  source: "observed"
+  params: 4
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/rat43.shtml"
+  latex: 
+    - "y = b1 / ((1+exp[b2-b3*x])**(1/b4))  +  e"
+
+- name: "Bennett5"
+  tag: "bennett5"
+  class: "miscellaneous"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/nls/data/bennett5.shtml"
+  latex: 
+    - "y = b1 * (b2+x)**(-1/b3)  +  e"
+
+

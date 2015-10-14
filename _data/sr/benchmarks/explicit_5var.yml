@@ -62,3 +62,13 @@
   tag: "korns_13"
   latex: "32.00 - \\frac{3\\tan(x)\\tan(z)}{\\tan(y)\\tan(v)}"
   nvars: 5
+
+- name: "Korns 14"
+  tag: "korns_14"
+  latex: "22.0 - 4.2*(\\cos(x)-\\tan(y))*\\frac{\\tanh(z)}{\\sin(v)}"
+  nvars: 5
+
+- name: "Korns 15"
+  tag: "korns_15"
+  latex: "12.0 - 6.0*(\\tan(x)/e^{y})(\\ln(z)-\\tan(v))"
+  nvars: 5

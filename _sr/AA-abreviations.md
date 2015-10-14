@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Appendix A - Abreviations
+title: Appendix D - Abreviations
 brief: A quick reference
 ---
 

@@ -1,0 +1,81 @@
+- name: "Norris"
+  tag: "norris"
+  class: "linear"
+  source: "observed"
+  params: 2
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Norris.shtml"
+  latex: 
+    - "y = B0 + B1*x + e"
+
+- name: "Pontius"
+  tag: "norris"
+  class: "quadratic"
+  source: "observed"
+  params: 3
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Pontius.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2)"
+
+- name: "Filip"
+  tag: "filip"
+  class: "polynomial"
+  source: "observed"
+  params: 11
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Filip.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + ... + B9*(x^9) + B10*(x^10) + e"
+
+- name: "Longley"
+  tag: "longley"
+  class: "multilinear"
+  source: "observed"
+  params: 7
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Longley.shtml"
+  latex: 
+    - "y = B0 + B1*x1 + B2*x2 + B3*x3 + B4*x4 + B5*x5 + B6*x6 + e"
+
+- name: "Wampler1"
+  tag: "wampler1"
+  class: "polynomial"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Wampler1.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + B3*(x^3)+ B4*(x^4) + B5*(x^5)"
+
+- name: "Wampler2"
+  tag: "wampler2"
+  class: "polynomial"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Wampler2.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + B3*(x^3)+ B4*(x^4) + B5*(x^5)"
+
+- name: "Wampler3"
+  tag: "wampler3"
+  class: "polynomial"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Wampler3.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + B3*(x^3)+ B4*(x^4) + B5*(x^5)"
+
+- name: "Wampler4"
+  tag: "wampler4"
+  class: "polynomial"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Wampler4.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + B3*(x^3)+ B4*(x^4) + B5*(x^5)"
+
+- name: "Wampler5"
+  tag: "wampler5"
+  class: "polynomial"
+  source: "generated"
+  params: 6
+  link: "http://www.itl.nist.gov/div898/strd/lls/data/Wampler5.shtml"
+  latex: 
+    - "y = B0 + B1*x + B2*(x^2) + B3*(x^3)+ B4*(x^4) + B5*(x^5)"
+
