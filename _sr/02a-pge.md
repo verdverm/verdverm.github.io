@@ -8,7 +8,7 @@ sections:
     brief: Foundations in Genetic Programming
   - name: Theory
     tag: theory
-    brief: Organization, , and directing the search
+    brief: Organization and directing the search
   - name: Components
     tag: components
     brief: Representation, evaluation, optimization, memoization

@@ -23,7 +23,7 @@ sections:
 <div id="ffx"></div>
 <a class="right" href="#top">top</a>
 
-#### Fast Function eXtraction
+### Fast Function eXtraction
 
 
 
@@ -80,7 +80,7 @@ the initial number of GLM basis functions was 7100.
 <div id="memoization"></div>
 <a class="right" href="#top">top</a>
 
-#### Memoization
+### Memoization
 
 
 \subsection{Prefix String Matching}
@@ -94,7 +94,7 @@ the initial number of GLM basis functions was 7100.
 <div id="graph"></div>
 <a class="right" href="#top">top</a>
 
-#### Graph Algorithms
+### Graph Algorithms
 
 
 
@@ -105,7 +105,7 @@ the initial number of GLM basis functions was 7100.
 <div id="data"></div>
 <a class="right" href="#top">top</a>
 
-#### Data Processing
+### Data Processing
 
 
 

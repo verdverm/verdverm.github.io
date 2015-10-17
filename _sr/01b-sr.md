@@ -14,7 +14,7 @@ sections:
     brief: Search space, relationships, learning loop
   - name: Implementations
     tag: implementations
-    brief: PGE, FFX, basic GP, modern GP
+    brief: PGE, FFX, basic and contemporary GP
   - name: Applications
     tag: applications
     brief: Where SR can been applied

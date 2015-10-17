@@ -5,7 +5,7 @@ brief: Related work, learning with evolution
 sections:
   - name: Overview
     tag: overview
-    brief: Learning through evolution
+    brief: Learning through evolution with Genetic Programming
   - name: Algorithm
     tag: algorithm
     brief: Details of the Genetic Programming algorithm
@@ -14,44 +14,87 @@ sections:
     brief: Problems with the original formulation
   - name: Enhancements
     tag: enhancements
-    brief: Improvements upon the baseline
+    brief: Improvements to the baseline
   - name: Fundemental Issues
     tag: issues
     brief: Which arise from randomized searches
 ---
 
 
+This focus of this chapter is 
+Genetic Programming (GP),
+the original implementation of
+Symbolic Regression (SR).
+Traditionally, the term GP has been used as 
+both the problem and the implementation.
+SR was classified as a sub-problem to GP.
+We want to make a distinction between 
+the task of symbolically regressing
+a parse tree in a grammar,
+from the method of realizing that tree.
+That is, separating the objective
+from the optimization method.
+From here on out, when we refer to
+GP, we mean an evolutionary implementation of SR.
+Again, we also use SR to mean the general problem,
+limiting our examples to equation regression,
+which we consider a specific sub-problem of SR.
+
+
 
 <div id="overview"></div>
 <a class="right" href="#top">top</a>
 
-#### Overview
+### Overview
 
 
-Genetic Programming (GP) is the original,
-and most common implementation of SR.
-In [koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi),
-term GP is used as both a problem and an implementation,
-as well as classifying SR as a sub-problem to GP.
-We want to again make a distinction between 
-the task of symbolically regressing
-a parse tree in a grammar,
-from the method of realizing that tree.
-From here on out, when we refer to
-GP, we mean an evolutionary implementation of SR.
-Again, we also us SR to mean the general problem,
-limiting our examples to equation regression,
-which we consider a specific sub-problem of SR.
-The following GP concepts can be mapped to the 
-generalized SR algorithm for arbitrary expression evolution.
+Genetic Programming (GP) 
+began with
+Evolutionary Algorithms (EA),
+where the optimization algorithm
+models biological evolutionary learning.
+From an initial, random population of models,
+EAs evaluate individuals to determine fitness,
+select which candidates survive,
+and choose parents to produce offspring. 
+Repeat this process for
+a number of generations,
+and the algorithm converges
+to a steady state.
+EAs are a flexible schematic
+to which many problems can,
+and have been, approached.
+Genetic Programming
+was originally EAs applied
+to evolving computer programs.
+While GP can be applied to
+generic languages,
+and was originally intentioned
+to evolve computer programs,
+we shall restrict our
+discussion to mathematical equations.
 
-GP is a highly stochastic,
-non-deterministic search heuristic
-based on natural selection
+
+Genetic Programming (GP) is 
+the most common implementation of SR.
+John Koza is often credited with
+coining the term genetic programming 
+[koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi).
+GP is a stochastic optimization heuristic
+based on natural selection.
 GP requires six components to be defined:
 representation, evaluation, selection, genetic operators, 
 initialization & termination, and population management.
-GP uses these components to refine
+Representation and evaluation are the first two
+components of a machine learning algorithm
+and were discussed previously.
+The third component, optimization,
+is the combination of 
+selection, the genetic operators, and population management.
+Initialization and termination are required because
+the success of GP is sensative to their determination.
+
+GP uses the aformentioned components to refine
 equations over a number generations.
 From an initial, random set of equations,
 GP iteratively evaluates individuals,
@@ -61,22 +104,42 @@ GP continues this process until
 a model of desired accuracy is discovered,
 or a computational threshold is reached.
 
-GP has issues which it inherits from evolution, 
-which is good at dealing with uncertainty and variability,
-but not the ideal method for honing in on the most fit individual.
-These issues stem from the difficulties
-in maintaining a diverse population of equations
-while converging towards the best equation.
-Representation, the genetic operators,
-selection mechanisms, and population structure
-are interwoven in complex ways.
-These difficulties, and advancements made in GP,
-have effects which permeate through the
-entire GP infrastructure and operation.
-Measuring and understanding these
-effects requires rigorous testing and analysis,
-something laking but being addressed
-[McDermott:2012:benchmarks](https://cs.gmu.edu/~sean/papers/gecco12benchmarks3.pdf).
+
+
+
+Symbolic Regression is the problem in which
+analytical formula are derived
+directly from observational or measured data
+without any \textit{a priori} domain knowledge.
+Abstractly, SR searches
+the expression space
+defined by a grammar to
+find the best form of an expression.
+In practice, the space is usually
+mathematical formula and the expression
+is an equation where the variables
+are the features in the data set.
+Thus, SR is a function identification task
+where the inputs and outputs are known
+and the search is for an unknown model.
+
+The most common implementation of SR
+is called Genetic Programming (GP) \cite{koza:1992:gen_prog},
+an algorithm inspired by Genetic Algorithms (GA).
+The classical GP algorithm is a
+probabilistic search over the
+syntax-tree representation of an equation.
+GP starts by randomly creating an
+initial pool (population) of equations.
+During each iteration (generation),
+individuals in this population are
+evaluated for fitness,
+selected for survival and replication,
+and then recombined using methods which resemble
+sexual reproduction and mutation.
+The GP algorithm completes when
+a model of desired accuracy is discovered
+or a computational threshold is reached.
 
 In this chapter, we overview 
 the inner workings of GP,
@@ -104,38 +167,12 @@ see \cite{koza:1992:gen_prog,kouch:08:thesis}.
 
 
 
-\textbf{Koza's Original Formulation}
-\label{section-gp-origins-koza}
-
-
-% \subsection{Schema Theory}
-
-% kouch pg47
-
-% holland 1975
-
-% form with ``blanks'' where not solved yet
-
-% introns: nop material (could be removed)
-
-% propagates through the population
-
-% increases in size as solution gets better
-% compactness / linkage
-
-% crossover disrupts long schema (under uniform probability) [bloat]
-% genetic drift - premature convergence, loss of generality (schemta)
-
-% mutation disrupts if good parts of schema are selected
-
-
-
 
 
 <div id="algorithm"></div>
 <a class="right" href="#top">top</a>
 
-#### The Algorithm
+### The Algorithm
 
 
 GP requires several components
@@ -153,7 +190,38 @@ components in the GP algorithm.
 
 
 
-##### Representation
+**The Basic GP Process**
+
+GP starts by creating a 
+random population of initial equations.
+During each generation, 
+individuals in this population are 
+evaluated for fitness
+to determine how well the model the data.
+A subset of the equations are
+the selected for breeding.
+We use brood selection
+which produces many offspring
+per parent pair.
+This is done to alleviate 
+some of the limitations 
+of the genetic operators,
+crossover and mutation.
+The offspring equations are then evaluated.
+Within each brood, the best candidate
+is selected into the general population.
+This general populations is then
+selected within for survival.
+This produces the next
+generation of equations.
+GP continues in this fashion until
+a model of desired accuracy is discovered,
+or a computational threshold is reached.
+
+
+
+
+#### Representation in Genetic Programming
 
 Section \ref{sec-sr-rep} described the general framework for 
 representing equations in an SR implementation.
@@ -170,8 +238,8 @@ As we will see, having continuous parameters,
 and optimizing by evolution, makes the task much harder.
 
 
-\noindent
-\textbf{Populations}
+
+##### Populations
 
 The population is the pool 
 of candidates equations GP has to work with.
@@ -180,6 +248,202 @@ Parents are selected from this population
 for breeding, children and parents
 compete for positions in the population
 between generations.
+
+
+
+
+
+
+#### Evaluation in Genetic Programming
+
+
+
+
+
+
+#### Optimization in Genetic Programming
+
+
+
+##### Genetic Operators
+
+Exploration with crossover
+
+Exploitation with mutation
+
+
+\noindent
+\textbf{Variation}
+
+\label{sec-gpsr-breed}
+Variation, or breeding is 
+the means by which Symbolic Regression (or GP)
+searches the space of equations.
+The search uses both explorative and exploitative
+techniques to find unexplored regions to search locally.
+Crossover is the explorative technique used by Symbolic regression.
+Mutation is the exploitation technique to search 
+around a potential solution.
+A balance is needed to make progress 
+through the space and narrow in on good solutions.
+
+% innovative vs conservative operators
+% exploit vs explore
+% small variations vs large changes
+
+
+
+
+% mutation: 
+%   - allow rate to decrease
+%   - vary by tree position (prob by depth - top has lower chance)
+
+
+\begin{figure}[htb]
+\centering
+% \includegraphics[scale=0.33, clip=true, trim=50 250 50 50]{imgs/eqncrossmutate/eqn-cross-mutate-color.png}
+\caption[Genetic Operatiors]{Crossover (colored boxes) and Mutation (red circles)}
+\label{fig:eqn-cross-mutate}
+\end{figure}
+
+\textbf{Crossover}, analogous to sexual reproduction, 
+uses two parent equations to produce child offspring equations.
+In Symbolic Regression, subtrees of the parents
+are selected, snipped, and swapped. 
+This method is similar to crossing DNA, 
+except that SR is tree-based and not linear. 
+
+The original method selects subtrees of an equation at random.
+It is considered a destructive operation due to the significant
+probability that good schemata of the tree are disrupted.
+Disrupted in this context means that a partial solution,
+stored in a subtree, has an internal node selected for the crossover point.
+To combat this, i.e. reduce the probability of disruption,
+candidate solutions grow extra 'genetic material' that has little
+value in the evaluation. 
+This 'natural' growth is called \textit{bloat}.
+
+% There are several alternatives which seek to 
+% reduce bloat or optimize the crossover point selection.
+% - limit to differences between chromosomes
+
+
+\textbf{Mutation} alters a single candidate equation
+to search locally around that candidate.
+It is also the way the vanilla algorithm
+optimizes real-valued coefficients.
+Mutation simply selects a node of a tree
+and changes it to a different type.
+Examples of mutations are 
+a change of variable from X to Y, 
+an operation from addition to subtraction,
+or a coefficient scaled by a random value in some predefined range.
+
+\textbf{Injection} is much like mutation,
+in which a single candidate is altered
+by choosing a single point of change.
+However, instead of changing a node type,
+the subtree is trimmed and replaced
+by a freshly grown branch.
+In terms of explorative and exploitative
+search qualities,
+injection lies between
+crossover and mutation.
+
+
+
+
+
+##### Selection
+
+for survival
+
+for reproduction
+
+
+Selection is the most important part
+of evolutionary algorithms.
+Selection determines the difference
+between good and bad solutions.
+Therefore it is very important 
+to choose the selection mechanisms wisely\cite{Dumitrescu:2000:EC}.
+
+
+Selection occurs at the generational switch,
+and chooses which candidates will form
+the parents that produce offspring.
+In order for the search to converge
+to the (locally) optimal solutions,
+partial solutions must be selected
+at earlier points.
+
+As the great MPUA says
+\begin{quotation}
+``The sole reason we exist is to survive and replicate. That's it.''
+\end{quotation}
+\hfill Mystery
+
+Selections role is to differentiate between candidates,
+based on their quality, for survival and replication.
+This artificial environmental pressure causes natural selection,
+raising the fitness of the population.
+\cite{Dumitrescu:2000:EC,goldberg:1991:comparative}
+extensively cover the variations in selection schemes.
+Here, we will give an overview to show what is possible.
+
+There are two types of selection,
+for survival and recombination.
+Recombination is the chance of 
+having genetics passed to an offspring.
+This is how good partial solutions 
+are passed through the population 
+and altered to find more of the solution.
+
+Parental selection can happen with
+or without replacement. Proportional selection
+favors better candidates by increasing the
+probability they will be selected.
+This can cause premature convergence
+to a local optima solution permeating the population,
+wiping out diversity.
+Rank based selection sought to overcome this
+by associating a position rather than a 
+probability for chance of selection.
+Rank is often calculated by the dominate, dominated
+ration of a candidate.
+Rank selection benefits GP by
+increasing selection pressure when 
+the population variance is low.
+
+Binary Tournament \cite{goldberg:1991:comparative}
+selects two individuals and competes them
+for one of the parental equations.
+This is down twice to generate both parents
+for a recombination.
+Binary tournament can be extended to 
+compete N candidates against each other.
+Binary tournament is similar to selecting a pivot point 
+in library implementations of quicksort.
+
+Survival is the chance of an individual
+solution remaining in the population.
+In the elitist method,
+a parent is only removed if
+one of its offspring is better than it.
+In the pure method,
+all parents and children
+contend for a spot in the population.
+
+% survival: chance of making it to the next generation
+% -----------
+% elitist vs pure
+%  - elitist, child must be better than parents
+%  - pure all parents and children contend for the allocated spots
+
+
+
+
+##### Pareto Front
 
 The Pareto front is a central
 component to the SR framework.
@@ -203,6 +467,12 @@ The overall goal is to include individuals
 near the front and reward uniqueness and diversity
 among the candidate solutions.
 
+
+
+##### Population Management
+
+
+
 Population size becomes an important parameter 
 to the success of a particular GP implementation.
 The population can be small and granular,
@@ -212,8 +482,9 @@ The population can be big and unified
 becoming a single gene pool.
 
 
-\textbf{Island Model}
-\tony{diagram}
+**Island Model**
+
+
 % In order to facilitate diversity maintenance,
 % the overall population is subdivided into
 % separately evolving processes. 
@@ -312,8 +583,15 @@ that should really be considered different implementations.
 
 
 
-\noindent
-\textbf{Initialization}
+
+
+
+
+##### Initialization & Termination
+
+
+**Initialization**
+
 Initialization determines the search starting point 
 and what portions of equation space are reachable.
 GP uses random generation to
@@ -357,192 +635,7 @@ leveraging GP's randomness (non-determinism),
 to obtain a pool of partially optimized candidates. 
 
 
-\noindent
-\textbf{Evaluation}
-\label{sec-gpsr-eval}
-
-Evaluation was discussed in the last chapter.
-(see Section \ref{sec-symreg-eqneval})
-
-
-\noindent
-\textbf{Selection}
-\label{sec-gpsr-sel}
-
-
-Selection is the most important part
-of evolutionary algorithms.
-Selection determines the difference
-between good and bad solutions.
-Therefore it is very important 
-to choose the selection mechanisms wisely\cite{Dumitrescu:2000:EC}.
-
-
-Selection occurs at the generational switch,
-and chooses which candidates will form
-the parents that produce offspring.
-In order for the search to converge
-to the (locally) optimal solutions,
-partial solutions must be selected
-at earlier points.
-
-As the great MPUA says
-\begin{quotation}
-``The sole reason we exist is to survive and replicate. That's it.''
-\end{quotation}
-\hfill Mystery
-
-Selections role is to differentiate between candidates,
-based on their quality, for survival and replication.
-This artificial environmental pressure causes natural selection,
-raising the fitness of the population.
-\cite{Dumitrescu:2000:EC,goldberg:1991:comparative}
-extensively cover the variations in selection schemes.
-Here, we will give an overview to show what is possible.
-
-There are two types of selection,
-for survival and recombination.
-Recombination is the chance of 
-having genetics passed to an offspring.
-This is how good partial solutions 
-are passed through the population 
-and altered to find more of the solution.
-
-Parental selection can happen with
-or without replacement. Proportional selection
-favors better candidates by increasing the
-probability they will be selected.
-This can cause premature convergence
-to a local optima solution permeating the population,
-wiping out diversity.
-Rank based selection sought to overcome this
-by associating a position rather than a 
-probability for chance of selection.
-Rank is often calculated by the dominate, dominated
-ration of a candidate.
-Rank selection benefits GP by
-increasing selection pressure when 
-the population variance is low.
-
-Binary Tournament \cite{goldberg:1991:comparative}
-selects two individuals and competes them
-for one of the parental equations.
-This is down twice to generate both parents
-for a recombination.
-Binary tournament can be extended to 
-compete N candidates against each other.
-Binary tournament is similar to selecting a pivot point 
-in library implementations of quicksort.
-
-Survival is the chance of an individual
-solution remaining in the population.
-In the elitist method,
-a parent is only removed if
-one of its offspring is better than it.
-In the pure method,
-all parents and children
-contend for a spot in the population.
-
-% survival: chance of making it to the next generation
-% -----------
-% elitist vs pure
-%  - elitist, child must be better than parents
-%  - pure all parents and children contend for the allocated spots
-
-
-
-
-
-
-
-
-
-
-\noindent
-\textbf{Variation}
-
-\label{sec-gpsr-breed}
-Variation, or breeding is 
-the means by which Symbolic Regression (or GP)
-searches the space of equations.
-The search uses both explorative and exploitative
-techniques to find unexplored regions to search locally.
-Crossover is the explorative technique used by Symbolic regression.
-Mutation is the exploitation technique to search 
-around a potential solution.
-A balance is needed to make progress 
-through the space and narrow in on good solutions.
-
-% innovative vs conservative operators
-% exploit vs explore
-% small variations vs large changes
-
-
-
-
-% mutation: 
-%   - allow rate to decrease
-%   - vary by tree position (prob by depth - top has lower chance)
-
-
-\begin{figure}[htb]
-\centering
-% \includegraphics[scale=0.33, clip=true, trim=50 250 50 50]{imgs/eqncrossmutate/eqn-cross-mutate-color.png}
-\caption[Genetic Operatiors]{Crossover (colored boxes) and Mutation (red circles)}
-\label{fig:eqn-cross-mutate}
-\end{figure}
-
-\textbf{Crossover}, analogous to sexual reproduction, 
-uses two parent equations to produce child offspring equations.
-In Symbolic Regression, subtrees of the parents
-are selected, snipped, and swapped. 
-This method is similar to crossing DNA, 
-except that SR is tree-based and not linear. 
-
-The original method selects subtrees of an equation at random.
-It is considered a destructive operation due to the significant
-probability that good schemata of the tree are disrupted.
-Disrupted in this context means that a partial solution,
-stored in a subtree, has an internal node selected for the crossover point.
-To combat this, i.e. reduce the probability of disruption,
-candidate solutions grow extra 'genetic material' that has little
-value in the evaluation. 
-This 'natural' growth is called \textit{bloat}.
-
-% There are several alternatives which seek to 
-% reduce bloat or optimize the crossover point selection.
-% - limit to differences between chromosomes
-
-
-\textbf{Mutation} alters a single candidate equation
-to search locally around that candidate.
-It is also the way the vanilla algorithm
-optimizes real-valued coefficients.
-Mutation simply selects a node of a tree
-and changes it to a different type.
-Examples of mutations are 
-a change of variable from X to Y, 
-an operation from addition to subtraction,
-or a coefficient scaled by a random value in some predefined range.
-
-\textbf{Injection} is much like mutation,
-in which a single candidate is altered
-by choosing a single point of change.
-However, instead of changing a node type,
-the subtree is trimmed and replaced
-by a freshly grown branch.
-In terms of explorative and exploitative
-search qualities,
-injection lies between
-crossover and mutation.
-
-
-
-
-
-
-\noindent
-\textbf{Termination}
+**Termination**
 
 % convergence: the point at which the population
 % contains a majority of the same individual... redundancy...
@@ -559,7 +652,6 @@ crossover and mutation.
 % evaluations, generations, equations
 % in most implementations these
 % become equivalent measures
-
 
 
 % -----
@@ -620,104 +712,7 @@ successive frontiers.
 
 
 
-
-
-\begin{figure}[htb]
-\centering
-\includegraphics[scale=0.33, clip=true, trim=20 262 720 20]{imgs/gpbasic/gp-basic.pdf}
-\caption{The basic Genetic Programming process}
-\label{fig:gp-basic}
-\end{figure}
-
-\textbf{The Basic GP Process}
-\label{sec-gpsr-steps}
-
-
-\textbf{Searching with GP}
-
-GP starts by creating a 
-random population of initial equations.
-During each generation, 
-individuals in this population are 
-evaluated for fitness
-to determine how well the model the data.
-A subset of the equations are
-the selected for breeding.
-We use brood selection
-which produces many offspring
-per parent pair.
-This is done to alleviate 
-some of the limitations 
-of the genetic operators,
-crossover and mutation.
-The offspring equations are then evaluated.
-Within each brood, the best candidate
-is selected into the general population.
-This general populations is then
-selected within for survival.
-This produces the next
-generation of equations.
-GP continues in this fashion until
-a model of desired accuracy is discovered,
-or a computational threshold is reached.
-
-
-
-
-
-
-
-
-
-% and the evolutionary operators, 
-% crossover and mutation (section \ref{sec-gpsr-breed}),
-% to breed parents into offspring
-% between iterations, referred to as generations.
-
-% These coefficients are optimized through the evolutionary process,
-% either altered through mutation or substituted by crossover.
-% This makes finding the 
-% optimal values for these coefficients 
-% a difficult task for GP.
-% This sub-problem for SR 
-% increases in difficulty as 
-% more coefficients in an expression 
-% create a more complex optimization space
-% for a particular expression form.
-% We will describe this issue
-% in greater detail Section \ref{sec-gpsr-limit}.
-
-
-
-% \textbf{Initialization}
-
-% When Symbolic Regression starts 
-% an initial set of equations is created.
-% This initialization forms the starting points
-% of the search and is vitally important to the
-% success of the SR algorithm.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% \noindent
-% \textbf{Parameters to GP}
+##### Parameters of Genetic Programming
 
 % \noindent
 % Common Between Implementations:
@@ -768,6 +763,31 @@ or a computational threshold is reached.
 
 
 
+##### Schema Theory
+
+kouch pg47
+
+holland 1975
+
+form with ``blanks'' where not solved yet
+
+introns: nop material (could be removed)
+
+propagates through the population
+
+increases in size as solution gets better
+compactness / linkage
+
+crossover disrupts long schema (under uniform probability) [bloat]
+genetic drift - premature convergence, loss of generality (schemta)
+
+mutation disrupts if good parts of schema are selected
+
+
+
+
+
+
 
 
 
@@ -791,21 +811,7 @@ or a computational threshold is reached.
 <div id="limitations"></div>
 <a class="right" href="#top">top</a>
 
-#### Limitations
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Limitations}
-\label{section-gp-limitations}
+### Limitations
 
 
 The basic GP algorithm has many limitations
@@ -825,16 +831,33 @@ sufficient coverage of the search space,
 GP will not be able to reach areas of that space.
 
 
+GP has issues which it inherits from evolution, 
+which is good at dealing with uncertainty and variability,
+but not the ideal method for honing in on the most fit individual.
+These issues stem from the difficulties
+in maintaining a diverse population of equations
+while converging towards the best equation.
+Representation, the genetic operators,
+selection mechanisms, and population structure
+are interwoven in complex ways.
+These difficulties, and advancements made in GP,
+have effects which permeate through the
+entire GP infrastructure and operation.
+Measuring and understanding these
+effects requires rigorous testing and analysis,
+something laking but being addressed
+[McDermott:2012:benchmarks](https://cs.gmu.edu/~sean/papers/gecco12benchmarks3.pdf).
+
+
+Most of these are intertwined, 
+we will do our best to elucidate
+how they ar so.
 
 
 
 
-\textbf{Representation Issues}
+#### Representation Closure
 
-\noindent
-\textbf{closure}
-
-\noindent
 In the basic GP algorithm,
 expressions are generated at random.
 This can result in invalid operations
@@ -856,89 +879,10 @@ Hoai prevents invalid expressions from being generated
 where the previous method removes them later.
 
 
-\noindent
-\textbf{Inefficacy of Coefficient Tuning}
-
-\noindent
-GP traditionally represents parameters to an equation
-as real-valued coefficients.
-It is a well known problem that SR 
-is not effective at tuning 
-the coefficients of an equation.
-We first describe how coefficients are updated
-and then give a probability argument
-as to why it is difficult to optimize
-parameters with genetic operators.
-
-In basic GP, there are only two ways 
-to change a coefficient,
-crossover and mutation.
-In the first case, the correct coefficient is 
-substituted during crossover.
-The second way is to select the 
-coefficient for mutation and then
-update it to the correct value.
-Common mutation rates are 10\% and below,
-and the multiplicative factor for updating
-coefficients is similarly low.
-
-Consider the probability of selecting a coefficient.
-We need to consider both the size of the equation
-and the mutation rate. We multiply the
-uniform probability of selection by the
-mutation rate to obtain the overall chance of selection. 
-Figure \ref{fig:coeff-probs}
-shows the resultant coefficients for 
-both binary and n-ary trees,
-assuming mutation rate of 10\%.
-These are the rates just for
-selection and do not include the
-update factor. 
-The missing update factor is difficult
-to calculate, first because the  
-range of coefficients is immense, 
-though not infinite, in computers,
-and second because it depends upon 
-the current value of the coefficient,
-the correct value of the coefficient,
-and the update factor itself.
-It becomes difficult reach the 
-correct coefficient from the real numbers,
-moving small multiplicative factor each time.
-Additionally, as more coefficients are
-present in an equation, the task
-increases in difficulty.
-
-
-\begin{figure}[h!]
-\centering
-\caption{Coefficient Tuning Probabilities}
-\label{fig:coeff-probs}
-\vskip 15pt
-%\\[15px]
-\begin{tabular}{|l|c|c|c|}
-% \hline
- % & Col 1 & Col 2 & Col 3 \\
-\hline
-Coefficient & $a$,$b$ & $a$,$b$,$c$ & $a$,$b$,$c$,$d$  \\
-\hline
-Binary & $0.1*\frac{1}{9} = 0.0111$ & $0.1*\frac{1}{16} = 0.00625$  & $0.1*\frac{1}{26} = 0.00385$ \\[1ex]
-\hline
-N-ary  & $0.1*\frac{1}{9} = 0.0111$ & $0.1*\frac{1}{14} = 0.00714$  & $0.1*\frac{1}{22} = 0.00455$ \\[1ex]
-\hline
-\end{tabular}
-
-\includegraphics[scale=0.25, clip=true, trim=40 210 20 -20]{imgs/eqntrees/eqn-graph-space.pdf}
-\end{figure}
 
 
 
-
-
-
-
-
-\textbf{Premature Convergence}
+#### Premature Convergence
 
 GP is a highly stochastic process and thus
 promotes contradictory and inconsistent solutions.
@@ -962,7 +906,7 @@ as we come to them.
 
 
 
-\textbf{Bloat}
+#### Bloat
 
 Equation bloat is the growth of average candidate size
 over course of evolution.
@@ -986,11 +930,10 @@ disrupting partial solutions.
 %  - no justification
 
 
-\noindent
-\textbf{Disruptiveness of Crossover}
+#### Disruptiveness of Crossover
+
 % \tony{diagram: tree with probabilities} \ref{fig:coeff-probs}
 
-\noindent
 Crossover is the main explorative operator of SR. 
 Crossover facilitates large changes to an equation. 
 These changes translate into
@@ -1023,16 +966,7 @@ under perform the parent.
 
 
 
-
-
-
-
-
-
-
-
-
-\textbf{Population Diversity}
+#### Population Diversity
 
 A major issue through the course of evolution
 is maintaining the proper diversity 
@@ -1065,7 +999,7 @@ for comparing unique to total
 equation forms in section \ref{sec-pge-ipt}.
 
 
-\textbf{Redundancy of Candidate Solutions}
+#### Redundancy of Candidate Solutions
 
 Redundancy of solutions is the propagation,
 of a particular form, throughout the population.
@@ -1109,7 +1043,105 @@ are weaker models than their parents.
 
 
 
-% \subsection{Difficulties of Non-determinism}
+#### Inefficacy of Coefficient Tuning
+
+GP traditionally represents parameters to an equation
+as real-valued coefficients.
+It is a well known problem that SR 
+is not effective at tuning 
+the coefficients of an equation.
+We first describe how coefficients are updated
+and then give a probability argument
+as to why it is difficult to optimize
+parameters with genetic operators.
+
+In basic GP, there are only two ways 
+to change a coefficient,
+crossover and mutation.
+In the first case, the correct coefficient is 
+substituted during crossover.
+The second way is to select the 
+coefficient for mutation and then
+update it to the correct value.
+Common mutation rates are 10\% and below,
+and the multiplicative factor for updating
+coefficients is similarly low.
+
+Consider the probability of selecting a coefficient.
+We need to consider both the size of the equation
+and the mutation rate. We multiply the
+uniform probability of selection by the
+mutation rate to obtain the overall chance of selection. 
+Figure \ref{fig:coeff-probs}
+shows the resultant coefficients for 
+both binary and n-ary trees,
+assuming mutation rate of 10\%.
+These are the rates just for
+selection and do not include the
+update factor. 
+The missing update factor is difficult
+to calculate, first because the
+range of coefficients is immense, 
+though not infinite, in computers,
+and second because it depends upon 
+the current value of the coefficient,
+the correct value of the coefficient,
+and the update factor itself.
+It becomes difficult reach the 
+correct coefficient from the real numbers,
+moving small multiplicative factor each time.
+Additionally, as more coefficients are
+present in an equation, the task
+increases in difficulty.
+
+
+\begin{figure}[h!]
+\centering
+\caption{Coefficient Tuning Probabilities}
+\label{fig:coeff-probs}
+\vskip 15pt
+%\\[15px]
+\begin{tabular}{|l|c|c|c|}
+% \hline
+ % & Col 1 & Col 2 & Col 3 \\
+\hline
+Coefficient & $a$,$b$ & $a$,$b$,$c$ & $a$,$b$,$c$,$d$  \\
+\hline
+Binary & $0.1*\frac{1}{9} = 0.0111$ & $0.1*\frac{1}{16} = 0.00625$  & $0.1*\frac{1}{26} = 0.00385$ \\[1ex]
+\hline
+N-ary  & $0.1*\frac{1}{9} = 0.0111$ & $0.1*\frac{1}{14} = 0.00714$  & $0.1*\frac{1}{22} = 0.00455$ \\[1ex]
+\hline
+\end{tabular}
+
+\includegraphics[scale=0.25, clip=true, trim=40 210 20 -20]{imgs/eqntrees/eqn-graph-space.pdf}
+\end{figure}
+
+
+
+
+#### Difficulties of Non-determinism
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1119,13 +1151,26 @@ are weaker models than their parents.
 <div id="enhancements"></div>
 <a class="right" href="#top">top</a>
 
-#### Enhancements
+### Enhancements
+
+Since Koza's initial formulation of GP and SR \cite{koza:1992:gen_prog},
+there has been a plethora of research from 
+generalized implementation enhancements 
+to improvements addressing the issues of 
+disruptiveness of crossover, bloat, population diversity, 
+and premature convergence among many others.
+We cover material which has 
+relevance to our discussion,
+though it will necessarily be abridged
+due to space limitations.
+
+Will attempt to section in such a 
+way that mirrors the limitations
+with the enhancements meant to address them.
+Some enhancements inevitably effect multiple limitations
+and others don't fit nicely into a single category.
 
 
-
-
-GP has had many enhancements
-that are meant to overcome its limitations.
 These enhancements come in two classes,
 remedies addressing specific issues
 and improvements that effect
@@ -1140,18 +1185,9 @@ many aspects of the algorithm.
 
 % bootstrap initialization
 
-Since Koza's initial formulation of GP and SR \cite{koza:1992:gen_prog},
-there has been a plethora of research from 
-generalized implementation enhancements 
-to improvements addressing the issues of 
-disruptiveness of crossover, bloat, population diversity, 
-and premature convergence among many others.
-We cover material which has 
-relevance to our discussion,
-though it will necessarily be abridged
-due to space limitations.
 
-%Population level improvements:
+#### Population level improvements
+
 Selection is arguably the most important
 aspect of GP,
 determining which solutions 
@@ -1204,41 +1240,16 @@ local gradient search,
 non-linear regression,
 and swarm intelligence~\cite{topchy:2001:faster,raidl:1998:hybrid,eberhart:2001:swarm}.
 
-Abstract Expression Grammar (AEG)~\cite{korns:2011:abstract},
-uses several concurrent searches
-with state-of-the-art GP implementations.
-AEG replaces functions, variables, and coefficients
-with abstract place-holders.
-These place-holders enable different optimization methods
-to focus on restricted subsections of the search space or 
-parts of an expression.
-Parameters and restrictions to a SR method
-are encapsulated into a SQL-like language,
-providing high level specifications
-and fine-grained search control.
-Opening book rules allow each island
-to be tailored to search a reduced
-area of the search space, while
-closing book rules enable AEG to
-update the constraints on islands
-which have stagnated.
-The author states that designing closing book rules
-is time consuming, were arrived at empirically, 
-and often need to be tailored to the SR system and problem at hand.
-AEG was shown to make many problems tractable with current techniques~\cite{korns:2011:accuracy}.
-Additionally, almost any SR algorithm can be used within the AEG framework.
 
 
-\textbf{Bloat}
+#### Bloat
 % \tony{depth based probability}
 
 % bloat counters \cite{panait:2004:alternative}
 
 % Counter: (Brood Selection, More intelligent cross point selection, hill climbing)
 
-% brood?
-\noindent
-\textbf{Brood Selection}
+##### Brood Selection
 
 \begin{figure}[htb]
 \centering
@@ -1247,7 +1258,7 @@ Additionally, almost any SR algorithm can be used within the AEG framework.
 \label{fig:gp-basic}
 \end{figure}
 
-\noindent
+
 Brood selection is a technique to
 create better offspring 
 from the crossover operation.
@@ -1286,10 +1297,8 @@ survival and replication selection phases.
 % \#, the increases size of the offspring population
 % directly increases the time spent evaluating.
 
-\noindent
-\textbf{Ideal point selection}
+##### Ideal point selection
 
-\noindent
 Ideal point selection aims to 
 choose crossover points wisely.
 This can be don in a context aware scheme,
@@ -1308,7 +1317,7 @@ disruption of good subtrees.
 % ---- depth dependent [123] favored shallower points
 
 
-\textbf{Population Diversity}
+#### Population Diversity
 
 Maintaining population diversity 
 is one of the most pressing issues
@@ -1335,14 +1344,14 @@ process by sharing information.
 
 % -- initialization
 % ---- multiple brief pre-runs to create diverse initial pop
-% ---- RAND\_tree [132,30] uniform sampling of tree-derivation grammar
+% ---- RAND_tree [132,30] uniform sampling of tree-derivation grammar
 
 % % \textbf{Redundancy of Candidate Solutions}
 
 % results in redundancy within population, premature convergence, excessive evaluation
 
 
-% \textbf{coefficient tuning}
+#### coefficient tuning
 % Counter: open research question
 
 % local gradiant search of numeric leaf values
@@ -1368,8 +1377,8 @@ process by sharing information.
 % ... 
 
 
-\textbf{Other Advancements}
-\label{sec-gp-adv}
+#### Other Advancements
+
 
 % \textbf{Cost of Evaluation}
 
@@ -1441,48 +1450,40 @@ and increased search ability justify using co-evolution.
 % -with non-lin, interval arithm, \cite{raidl:1998:hybrid}
 % -- results not very parsimonious
 
+#### Advanced GP Systems
+
+**Abstract Expression Grammar** (AEG)~\cite{korns:2011:abstract},
+uses several concurrent searches
+with state-of-the-art GP implementations.
+AEG replaces functions, variables, and coefficients
+with abstract place-holders.
+These place-holders enable different optimization methods
+to focus on restricted subsections of the search space or 
+parts of an expression.
+Parameters and restrictions to a SR method
+are encapsulated into a SQL-like language,
+providing high level specifications
+and fine-grained search control.
+Opening book rules allow each island
+to be tailored to search a reduced
+area of the search space, while
+closing book rules enable AEG to
+update the constraints on islands
+which have stagnated.
+The author states that designing closing book rules
+is time consuming, were arrived at empirically, 
+and often need to be tailored to the SR system and problem at hand.
+AEG was shown to make many problems tractable with current techniques~\cite{korns:2011:accuracy}.
+Additionally, almost any SR algorithm can be used within the AEG framework.
+
+
+**Eureqa**
 
 
 
 
 
-
-
-
-
-Symbolic Regression is the problem in which
-analytical formula are derived
-directly from observational or measured data
-without any \textit{a priori} domain knowledge.
-Abstractly, SR searches
-the expression space
-defined by a grammar to
-find the best form of an expression.
-In practice, the space is usually
-mathematical formula and the expression
-is an equation where the variables
-are the features in the data set.
-Thus, SR is a function identification task
-where the inputs and outputs are known
-and the search is for an unknown model.
-
-The most common implementation of SR
-is called Genetic Programming (GP) \cite{koza:1992:gen_prog},
-an algorithm inspired by Genetic Algorithms (GA).
-The classical GP algorithm is a
-probabilistic search over the
-syntax-tree representation of an equation.
-GP starts by randomly creating an
-initial pool (population) of equations.
-During each iteration (generation),
-individuals in this population are
-evaluated for fitness,
-selected for survival and replication,
-and then recombined using methods which resemble
-sexual reproduction and mutation.
-The GP algorithm completes when
-a model of desired accuracy is discovered
-or a computational threshold is reached.
+---
 
 Due to issues with
 benchmarking SR algorithms~\cite{McDermott:2012:benchmarks},
@@ -1573,26 +1574,10 @@ real-world problems and data as well.
 
 
 
-
-
-
-
-\textbf{Components}
-\label{section-gp-enhancements-components}
-
-\textbf{Islands}
-\label{section-gp-enhancements-islands}
-
-\textbf{Hybrids}
-\label{section-gp-enhancements-hybrids}
-
-
-
-
 <div id="issues"></div>
 <a class="right" href="#top">top</a>
 
-#### Fundemental Issues
+### Fundemental Issues
 
 
 
