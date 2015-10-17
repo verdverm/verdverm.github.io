@@ -5,7 +5,7 @@ brief: Overview, context, details, implementations
 sections:
   - name: The Problem
     tag: problem
-    brief: Definition, classes, appilacitons
+    brief: Definition, classes, applications
   - name: The Components
     tag: components
     brief: Representation, evaluation, optimization, memoization
@@ -15,47 +15,25 @@ sections:
   - name: Implementations
     tag: implementations
     brief: PGE, FFX, basic GP, modern GP
+  - name: Applications
+    tag: applications
+    brief: Where SR can been applied
   - name: Further Considerations
     tag: considerations
     brief: Terminonolgy, implementation evaluation, reproducibility
 ---
 
 
-##### A chart
-
-
-<google-chart
-    type='scatter'
-    options='{
-        "title": "Pareto Non-dominated sort",
-        "legend": "none",
-        "pointSize": 2,
-        "crosshair": { "trigger": "both", "orientation": "both" },
-        "hAxis": {"title": "Size"},
-        "vAxis": {"title": "Error", "viewWindow": {"min": 0.25, "max": 1.25} },
-        "series": {
-          "1": {
-            "pointSize": 5
-          }
-        }
-      }'
-    data='/sr/data/pareto.json'>
-</google-chart>
 
 
 
-##### A definition
+<div id="problem"></div>
+<a class="right" href="#top">top</a>
 
-Symbolic Regression (SR) is the problem of 
-deriving expressions directly from measured data. 
-It is a machine learning problem where the
-output is a mathematical equation.
-The process which an SR implementation employs, 
-mirrors our human notions for 
-mathematical discovery in science and engineering.
+### The Problem
 
 
-The primary setting for this work is Symbolic Regression (SR),
+Symbolic Regression (SR) is
 the task of deriving mathematical formula
 from observational data without any fore-knowledge
 of the domain or problem.
@@ -64,6 +42,9 @@ performed by a computer.
 Hypotheses are formulated,
 tested against the observations,
 and compared for explanatory value.
+This process mirrors our human notions for 
+mathematical discovery in science and engineering.
+
 The overall goal of SR is to produce
 expressions which find a balance in the
 trade-off between accuracy and complexity.
@@ -76,9 +57,7 @@ aspects of that system,
 gaining insights from the results of SR.
 
 
-##### Where it fits in
-
-SR is a generalization of
+SR is often considered a generalization of
 traditional methods for regression.
 Linear and non-linear regression
 assume a model and fit 
@@ -90,27 +69,20 @@ can model almost any signal or function.
 However, they don't elucidate an understanding of the
 interactions and behavior of that signal or function.
 SR addresses these issues by
-making no a priori assumptions about the model.
-A SR implementation generates, tests, and validates equations.
-It searches the space defined by a model space's grammar
-returning expressions, a concrete model instance or an equation.
-Thus, we gain the simplicity and interpretable of equations
-while maintaining the sophistication from more complex
-learning methods.
-
-
-##### Applications & problem types
+making no a priori assumptions about the form of a model.
+A SR implementation will generate, tests, and validated
+a massive number of models.
 
 Because SR models data with equations,
 it finds a vast array of application domains.
 Simple relationships are modeled with
-explicit functions $y=f(X)$.
+explicit functions.
 Time variant relationships are modeled with
-differential equations: $\frac{dx_i}{dt} = f(X,dX)$.
+differential equations.
 Several differential equations can be combined into
 a set, forming a dynamical system.
 Relationships with vary in both time and space
-are modeled with partial differential equations (PDEs).
+are modeled with partial differential equations.
 Invariants, or conserved quantities can also be modeled
 with an equation and its partial derivatives.
 These are all incantations of ideas from calculus
@@ -119,16 +91,18 @@ From
 cell biology to ecology, 
 physics to astronomy,
 chemistry to pharmaceuticals,
-economics and finance;
+engineering and finance;
 all fields rely on
 mathematical notions and theory
 to produce solid foundations
 upon which decisions can be made.
 
-##### The Importance
 
-The importance in automatically discovering analytical models
-for our increasing volumes and complexity of data is paramount.
+Symbolic Regression technology will thus
+be a tool of great significance moving forward.
+The ability to automatically discover analytical models
+from our increasing volumes and complexity of data is paramount
+if scientific understanding and progress is to continue.
 The equation models described above are human interpretable,
 precisely because they are a human conception
 for talking about functional relationships
@@ -147,235 +121,6 @@ SR holds the potential to
 alleviate this situation
 and accelerate the pace of 
 scientific and engineering breakthroughs.
-
-
-##### The Components
-
-Like all machine learning tasks,
-SR can be logically broken into three components for
-representation, evaluation, and optimization.
-We include a forth component, memoization,
-due to its important to the SR problem.
-% methods
-Similarly, as in any machine learning task,
-there are several algorithms which
-try to solve the SR problem.
-Originally, SR was born from Genetic Programming (GP),
-an evolutionary algorithm for attempting this problem.
-The use of GP as a method for SR
-has been the de-facto until only recently.
-It is for this reason that SR as a problem
-is just starting to find itself researched
-outside of evolutionary algorithms.
-With the advent of Fast Function eXtraction (FFX)
-and Prioritized Grammar Enumeration (PGE),
-there are now competing methods to GP
-which are also deterministic.
-
-###### Reproducibility
-
-This deterministic nature of FFX and PGE
-is an important feature for a SR algorithm.
-It is because of the link between
-human, math, and science.
-In science we expect reproducible results.
-We believe this is why GP has not
-become a predominant technology as predicted by its proponents,
-and likewise, SR for being so tightly coupled to GP
-for much of its history.
-Here, we take a strong stance that reproducibility
-is one of the key features to a SR implementation.
-Reproducibility provides the necessary reliability
-for scientific discovery and adoption of a new tool, 
-as well as the foundation upon which research into SR
-can stand.
-
-
-
-
-
-
-
-
-
-
-
-<div id="problem"></div>
-<a class="right" href="#top">top</a>
-
-#### The Problem
-
-
-
-origins, so we can forward reference relation to GP and its limitations
-
-- definition
-- importance
-- reproducibility
-
-Problem Types
-
-- explicit
-- diffeq
-- systems
-- pde
-- invar
-
-How relates to equation relationships
-
-
-\subsection{A Definition}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Equation Types}
-
-\begin{table}[h]
-\centering
-\caption[Problem Type - Equation Form]{Problem Type - Equation Form}
-\label{tab:probtype-eqnform}
-\begin{tabular}{|l|r c l|}
-\hline
-Problem Type & \multicolumn{3}{c|}{Equation Form} \\
-\hline
-Explicit Equations      &  $ y $ & = & $f(\vec{x}) $ \\
-Differential Equations  &  $ \frac{dx_i}{dt} $ & = & $ f(\vec{x})$,$ f(\vec{x},\vec{dx}) $ \\
-Partial DiffEqs         &  $ \frac{dx_i}{dt} $ , $ \frac{dx_i}{dx_j} $ & = & $ f(\vec{x},\vec{dx}) $ \\
-Invariants              &  $ F(\vec{x}) $ & = & $ \frac{df_i}{dt}(\vec{x},\vec{dx}) = C $ \\
-\hline
-\end{tabular}
-\end{table}
-
-
-\noindent
-\textbf{Explicit Equations}
-
-\noindent
-Explicit functions are the most basic equation type.
-These are a direct mapping, or rule,
-from the independent input variables to the dependent output variable.
-Data is plugged in and the output is the result of depth-first evaluation. 
-The most familiar of these is the line: $ y = ax + b $.
-The line has one input variable and 
-one output variable.
-Another familiar examples is the polynomial: $ y = ax^2 + bx + c $.
-Both of these equations are easily extended
-to multiple dimensions and become 
-hyper-planes and hyper-surfaces respectively.
-
-
-\noindent
-\textbf{Dynamical Systems}
-
-\noindent
-Dynamical systems are a set of differential equations,
-either heterogeneous or homogeneous.
-Each differential equations, in turn,
-is a rule for the rate of change,
-in one variable over time, to the current state of all variables.
-That is to say that the future depends upon the past.
-
-To evaluate differential equations,
-techniques of numerical integration are required.
-There are many methods of numerical integration \cite{kress:98:num_analysis}.
-Runge-Kutta 4 (RK4) is one such technique.
-It makes four smaller steps in time, 
-updating the input variables along the way.
-Since RK4 involves four evaluations of a function,
-it requires four times the computational effort.
-RK4 also requires all of the differential equations, 
-for a dynamical system, in order to simulate the system.
-RK4 integrates from current state to produce the
-next state of the system. It thus requires
-a temporal ordering of the data.
-We use the RK4 algorithm in this work
-to produce the data sets for the dynamical systems.
-
-When performing an SR search, it is possible
-to decompose the differential equations for separate evaluation.
-We can approximate the integrated values
-of the other variables
-by substituting interpolated data.
-This partitions the SR search 
-making the equation recovery simpler task \cite{hod:07:pnas}.
-We call this Partitioned RK4 (PRK4).
-PRK4 requires the current and next
-states of the system, and four evaluations,
-in order to measure the fitness of an equation.
-It also maintains the temporal restriction
-of data in the evaluation process.
-
-An alternative evaluation method
-for differential equations
-exists, if the numerical derivatives 
-of the data can be calculated.
-The equations fitness is then
-measured by its ability to predict 
-the numerical derivative.
-There are two reasons for doing this.
-The first is that small variations in the equation
-result in a larger magnitude 
-of difference from the fitness function.
-The integrals of $x^2$ and $x^2+1$ 
-diverge linearly, which means the
-integrated values of RK4 are very similar.
-The fitness landscape of the
-numerical derivative method is less smooth.
-The second reason for evaluating
-against the numerical derivative data
-is that we can perform a single point evaluation.
-We perform four times fewer evaluations
-and we can perform them at arbitrary points.
-\cite{hod:08:mining}
-
-% \tony{One day... I would like to perform some experiments on this last bit}
-
-% A natural extension to differential equations
-% is partial differential equations.
-% PDEs allow more than time to be independent measurements,
-% such as x, y, and z in three dimensional space.
-% We not yet made an attempt at this type of equation.
-
-
-\noindent
-\textbf{Invariants}
-
-\noindent
-Invariant equations represent the solution to 
-a set of homogeneous differential equations and
-are the integral solution to that dynamical system.
-Well known examples from physics are 
-the conservation of energy, mass, and angular momentum.
-This begs the question:
- ``are there conserved quantities in biological or ecological systems.'' 
-Previous work \cite{hod:09:science,hod:09:implicit_long}
-has shown that it is actually possible to
-uncover the Hamiltonians for conservation of angular momentum,
-directly from measured data. 
-We do not, however, explore the search for invariants in this work.
-
-
-
-
-
-\subsection{Applications}
 
 
 
@@ -403,64 +148,69 @@ We do not, however, explore the search for invariants in this work.
 <div id="components"></div>
 <a class="right" href="#top">top</a>
 
-#### The Components
+### The Components
 
-
-
-
-
-All machine learning techniques 
-require three components: 
+Like all machine learning tasks,
+SR can be logically broken into three components: 
 Representation, Evaluation, and Optimization.
-Representations are the conceptual and actual
+Representations are the conceptual and implementation
 models we choose for the problem space.
-Evaluation is how one model is determined
-to be better than another. It is also
-how a model's fitness is defined.
-Optimization is the technique
+Evaluation of a model's fitness is defined
+by the objective function.
+By comparing fitness, a model can be determined
+to be better or worse than another. 
+Optimization is then the technique
 which searches the representational space
 and maximizes model fitness.
-Often, these three components have a
-high degree of coupling, 
-and thus there are natural pairings.
-Additionally, we include Memoization
+Often these three components have a
+high degree of coupling or co-dependence.
+That is, optimization techniques usually
+have a representation and objective in mind.
+
+We additionally include Memoization as a compenent,
 due to its paramount role in the SR problem.
-This role is significant because the SR representational space 
+Memoization is necessary as the SR representational space 
 contains an extremely high degree of overlapping subproblems.
+If we did not detect overlap, we would experience 
+a high degree of repetition and solve the same problems
+many times.
 
 
-\subsection{Representation}
-\label{section-sr-components-representation}
-
-Many equation representations have been explored
-in SR research.
-
-Binary: natural to computers
-
-Other: graph, ccgp, linear, mapping
-
-N-ary: natural to algebra
+#### Representation in Symbolic Regression
 
 
-Combination of n-ary and linear mapping (prefix notation),
-which are equivalent,
-give PGE part of its power and sophistication
-
-
-In order model with Symbolic Regression,
-equations need to be represented \textit{in cilico}.
+In order to model with Symbolic Regression,
+equations need to be represented *in cilico*.
 The method of representation 
 determines the methods
 we can use to work with the equations.
+
+Many equation representations have been explored
+in SR research.
 Tree structures are the most common
 implementation for equation representation,
 because, as we will see, they fit most
 naturally with the theoretical concepts.
+Trees can be subdivided into binary
+and n-ary. 
+Binary are natural to computers,
+n-ary are natural to algebra.
+Graph and linear representations 
+have been used as well.
+The combination of a n-ary tree and linear prefix notation,
+which are equivalent,
+enable PGE's power and sophistication.
 
-\noindent
-\textbf{Equation Representation}
 
-\noindent
+
+##### Linguistic Foundations
+
+In this work, we take a strong point of view
+from a language perspective.
+It was this perspective which 
+lead to the PGE algorithm
+and underpins much of our foundation.
+
 A grammar defines a language in a recursive manner \cite{Aho:1972:TPT}. 
 A grammar is comprised of a start symbol,
 nonterminals, terminals, and production rules.
@@ -476,27 +226,23 @@ Thus, grammar allows us to determine if
 a sentence is in a language and
 conversely provides a means to
 recursively enumerate sentences in a language.
-Listing \ref{grammar} is an example 
-of a grammar for mathematics.
-It is also the grammar we use 
-throughout this work.
-
-\begin{figure}[h!]
-\lstset{caption={Grammar for Mathematical Equations},label=grammar}
-\begin{lstlisting}
-START -> E
-E -> E + T | T          // subtraction handled by negatives & constants
-T -> T * N | T / N | N
-N -> Sqrt(E) | Cos(E) | Sin(E) | Tan(E) | Log(E) | Exp(E) | L
-L -> (E) | -(E) | (E)^(E) | TERM 
-TERM -> Constant | Variable
-\end{lstlisting}
-\end{figure}
+Below is a simplified example 
+for a grammar for mathematics.
 
 
+    START -> E
+    E -> E + T | T          // subtraction handled by negatives & constants
+    T -> T * N | T / N | N
+    N -> Sqrt(E) | Cos(E) | Sin(E) | Tan(E) | Log(E) | Exp(E) | L
+    L -> (E) | -(E) | (E)^(E) | TERM 
+    TERM -> Constant | Variable
+
+
+
+##### Binary Trees
 
 In Symbolic Regression,
-equations are constructed as binary trees  
+equations are constructed as binary trees
 made of basic components called building blocks.
 The tree of building blocks 
 makes up the `DNA' of an equation.
@@ -532,26 +278,10 @@ but they have not been the only method.
 \cite{Hod:2007:graphrep} considered 
 graph representations for equations,
 sometimes referred to as Cartesian GP \cite{miller:2000:cartesian}.
-In Fast Function eXtraction \cite{McConaghy:2011:FFX}, 
-described in section \ref{subsec-ffx},
-equations are represented as a
-linear combination of simple basis functions.
-\begin{figure}[h!]
-\centering
-\caption[Equation Representation]{Equation Tree Representations. Row 1: Binary,  Row 2: Nary}
-\label{fig:eqn-trees}
-\vskip 15pt
-%\\[15px]
-\begin{tabular}{|l|c|c|c|}
-\hline
- & Col 1 & Col 2 & Col 3 \\
-\hline
-Equation & $ax + bx^2$ & $ax + bx^2 + cx^3$ & $ax + bx^2 + cx^3 + dx^4 y^3$  \\
-\hline
-\end{tabular}
 
-\includegraphics[scale=0.25, clip=true, trim=40 210 20 -20]{imgs/eqn-trees.pdf}
-\end{figure}
+
+##### N-ary Trees
+
 
 In this work, we use n-ary trees, 
 where each operand can have a variable number of children.
@@ -586,9 +316,9 @@ the operation of any SR implementation.
 
 Additionally, the n-ary representation
 eases the design of simplification algorithms.
-These algorithms, detailed next,
-work within the parse tree
-to reshape it to a canonical form.
+These algorithms
+work within the tree
+to rewrite it to a canonical form.
 The simplification algorithms are analogous to 
 rewrite rules from the parser literature\cite{Aho:1972:TPT},
 and are reminiscent of high school algebra.
@@ -599,6 +329,20 @@ and are reminiscent of high school algebra.
 %  - effect on GP (need to limit simplification \textbf{doable?})
 % It makes easier / enables
 %   - the design of sorting / simplification algorithms 
+
+
+
+
+##### Linear Representations
+
+In Fast Function eXtraction \cite{McConaghy:2011:FFX}, 
+described in section \ref{subsec-ffx},
+equations are represented as a
+linear combination of simple basis functions.
+
+
+
+##### Other Representations
 
 
 
@@ -651,8 +395,11 @@ and is arguably the most important part.
 
 
 
-\subsection{Evaluation}
-\label{section-sr-components-evaluation}
+
+
+
+
+#### Evaluation in Symbolic Regression
 
 Symbolic Regression explicates relationships 
 between variables using mathematical equations.
@@ -717,7 +464,7 @@ for the evaluation of PGE.
 Further, we believe PGE can contribute to this effort,
 as a deterministic, base-line algorithm,
 against which evolutionary methods can measure themselves.
-% \tony{(last paragraph of Section 5) [copied into tex file]}
+
 We do, however, disagree with the assumption in ~\cite{McDermott:2012:benchmarks},
 that results should not be expected to be repeatable,
 and thus unverifiable by a third party.
@@ -725,10 +472,10 @@ A non-GP practitioner will not likely
 use a tool which gives different
 answers each time it is used.
 This has been partially addressed by 
-\textit{rate of convergence}
+*rate of convergence*
 (how often an implementation finds an answer)
 and 
-\textit{cumulative probability of success}
+*cumulative probability of success*
 (the probability that an ideal solution would be found on or prior to generation $i$).
 Both of these methods require many trials.
 Nevertheless, we agree that the optimum is less obtainable
@@ -762,10 +509,8 @@ and a true evaluation can
 only come by using multiple metrics
 in conjunction.
 
-\noindent
-\textbf{Data Presentation}
+##### Data Presentation
 
-\noindent
 Data sets come in many varieties.
 How we measure data effects
 the methods we can employ
@@ -774,7 +519,7 @@ One method is to uniformly sample
 the input variables. This is easy
 when the variables have 
 a well defined range and can easily be simulated or observed.
-This is the case for equations like $y=f(\vec{x})$.
+This is the case for equations like $$y=f(\vec{x})$$.
 In the real world, we have limited
 access to the multitude of
 states a system can exhibit.
@@ -834,8 +579,7 @@ an overall solution to the bigger problem.
 
 
 
-\noindent
-\textbf{Fitness Function}
+##### Fitness Function
 
 \noindent
 To test hypotheses, SR requires 
@@ -884,10 +628,11 @@ The Levenberg-Marquardt (LM) algorithm is an iterative technique that finds a lo
 
 
 
-\noindent
-\textbf{Pareto Front}
 
-\noindent
+
+##### Pareto Front
+
+
 In multi-objective optimizations,
 no one fitness measure trumps the others.
 There is an irregular
@@ -942,8 +687,7 @@ of the equations being sorted.
 
 
 
-\subsection{Optimization}
-\label{section-sr-components-optimization}
+#### Optimization in Symbolic Regression
 
 
 \begin{figure}[h!]
@@ -994,7 +738,7 @@ the direction of SR becoming more than research.
 
 
 
-\subsection{Memoization}
+#### Memoization
 
 Make the case
 
@@ -1051,12 +795,26 @@ Explain why important
 <div id="algorithm"></div>
 <a class="right" href="#top">top</a>
 
-#### The Algorithm
+### The Algorithm
+
+Similarly, as in any machine learning task,
+there are several algorithms which
+try to solve the SR problem.
+Originally, SR was born from Genetic Programming (GP),
+an evolutionary algorithm for attempting this problem.
+The use of GP as a method for SR
+has been the de-facto until only recently.
+It is for this reason that SR as a problem
+is just starting to find itself researched
+outside of evolutionary algorithms.
+With the advent of Fast Function eXtraction (FFX)
+and Prioritized Grammar Enumeration (PGE),
+there are now competing methods to GP
+which are also deterministic.
 
 
 
-
-\subsection{The Search Space}
+#### The Search Space
 
 The equation search space is defined
 by a grammar through its terminals,
@@ -1185,17 +943,9 @@ Generally, a small bound on the size or depth is started with and increased
 if the models returned are unsatisfactory.
 
 
-\subsection{Equation Relationships}
+#### Equation Relationships
 
-\subsection{The Search Loop}
-\label{section-dt-qualities}
-
-
-
-
-
-
-
+#### The Search Loop
 
 
 
@@ -1216,7 +966,7 @@ if the models returned are unsatisfactory.
 <div id="implementations"></div>
 <a class="right" href="#top">top</a>
 
-#### Implementations
+### Implementations
 
 
 
@@ -1237,7 +987,7 @@ In GP, solutions vary in size,
 represented as a parse tree within a grammar.
 
 
-\subsection{Genetic Programming}
+#### Genetic Programming
 
 The terms Genetic Programming and Symbolic Regression 
 were originally coined by \cite{koza:1992:gen_prog}.
@@ -1391,7 +1141,8 @@ func FFX_Search() {
 }
 \end{lstlisting}
 \end{figure}
-\subsection{Fast Function eXtraction}
+
+#### Fast Function eXtraction
 \label{subsec-ffx}
 Fast Function eXtraction (FFX)
 is a deterministic SR implementation \cite{McConaghy:2011:FFX}.
@@ -1426,7 +1177,7 @@ $b$ basis functions.
 To learn a model, FFX applies
 pathwise regularized learning
 to fit the GLM coefficients.
-This learning method uses  
+This learning method uses
 a coefficient threshold value $\lambda$ and varied it until
 the number of function bases equals the desired model complexity.
 FFX returns all of the models sorted,
@@ -1480,7 +1231,9 @@ func PGE_Search() {
 }
 \end{lstlisting}
 \end{figure}
-\subsection{Prioritized Grammar Enumeration}
+
+
+#### Prioritized Grammar Enumeration
 
 
 This work introduces Prioritized Grammar Enumeration (PGE), 
@@ -1552,6 +1305,158 @@ in Section \ref{sec-pge-vari}.
 
 
 
+<div id="applications"></div>
+<a class="right" href="#top">top</a>
+
+### Applications
+
+Equation Types
+
+- explicit
+- diffeqs & dynamical systems
+- pdes & invariants
+
+How relates to equation relationships
+
+Problems: 
+
+examples of problem applications from the literature
+
+- basic functions
+- trig relationships
+- mechanics
+- biology (yeast)
+
+#### Equation Types
+
+\begin{table}[h]
+\centering
+\caption[Problem Type - Equation Form]{Problem Type - Equation Form}
+\label{tab:probtype-eqnform}
+\begin{tabular}{|l|r c l|}
+\hline
+Problem Type & \multicolumn{3}{c|}{Equation Form} \\
+\hline
+Explicit Equations      &  $ y $ & = & $f(\vec{x}) $ \\
+Differential Equations  &  $ \frac{dx_i}{dt} $ & = & $ f(\vec{x})$,$ f(\vec{x},\vec{dx}) $ \\
+Partial DiffEqs         &  $ \frac{dx_i}{dt} $ , $ \frac{dx_i}{dx_j} $ & = & $ f(\vec{x},\vec{dx}) $ \\
+Invariants              &  $ F(\vec{x}) $ & = & $ \frac{df_i}{dt}(\vec{x},\vec{dx}) = C $ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+##### Explicit Equations
+
+Explicit functions are the most basic equation type.
+These are a direct mapping, or rule,
+from the independent input variables to the dependent output variable.
+Data is plugged in and the output is the result of depth-first evaluation. 
+The most familiar of these is the line: $$ y = ax + b $$.
+The line has one input variable and 
+one output variable.
+Another familiar examples is the polynomial: $$ y = ax^2 + bx + c $$.
+Both of these equations are easily extended
+to multiple dimensions and become 
+hyper-planes and hyper-surfaces respectively.
+
+
+##### Differential Equations and Dynamical Systems
+
+Dynamical systems are a set of differential equations,
+either heterogeneous or homogeneous.
+Each differential equations, in turn,
+is a rule for the rate of change,
+in one variable over time, to the current state of all variables.
+That is to say that the future depends upon the past.
+
+To evaluate differential equations,
+techniques of numerical integration are required.
+There are many methods of numerical integration \cite{kress:98:num_analysis}.
+Runge-Kutta 4 (RK4) is one such technique.
+It makes four smaller steps in time, 
+updating the input variables along the way.
+Since RK4 involves four evaluations of a function,
+it requires four times the computational effort.
+RK4 also requires all of the differential equations, 
+for a dynamical system, in order to simulate the system.
+RK4 integrates from current state to produce the
+next state of the system. It thus requires
+a temporal ordering of the data.
+We use the RK4 algorithm in this work
+to produce the data sets for the dynamical systems.
+
+When performing an SR search, it is possible
+to decompose the differential equations for separate evaluation.
+We can approximate the integrated values
+of the other variables
+by substituting interpolated data.
+This partitions the SR search 
+making the equation recovery simpler task \cite{hod:07:pnas}.
+We call this Partitioned RK4 (PRK4).
+PRK4 requires the current and next
+states of the system, and four evaluations,
+in order to measure the fitness of an equation.
+It also maintains the temporal restriction
+of data in the evaluation process.
+
+An alternative evaluation method
+for differential equations
+exists, if the numerical derivatives 
+of the data can be calculated.
+The equations fitness is then
+measured by its ability to predict 
+the numerical derivative.
+There are two reasons for doing this.
+The first is that small variations in the equation
+result in a larger magnitude 
+of difference from the fitness function.
+The integrals of $x^2$ and $x^2+1$ 
+diverge linearly, which means the
+integrated values of RK4 are very similar.
+The fitness landscape of the
+numerical derivative method is less smooth.
+The second reason for evaluating
+against the numerical derivative data
+is that we can perform a single point evaluation.
+We perform four times fewer evaluations
+and we can perform them at arbitrary points.
+\cite{hod:08:mining}
+
+% \tony{One day... I would like to perform some experiments on this last bit}
+
+% A natural extension to differential equations
+% is partial differential equations.
+% PDEs allow more than time to be independent measurements,
+% such as x, y, and z in three dimensional space.
+% We not yet made an attempt at this type of equation.
+
+
+##### Partial Differential Equations and Invariants
+
+Invariant equations represent the solution to 
+a set of homogeneous differential equations and
+are the integral solution to that dynamical system.
+Well known examples from physics are 
+the conservation of energy, mass, and angular momentum.
+Previous work \cite{hod:09:science,hod:09:implicit_long}
+has shown that it is actually possible to
+uncover the Hamiltonians for conservation of angular momentum,
+directly from measured data. 
+This begs the question:
+<blockquote>
+Are there conserved quantities in biological or ecological systems.
+</blockquote>
+We do not, unfortunately, explore this question or the search for invariants in this work.
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1571,11 +1476,11 @@ in Section \ref{sec-pge-vari}.
 <div id="considerations"></div>
 <a class="right" href="#top">top</a>
 
-#### Further Considerations
+### Further Considerations
 
 
 
-\subsection{Separating Task from Implementation}
+#### Separating Task from Implementation
 
 
 In this work, we view SR as only a problem
@@ -1616,7 +1521,7 @@ offering a new means of performing an equation search.
 
 
 
-\subsection{Implementation Evaluation}
+#### Implementation Evaluation
 
 In order to compare SR implementations,
 and before trusting them on unsolved problems,
@@ -1664,10 +1569,8 @@ which can make comparison difficult at times.
 
 
 
-\noindent
-\textbf{Number of Iterations}
+##### Number of Iterations
 
-\noindent
 The number of iterations
 is often equated with how many steps
 it takes to find a solution.
@@ -1702,10 +1605,7 @@ iterations becomes misleading if
 other factors are not considered.
 
 
-\noindent
-\textbf{Accuracy of Candidate Solutions}
-
-\noindent
+##### Accuracy of Candidate Solutions
 
 Accuracy predicts a candidates
 ability to model a given data set.
@@ -1741,10 +1641,8 @@ the never-before-seen testing data.
 \newline
 
 
-\noindent
-\textbf{Rate of Convergence}
+##### Rate of Convergence
 
-\noindent
 The rate of convergence is defined as 
 an implementation's probability
 of finding the correct solution.
@@ -1805,10 +1703,8 @@ the results are to the true form.
 
 
 
-\noindent
-\textbf{Clock Time}
+##### Clock Time
 
-\noindent
 Clock time tells us how long, 
 from when we hit enter,
 until we get our answer.
@@ -1837,10 +1733,8 @@ When time is coupled with other metrics,
 we can gain measures for the amount of work.
 
 
-\noindent
-\textbf{Amount of Work}
+##### Amount of Work
 
-\noindent
 Amount of work done is a good metric when
 we want the most return for what we put in.
 Work, however, can be difficult no quantify.
@@ -1903,17 +1797,28 @@ by both GP and PGE.
 
 
 
-\subsection{Reproducibility and the Importance of Determinism}
-\label{section-sr-reproducibility}
+#### Reproducibility and the Importance of Determinism
+
+
+This deterministic nature of FFX and PGE
+is an important feature for a SR algorithm.
+It is because of the link between
+human, math, and science.
+In science we expect reproducible results.
+We believe this is why GP has not
+become a predominant technology as predicted by its proponents,
+and likewise, SR for being so tightly coupled to GP
+for much of its history.
+Here, we take a strong stance that reproducibility
+is one of the key features to a SR implementation.
+Reproducibility provides the necessary reliability
+for scientific discovery and adoption of a new tool, 
+as well as the foundation upon which research into SR
+can stand.
 
 
 
-
-\subsection{The Issues}
-
-- cs
-- gp
-- science
+issues of reproducibility in SR and GP
 
 \subsection{The Importance}
 \subsection{Systems for Reproducibility}

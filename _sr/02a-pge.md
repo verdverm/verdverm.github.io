@@ -26,9 +26,9 @@ sections:
 
 
 
-This chapter describes the rethinking of Symbolic Regression.
-Prioritized Grammar Enumeration (PGE) is the result
-built on ideas from dynamic programming. 
+This chapter describes our rethinking of Symbolic Regression.
+Prioritized Grammar Enumeration (PGE) is the result.
+PGE is built on ideas from dynamic programming. 
 To our knowledge, PGE is the first
 deterministic, tree-based SR implementation.
 PGE solves the SR problem by 
@@ -134,7 +134,7 @@ that GP cannot as a randomized algorithm.
 <div id="overview"></div>
 <a class="right" href="#top">top</a>
 
-#### Overview
+### Overview
 
 
 
@@ -178,28 +178,8 @@ Psuedocode is provided,
 at the end of the section,
 after the necessary material
 has been covered.
-% \ken{There's a missing ending to the sentence.  Maybe just a period.}
-
-\begin{figure}[t]
-\vspace*{-.1in}
-\caption{Grammar for Mathematical Equations}
-\lstset{label=grammar}
-\begin{lstlisting}
-START %* $\rightarrow$ *) E
-E %* $\rightarrow$ *) E + T | E * T | T         
-T %* $\rightarrow$ *) T - N | T / N | N
-N %* $\rightarrow$ *) Cos(E) | Sin(E) | Tan(E) |
-      Log(E) | Exp(E) | Sqrt(E) | L
-L %* $\rightarrow$ *) (E) | -(E) | (E)^(E) | TERM 
-TERM %* $\rightarrow$ *) Constant | Variable
-\end{lstlisting}
-\vspace*{-.5in}
-\end{figure}
 
 
-
-Previously, Prioritized Grammar Enumeration (PGE)
-was introduced as a new, deterministic algorithm for SR~\cite{worm:2013:pge}.
 In addition to creating a
 consistent and reproducible algorithm for SR,
 PGE also brings to light
@@ -352,19 +332,21 @@ an API call in the algebra service.
 
 
 
-PGE limitations and opportunities\\
+PGE limitations and opportunities
 
 
-Addressed\\
+Addressed
+
 - all models are completely trained
   [expensive with large data sets]
-  (pass through multiple heaps and increased data)\\
+  (pass through multiple heaps and increased data)
 - custom algebra lacks features \& has errors
-  (use a mature system SYMPY, and provide as a service)\\
+  (use a mature system SYMPY, and provide as a service)
 
-Unaddressed\\
-- ordering is arbitrary\\
-- when / where to put coefficients\\
+Unaddressed
+
+- ordering is arbitrary
+- when / where to put coefficients
   (complex)
 - un-dealt with exponential w.r.t. input feature size
   (due to nature of production functions)

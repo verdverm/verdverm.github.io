@@ -30,7 +30,7 @@ sections:
 
 Genetic Programming (GP) is the original,
 and most common implementation of SR.
-In \cite{koza:1992:gen_prog},
+In [koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi),
 term GP is used as both a problem and an implementation,
 as well as classifying SR as a sub-problem to GP.
 We want to again make a distinction between 
@@ -50,7 +50,7 @@ non-deterministic search heuristic
 based on natural selection
 GP requires six components to be defined:
 representation, evaluation, selection, genetic operators, 
-initialization \& termination, and population management.
+initialization & termination, and population management.
 GP uses these components to refine
 equations over a number generations.
 From an initial, random set of equations,
@@ -75,7 +75,8 @@ have effects which permeate through the
 entire GP infrastructure and operation.
 Measuring and understanding these
 effects requires rigorous testing and analysis,
-something laking but being addressed\cite{McDermott:2012:benchmarks}.
+something laking but being addressed
+[McDermott:2012:benchmarks](https://cs.gmu.edu/~sean/papers/gecco12benchmarks3.pdf).
 
 In this chapter, we overview 
 the inner workings of GP,
@@ -101,25 +102,6 @@ see \cite{koza:1992:gen_prog,kouch:08:thesis}.
 
 
 
-
-\subsection{Origins}
-\label{section-gp-origins}
-
-Since Koza's initial formulation of GP and SR \cite{koza:1992:gen_prog},
-there has been a plethora of research from 
-generalized implementation enhancements 
-to improvements addressing the issues of 
-disruptiveness of crossover, bloat, population diversity, 
-and premature convergence among many others.
-We cover material which has 
-relevance to our discussion,
-though it will necessarily be abridged
-due to space limitations.
-
-\textbf{Early History}
-\label{section-gp-origins-koza}
-
-Genetic Algorithms...
 
 
 \textbf{Koza's Original Formulation}

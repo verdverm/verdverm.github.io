@@ -264,11 +264,21 @@ Will fill this in later after the chapter(s) are written.
 
 ##### Reproducibility
 
-The running theme to this work is Reproducibility.
+A running theme to this work is Reproducibility.
 
 There have been many controversies recently...
 
-Estimates of irreproducibility...[citations]()
+
+Estimates of irreproducibility...
+
+[Oncology: 11%](http://www.nature.com/nature/journal/v483/n7391/full/483531a.html)
+
+[Computer Science: 25%](http://reproducibility.cs.arizona.edu/tr.pdf)
+
+[Psychology: 39%](http://www.sciencemag.org/content/349/6251/aac4716)
+
+
+
 
 
 We champion reproducibility by
@@ -280,10 +290,6 @@ We champion reproducibility by
 
 Each chapter will end with a section on reproducibility
 and the ideas relevant to that chapter.
-
-
-
-
 
 
 

@@ -58,6 +58,8 @@ sections:
 		- error metrics
 		- normalize (err/size)
     - data transformations
+    - diffeqs
+      - point evaluation vs integration for N points
 
 	- PGE enhancements
 		- Algorithm
@@ -216,7 +218,8 @@ can be found in [Appendix 3](/sr/A3-benchmarks/).
 
 #### PGE Algorithm
 
-
+- use clean data
+- variate base functions
 
 
 <div id="datarelated"></div>

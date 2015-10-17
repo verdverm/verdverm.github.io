@@ -24,7 +24,7 @@ Test competing methods
 	  - 2-stage SR
 
 
-
+    - Comparative Testing against SVM-regression
 
 
 
