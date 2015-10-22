@@ -25,8 +25,6 @@ sections:
 
 
 
-
-
 <div id="problem"></div>
 <a class="right" href="#top">top</a>
 
@@ -949,6 +947,7 @@ if the models returned are unsatisfactory.
 
 
 
+aoeu
 
 
 
@@ -958,55 +957,40 @@ if the models returned are unsatisfactory.
 
 
 
+<div>
+<img src='/sr/img/sr-basic.png' class='responsive-img'></img>
+</div>
 
 
 
-
- 
 <div id="implementations"></div>
 <a class="right" href="#top">top</a>
 
 ### Implementations
 
 
-
 SR implementations are the
-assemblages of methods 
+assemblages of algorithms and data structures
 for representing, generating, and testing hypotheses.
 The most common implementation of SR 
 has been the evolutionarily inspired method
-called Genetic Programming (GP) \cite{koza:1992:gen_prog}.
-GP is part of the larger family
-of Genetic Algorithms (GA) \cite{holland:1962:outline, goldberg:1988:genetic},
-a class of algorithms 
-inspired by `survival of the fittest'.
-GP differs from GAs by solution representation.
-In GAs, solution representation is 
-a fixed size structure.
-In GP, solutions vary in size,
-represented as a parse tree within a grammar.
+called Genetic Programming (GP).
+More recently, Fast Function eXtraction (FFX)
+was proposed as the first deterministic SR implementation,
+based on ridge and lasso regressions.
+The main contribution of this work is
+Prioritized Grammar Enumeration (PGE),
+a second deterministic implementation,
+with foundations in dynamic programming.
+We will briefly describe each here
+with further details in subsequent chapters.
 
 
 #### Genetic Programming
 
-The terms Genetic Programming and Symbolic Regression 
-were originally coined by \cite{koza:1992:gen_prog}.
-As previously mentioned, SR developed 
-as a sub-problem of Genetic Programming.
-In the Genetic Programming (GP) literature,
-GP is a term for both a the problem \textit{and} the implementation,
-and SR is nomenclature for restriction to equations.
-If we instead consider SR
-as the task of deriving expressions
-in the language defined by a grammar,
-then GP becomes an evolutionary implementation 
-for the SR problem. 
-In this light, program design is viewed
-as the sub-problem to SR, as is equation regression,
-and GP is an evolutionary framework for realizing that task.
+*re-edit after GP chapter done*
 
-GP is a highly stochastic,
-non-deterministic heuristic
+GP is a stochastic search heuristic
 for searching a space of expressions.
 GP uses natural selection
 to evolve models representable by 
@@ -1032,15 +1016,6 @@ This process uses information learned
 through evolutionary progress
 to guide the future search direction. 
 
-The GP process and its components have many
-parameters which effect their behavior.
-Setting and tuning these parameters is difficult
-and has a significant impact on the
-efficacy of a GP run.
-Dynamic, feedback, and meta-heuristics 
-have been proposed for auto-tuning the parameters
-to the GP algorithm.
-
 GP, as a non-deteriministic algorithm
 comes with a host of issues.
 These issues stem from problems created
@@ -1053,97 +1028,16 @@ each year. Chapter 3 will give
 a more detailed account of these limitations
 and the advancements in the fields of GP and SR.
 
-\begin{figure}[h!]
-\lstset{caption={GPSR Search},label=gpsr_process}
-\begin{lstlisting}
-func GP_Search() {
-  eqns := createInitialEquationPopulation()
-
-  while !done {
-    eqns.Evaluate(TestData)
-    eqns.ParetoSort()
-    parents := eqns.Select()
-    eqns = parents.Breed()
-  }
-
-  best := eqns.Select()
-  return best
-}
-\end{lstlisting}
-\end{figure}
-\subsection{Variations on Genetic Programming}
-\noindent
-\textbf{SAW}
-
-\noindent
-Stepwise Adaptive Weights (SAW) 
-alters the fitness function
-with information gained during the search process \cite{eggermont:2000:stepwise}.
-SAW weights each sample point,
-periodically updating the weights
-using the error of the best candidate solution.
-If the informing candidate has non-zero error, then
-either a constant is added to the weight (CSAW),
-or a precision value is added (PSAW).
-By variating the sample weights,
-SAW accentuates points which
-are not modeled well.
-This exerts pressure on the
-evolutionary process to 
-produce better models
-geared towards explaining
-the difficult points.
-
-\noindent
-\textbf{TAG3P}
-
-\noindent
-Tree-Adjunct Grammar Guided Genetic Programming (TAG3P)
-uses a grammar to enforce syntactical constraints on a solution
-\cite{hoai:2001:framework, hoai:2002:solving, hoai:2003:tree}.
-TAG3P is basically the same as GP,
-having the same representation and components.
-However, TAG3P differs is a couple of ways.
-TAG3P only allows crossover points
-where the non-terminals are the same.
-A similar constraint is enforced
-during mutation. Only subtrees
-of the same root node can be
-substituted into the parse tree.
-TAG3P can also incorporate the use of
-tree rewriting systems \cite{Joshi:1975:TAG}.
-By produces only syntactically valid solutions,
-TAG3P biases the search towards those solutions \cite{hoai:2001:framework, hoai:2002:solving}.
-\newline
 
 
 
 
 
-
-\begin{figure}[h!]
-\lstset{caption={FFX Search},label=ffx_process}
-\begin{lstlisting}
-func FFX_Search() {
-  bases := createBasisFunctions()
-  
-  for b := 0 -> B {
-    %* $\lambda$ *) := 1.0
-    while numBases(e) != b {
-      e := eqns.FitCoefficents(TrainData,%* $\lambda$ *))
-      adjustLambda(e,%* $\lambda$ *))
-    }
-    best.Push(e)
-  }
-  
-  best.ParetoSort()
-  return best
-}
-\end{lstlisting}
-\end{figure}
 
 #### Fast Function eXtraction
-\label{subsec-ffx}
+
+*re-edit after RelatedWork chapter done*
+
 Fast Function eXtraction (FFX)
 is a deterministic SR implementation \cite{McConaghy:2011:FFX}.
 FFX does not use genetic operators or
@@ -1235,6 +1129,7 @@ func PGE_Search() {
 
 #### Prioritized Grammar Enumeration
 
+*re-edit after PGE chapter done*
 
 This work introduces Prioritized Grammar Enumeration (PGE), 
 the first tree based implementation of Symbolic Regression.

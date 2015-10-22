@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-  <title>verdverm, they call me Dr. Worm</title>
+	<title>verdverm, they call me Dr. Worm</title>
 
+	<link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-  <!-- CSS  -->
-  <link rel="shortcut icon" type="image/png" href="/images/favicon.png"/>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.load.min.js"></script>
+	<script>
+		var cssfiles = [
+			// "https://fonts.googleapis.com/icon?family=Material+Icons",
+			"https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css",
+			"https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css",
+			"/css/code.css",
+			"/css/style.css",
+		];
+		head.load(cssfiles, function() {
+			console.log("cssfiles loaded");
+		});
+	</script>
 
 </head>
 <body>

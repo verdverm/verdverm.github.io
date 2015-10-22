@@ -1,11 +1,8 @@
 ---
-layout: post
+layout: sr
 title: Genetic Programming
 brief: Related work, learning with evolution
 sections:
-  - name: Overview
-    tag: overview
-    brief: Learning through evolution with Genetic Programming
   - name: Algorithm
     tag: algorithm
     brief: Details of the Genetic Programming algorithm
@@ -25,9 +22,11 @@ This focus of this chapter is
 Genetic Programming (GP),
 the original implementation of
 Symbolic Regression (SR).
-Traditionally, the term GP has been used as 
-both the problem and the implementation.
-SR was classified as a sub-problem to GP.
+Traditionally much of the literature has used 
+the term Genetic Programming as both the problem and the implementation.
+The term Symbolic Regression was then used as 
+a sub-problem to Genetic Programming,
+the task of evolving equations.
 We want to make a distinction between 
 the task of symbolically regressing
 a parse tree in a grammar,
@@ -35,144 +34,18 @@ from the method of realizing that tree.
 That is, separating the objective
 from the optimization method.
 From here on out, when we refer to
-GP, we mean an evolutionary implementation of SR.
-Again, we also use SR to mean the general problem,
+Genetic Programming, we mean an evolutionary implementation of Symbolic Regression.
+And when we use Symbolic Regression,
+we mean the generalized regression problem,
 limiting our examples to equation regression,
-which we consider a specific sub-problem of SR.
+which we consider a specific sub-problem of Symbolic Regression.
 
 
 
-<div id="overview"></div>
-<a class="right" href="#top">top</a>
-
-### Overview
-
-
-Genetic Programming (GP) 
-began with
-Evolutionary Algorithms (EA),
-where the optimization algorithm
-models biological evolutionary learning.
-From an initial, random population of models,
-EAs evaluate individuals to determine fitness,
-select which candidates survive,
-and choose parents to produce offspring. 
-Repeat this process for
-a number of generations,
-and the algorithm converges
-to a steady state.
-EAs are a flexible schematic
-to which many problems can,
-and have been, approached.
-Genetic Programming
-was originally EAs applied
-to evolving computer programs.
-While GP can be applied to
-generic languages,
-and was originally intentioned
-to evolve computer programs,
-we shall restrict our
-discussion to mathematical equations.
-
-
-Genetic Programming (GP) is 
-the most common implementation of SR.
-John Koza is often credited with
-coining the term genetic programming 
-[koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi).
-GP is a stochastic optimization heuristic
-based on natural selection.
-GP requires six components to be defined:
-representation, evaluation, selection, genetic operators, 
-initialization & termination, and population management.
-Representation and evaluation are the first two
-components of a machine learning algorithm
-and were discussed previously.
-The third component, optimization,
-is the combination of 
-selection, the genetic operators, and population management.
-Initialization and termination are required because
-the success of GP is sensative to their determination.
-
-GP uses the aformentioned components to refine
-equations over a number generations.
-From an initial, random set of equations,
-GP iteratively evaluates individuals,
-chooses parents to breed children,
-a selects which candidates survive. 
-GP continues this process until
-a model of desired accuracy is discovered,
-or a computational threshold is reached.
-
-
-
-
-Symbolic Regression is the problem in which
-analytical formula are derived
-directly from observational or measured data
-without any \textit{a priori} domain knowledge.
-Abstractly, SR searches
-the expression space
-defined by a grammar to
-find the best form of an expression.
-In practice, the space is usually
-mathematical formula and the expression
-is an equation where the variables
-are the features in the data set.
-Thus, SR is a function identification task
-where the inputs and outputs are known
-and the search is for an unknown model.
-
-The most common implementation of SR
-is called Genetic Programming (GP) \cite{koza:1992:gen_prog},
-an algorithm inspired by Genetic Algorithms (GA).
-The classical GP algorithm is a
-probabilistic search over the
-syntax-tree representation of an equation.
-GP starts by randomly creating an
-initial pool (population) of equations.
-During each iteration (generation),
-individuals in this population are
-evaluated for fitness,
-selected for survival and replication,
-and then recombined using methods which resemble
-sexual reproduction and mutation.
-The GP algorithm completes when
-a model of desired accuracy is discovered
-or a computational threshold is reached.
-
-In this chapter, we overview 
-the inner workings of GP,
-citing relevant research in the field.
-Section \ref{sec-gpsr-basic} 
-overviews the requirements
-and describes the search process
-for a GP implementation. 
-% Section \ref{sec-gpsr-theory} discusses
-% some of the theory underlining GPSR.
-Section \ref{sec-gpsr-limits} discusses 
-the limitations of GP and their origins.
-Section \ref{sec-gp-enhance} presents 
-remedies and enhancements to the GP algorithm.
-We conclude with some remarks
-about the conceptual limitations of GP
-and set the stage for the 
-novel, deterministic method of SR.
-For detailed discussions of 
-tree-based Genetic Programming,
-see \cite{koza:1992:gen_prog,kouch:08:thesis}.
-
-
-
-
-
-
-
+<br>
 
 <div id="algorithm"></div>
 <a class="right" href="#top">top</a>
-
-### The Algorithm
 
 
 GP requires several components
@@ -189,34 +62,85 @@ This section overviews each of these
 components in the GP algorithm.
 
 
+### The Algorithm
 
-**The Basic GP Process**
+1. **Overview** - Basics of Genetic Programming
+1. **Representation** - Tree-based and beyond
+1. **Evaluation** - Fitness measurement
+1. **Optimization** - Genetic operators and selection
+1. **Initialization & Termination** - It's important
+1. **Parameters** - All the knobs and buttons
 
-GP starts by creating a 
-random population of initial equations.
-During each generation, 
-individuals in this population are 
-evaluated for fitness
-to determine how well the model the data.
-A subset of the equations are
-the selected for breeding.
-We use brood selection
-which produces many offspring
-per parent pair.
-This is done to alleviate 
-some of the limitations 
-of the genetic operators,
-crossover and mutation.
-The offspring equations are then evaluated.
-Within each brood, the best candidate
-is selected into the general population.
-This general populations is then
-selected within for survival.
-This produces the next
-generation of equations.
-GP continues in this fashion until
-a model of desired accuracy is discovered,
+
+
+#### Overview
+
+The most common implementation of SR 
+has been the evolutionarily inspired method
+called Genetic Programming (GP) [koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi).
+GP is part of the larger family
+of Genetic Algorithms (GA) 
+a class of algorithms 
+inspired by `survival of the fittest'
+[
+[holland:1962:outline](http://dl.acm.org/citation.cfm?id=321128),
+[goldberg:1988:genetic](http://link.springer.com/article/10.1023%2FA%3A1022602019183)
+].
+GP differs from GAs by solution representation.
+In GAs, solution representation is 
+a fixed size structure.
+In GP, solutions vary in size,
+usually represented as a parse tree within a grammar.
+While GP can be applied to
+generic languages,
+and was originally intentioned
+to evolve computer programs,
+we shall restrict our
+discussion to mathematical equations.
+This is inline with the general
+focus of the GP literature.
+
+GP is a stochastic search heuristic
+over the syntax-tree representation of an equation.
+GP requires several components to be defined:
+representation, evaluation, selection, genetic operators, 
+initialization & termination, and population management.
+Representation and evaluation, the first two
+components of a ML algorithm
+were detailed previously.
+We while expand upon their
+usage in GP here.
+The third component, optimization,
+is the combination of 
+selection, the genetic operators, and population management.
+Initialization and termination are required because
+the success of GP is sensative to their determination.
+
+**The Basic GP Process** 
+begins with an initial, random population of models.
+Then each individual is evaluated to determine fitness.
+This is followed by a selection process 
+for candidate survival and replication.
+Survivors are then recombined using methods which resemble
+sexual reproduction and mutation.
+GP continues this process 
+for a number of generations,
+until a model of desired accuracy is discovered
 or a computational threshold is reached.
+
+For detailed overviews of 
+tree-based Genetic Programming,
+see [
+[koza:1992:gen_prog](http://www.amazon.com/exec/obidos/ASIN/0262111705/geneticprogrammi),
+[kouch:08:thesis](http://robotics.ee.uwa.edu.au/theses/2008-Genetic-Kouchakpour-PhD.pdf)
+]
+For a nearly complete list
+of all GP publications,
+visit [GP-bib](http://www.cs.bham.ac.uk/~wbl/biblio/),
+maintained by Bill Langdon.
+
+
+
 
 
 
@@ -237,6 +161,35 @@ equation coefficients are real valued numbers.
 As we will see, having continuous parameters,
 and optimizing by evolution, makes the task much harder.
 
+##### Representation Closure
+
+In the basic GP algorithm,
+expressions are generated at random.
+This can result in invalid operations
+being evolved which violate our
+basic mathematical constraints.
+Closure is the property of an
+expression being valid, mathematically.
+
+A simple remedy exists in which
+invalid operations are removed
+and functions such as log
+are protected.
+This method has been termed 
+*interval arithmetic* 
+[
+[keijzer:03:improving](),
+[kotanchek:2008:trustable]()
+].
+A second method is to place restrictions
+on the grammar, as in
+[
+[hoai:2001:framework](),
+[hoai:2002:solving](),
+[hoai:2003:tree]()
+].
+Hoai prevents invalid expressions from being generated
+where the previous method removes them later.
 
 
 ##### Populations
@@ -254,6 +207,7 @@ between generations.
 
 
 
+
 #### Evaluation in Genetic Programming
 
 
@@ -264,20 +218,21 @@ between generations.
 #### Optimization in Genetic Programming
 
 
+Optimization in GP is performed by two
+main processes. 
+
+
+Optimization is performed over a series of iterations,
+know as generations in the GP scheme.
+Following the evolutionary motif,
+the population requires 
+selecetion and repord
 
 ##### Genetic Operators
 
-Exploration with crossover
 
-Exploitation with mutation
-
-
-\noindent
-\textbf{Variation}
-
-\label{sec-gpsr-breed}
-Variation, or breeding is 
-the means by which Symbolic Regression (or GP)
+Genetic Operators, or breeding is 
+the means by which GP
 searches the space of equations.
 The search uses both explorative and exploitative
 techniques to find unexplored regions to search locally.
@@ -287,26 +242,10 @@ around a potential solution.
 A balance is needed to make progress 
 through the space and narrow in on good solutions.
 
-% innovative vs conservative operators
-% exploit vs explore
-% small variations vs large changes
 
+<img class="responsive-img" src="/sr/img/eqn-cross-mutate-color.jpg" />
 
-
-
-% mutation: 
-%   - allow rate to decrease
-%   - vary by tree position (prob by depth - top has lower chance)
-
-
-\begin{figure}[htb]
-\centering
-% \includegraphics[scale=0.33, clip=true, trim=50 250 50 50]{imgs/eqncrossmutate/eqn-cross-mutate-color.png}
-\caption[Genetic Operatiors]{Crossover (colored boxes) and Mutation (red circles)}
-\label{fig:eqn-cross-mutate}
-\end{figure}
-
-\textbf{Crossover}, analogous to sexual reproduction, 
+**Crossover**, analogous to sexual reproduction, 
 uses two parent equations to produce child offspring equations.
 In Symbolic Regression, subtrees of the parents
 are selected, snipped, and swapped. 
@@ -323,12 +262,8 @@ candidate solutions grow extra 'genetic material' that has little
 value in the evaluation. 
 This 'natural' growth is called \textit{bloat}.
 
-% There are several alternatives which seek to 
-% reduce bloat or optimize the crossover point selection.
-% - limit to differences between chromosomes
 
-
-\textbf{Mutation} alters a single candidate equation
+**Mutation** alters a single candidate equation
 to search locally around that candidate.
 It is also the way the vanilla algorithm
 optimizes real-valued coefficients.
@@ -339,7 +274,12 @@ a change of variable from X to Y,
 an operation from addition to subtraction,
 or a coefficient scaled by a random value in some predefined range.
 
-\textbf{Injection} is much like mutation,
+% mutation: 
+%   - allow rate to decrease
+%   - vary by tree position (prob by depth - top has lower chance)
+
+
+**Injection** is much like mutation,
 in which a single candidate is altered
 by choosing a single point of change.
 However, instead of changing a node type,
@@ -356,9 +296,7 @@ crossover and mutation.
 
 ##### Selection
 
-for survival
-
-for reproduction
+for survival and replication
 
 
 Selection is the most important part
@@ -366,8 +304,8 @@ of evolutionary algorithms.
 Selection determines the difference
 between good and bad solutions.
 Therefore it is very important 
-to choose the selection mechanisms wisely\cite{Dumitrescu:2000:EC}.
-
+to choose the selection mechanisms wisely
+[Dumitrescu:2000:EC]().
 
 Selection occurs at the generational switch,
 and chooses which candidates will form
@@ -376,18 +314,21 @@ In order for the search to converge
 to the (locally) optimal solutions,
 partial solutions must be selected
 at earlier points.
-
 As the great MPUA says
-\begin{quotation}
-``The sole reason we exist is to survive and replicate. That's it.''
-\end{quotation}
-\hfill Mystery
+
+<blockquote>
+The sole reason we exist is to survive and replicate. That's it.
+~ Mystery
+</blockquote>
 
 Selections role is to differentiate between candidates,
 based on their quality, for survival and replication.
 This artificial environmental pressure causes natural selection,
 raising the fitness of the population.
-\cite{Dumitrescu:2000:EC,goldberg:1991:comparative}
+[
+[Dumitrescu:2000:EC](),
+[goldberg:1991:comparative]()
+]
 extensively cover the variations in selection schemes.
 Here, we will give an overview to show what is possible.
 
@@ -415,7 +356,7 @@ Rank selection benefits GP by
 increasing selection pressure when 
 the population variance is low.
 
-Binary Tournament \cite{goldberg:1991:comparative}
+Binary Tournament [[goldberg:1991:comparative]()]
 selects two individuals and competes them
 for one of the parental equations.
 This is down twice to generate both parents
@@ -434,155 +375,6 @@ In the pure method,
 all parents and children
 contend for a spot in the population.
 
-% survival: chance of making it to the next generation
-% -----------
-% elitist vs pure
-%  - elitist, child must be better than parents
-%  - pure all parents and children contend for the allocated spots
-
-
-
-
-##### Pareto Front
-
-The Pareto front is a central
-component to the SR framework.
-As such, it has received much
-research attention which has
-resulted in progress.
-NGSA \cite{srinivas:1994:muiltiobjective}, 
-NSGA-II \cite{deb:2000:fast}, 
-SPEA \cite{zitzler:1998:evolutionary}, 
-SPEA2 \cite{zitzler:2001:spea2}, 
-SPEA2+ \cite{kim:2004:spea2+}, 
-PAES \cite{knowles:1999:pareto}, 
-PESA \cite{corne:2000:pareto},
-PESA-II \cite{corne:2001:pesa}
-are all algorithms which aim to improve the
-quality of solutions.
-SPEA, PESA, MOGA --- aim to improve diversity by accounting for density along the front.
-SPEA2, NSGA, NSGA-II --- use an archive to maintain the population of good solutions.
-NSGA-II, SPEA2+ --- improve the time complexity of the Pareto sort itself.
-The overall goal is to include individuals 
-near the front and reward uniqueness and diversity
-among the candidate solutions.
-
-
-
-##### Population Management
-
-
-
-Population size becomes an important parameter 
-to the success of a particular GP implementation.
-The population can be small and granular,
-at the extreme a cellular population
-with each equation a separate population.
-The population can be big and unified
-becoming a single gene pool.
-
-
-**Island Model**
-
-
-% In order to facilitate diversity maintenance,
-% the overall population is subdivided into
-% separately evolving processes. 
-% This methodology is called the Island Model and
-% has its roots in the way human cultures 
-% separately evolved. 
-% At the extreme, each candidate becomes its
-% own island and is then referred to as
-% cellular grid.
-
-% (Theory paper on expo/poly time to convergence)
-% (CITE) demonstrated an important point 
-% about evolving populations, knowledge flow, and convergence rates.
-% They showed that a single population has
-% exponential time for convergence and extended this 
-% to show that N independently evolving populations
-% still have exponential convergence time.
-% What is needed is interaction, such as a boat
-% carrying a couple of equations from one island
-% to another, i.e. migration. 
-% With the migration scheme,
-% THEY showed that convergence times become polynomial.
-% (exponential and polynomial to WHAT?)
-
-% Are their parallel papers which do this
-% talk about parallel nature of SR, GPSR, and PESR?
-% super-linear speed up?
-% Islands change the implementation of the algorithm
-% and how it actually works
-% and should not be compared against a single island run,
-% at least not to claim super linear speed up.
-% (CITE koza super-linear speedup, 
-% Theory paper on expo/poly time to convergence)
-
-
-% superlinear speedup...
-% koza, [8]
-
-
-The island model\cite{cohoon:1987:punctuated}
-splits a unified population
-onto several concurrent GP searches
-called islands. 
-The interconnections between these
-islands form lines of communication.
-At one extreme there is no connection
-and each island as a completely
-separate GP search with a smaller population.
-If we follow the usual scheme of communication
-then we have what is called migration.
-At regular intervals, and island
-informs its neighbors of its search progress.
-This usually takes the form of sending
-several good candidates to be included
-in the neighbors equation pool.
-Connection settings vary from 
-a ring, fully connected, random connections,
-and several other variants \cite{alba:2000:influence}
-In \cite{lassig:2010:benefit},
-a proof is given that islands
-are needed to achieve polynomial
-time convergence.
-Without communication, the islands
-become basic GP searches and don't
-receive the added benefit of information sharing.
-
-Using the island model with migration,
-several topologies of interaction arise.
-These topologies are undirected graphs.
-At the extremes, 
-the ring topology connects each island to one neighbor on each side
-and full topology connects each island to every other island.
-Other topologies connect to N random neighbors, bringing the ring
-topology closer to a fully connected graph.
-Using the island model for GP
-permits for easy GP parallelization
-\cite{alba:2002:parallelism}.
-\cite{alba:2001:analyzing}
-Analyzing synchronous and asynchronous parallel distributed genetic algorithms
-and found that there was no meaningful difference in ability.
-In \cite{alba:2002:super-linear},
-they claim super-linear speed up
-by running several GP searches in parallel.
-However, they incorporated information sharing
-between the processes which
-alters the algorithm's behavior so much
-that should really be considered different implementations. 
-
-\begin{figure}[htb]
-\centering
-\includegraphics[scale=0.25, clip=true, trim=30 40 20 20]{imgs/gpdiag/gp-diag.pdf}
-\caption{Archive selection and Island model in Genetic Programming}
-\label{fig:gp-basic}
-\end{figure}
-
-
-
-
 
 
 
@@ -590,9 +382,7 @@ that should really be considered different implementations.
 ##### Initialization & Termination
 
 
-**Initialization**
-
-Initialization determines the search starting point 
+**Initialization** determines the search starting point 
 and what portions of equation space are reachable.
 GP uses random generation to
 create the initial population of candidate solutions.
@@ -637,32 +427,9 @@ to obtain a pool of partially optimized candidates.
 
 **Termination**
 
-% convergence: the point at which the population
-% contains a majority of the same individual... redundancy...
-
-
-% process iterated until a 
-% candidate of desired quality is realized
-% or a predefined computational limit is reached
-
-% quality 
-% threshold, lack of improvement
-
-% time, count
-% evaluations, generations, equations
-% in most implementations these
-% become equivalent measures
-
-
-% -----
-Since Symbolic Regression is a heuristic search,
+Since Genetic Programming is a heuristic search,
 it has no intrinsic stopping point.
 Therefore, we must tell it when to stop,
-though in general, it's difficult to know when.
-Run time can be used, but is generally not
-due to the effects of processing on varied hardware
-and the fact that the searches tend not to 
-take more than a few minutes.
 
 The most common method used is generational,
 i.e. upon reaching a predefined number of generations or iterations.
@@ -687,19 +454,12 @@ In this case, the search terminates if any
 candidate scores a hit on all data points
 or some percentage of all the data points.
 
-% Other schemes attempt to 
-% measure the progress of the search.
-% One such example is the number of generations
-% since a new best solution has been found.
-% If the search continues for a time without finding 
-% improvement, then termination occurs.
-
-% All the aforementioned methods 
-% require an extra parameter
-% and are sensitive to the 
-% magnitude of the data
-% as well as the error accumulation function.
-
+Other schemes attempt to 
+measure the progress of the search.
+One such example is the number of generations
+since a new best solution has been found.
+If the search continues for a time without finding 
+improvement, then termination occurs.
 
 No matter what means is used
 to determine the stopping point,
@@ -713,6 +473,16 @@ successive frontiers.
 
 
 ##### Parameters of Genetic Programming
+
+The GP process and its components have many
+parameters which effect their behavior.
+Setting and tuning these parameters is difficult
+and has a significant impact on the
+efficacy of a GP run.
+Dynamic, feedback, and meta-heuristics 
+have been proposed for auto-tuning the parameters
+to the GP algorithm.
+
 
 % \noindent
 % Common Between Implementations:
@@ -739,25 +509,6 @@ successive frontiers.
 % lineage / ancestry with operator info
 
 % credit assignment to good operators
-
-
-
-% Island Based:
-% - \# of islands
-% - layout (ring/grid)
-% - connections
-% - pop per or total
-% - migration size / rate
-
-
-% Enhancements:
-%  - co-evo has same as single search
-%    plus:
-%      -- fitness predictor size
-%  - archived pop mgmt
-%    -- archive selection
-%    -- archive size
-
 
 
 
@@ -808,10 +559,27 @@ mutation disrupts if good parts of schema are selected
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div id="limitations"></div>
 <a class="right" href="#top">top</a>
 
 ### Limitations
+
+1. **Disruptiveness of Crossover** - the basic search operator has uniform selection probability. It is the reason for bloat and inefficiencies.
+1. **Equation Bloat** - the growth in tree size to reduce probability of node selection. Bloat emerges to protect good partial solutions.
+1. **Equation Redundancy** - results from multiple copies of the same equation. Compounded by commutative and associative properties.
+1. **Loss of Population Diversity** - results when a partial solution dominates the population. Caused by bloat and good partial solutions.
+1. **Premature Convergence** - results when a search converges upon a local optimum. Caused by loss of population diversity then next point.
+
 
 
 The basic GP algorithm has many limitations
@@ -856,83 +624,13 @@ how they ar so.
 
 
 
-#### Representation Closure
+#### Disruptiveness of Crossover 
 
-In the basic GP algorithm,
-expressions are generated at random.
-This can result in invalid operations
-being evolved which violate our
-basic mathematical constraints.
-Closure is the property of an
-expression being valid, mathematically.
-
-A simple remedy exists in which
-invalid operations are removed
-and functions such as log
-are protected.
-This method has been termed 
-\textit{interval arithmetic} \cite{keijzer:03:improving,kotanchek:2008:trustable}.
-A second method is to place restrictions
-on the grammar, as in
-\cite{hoai:2001:framework,hoai:2002:solving,hoai:2003:tree}.
-Hoai prevents invalid expressions from being generated
-where the previous method removes them later.
+the basic search operator has uniform
+selection probability. It is the reason for bloat and inefficiencies.
 
 
-
-
-
-#### Premature Convergence
-
-GP is a highly stochastic process and thus
-promotes contradictory and inconsistent solutions.
-Often, GP reaches a local optima and further
-progress cannot be made towards an acceptable solution.
-This behavior is known as premature convergence.
-It is effected by all components of the GP process
-and becomes the term to describe the event, in GP, 
-when the algorithm is stuck on the wrong answer.
-
-Premature convergence is usually the result 
-of a loss of diversity among the population.
-This in turn is a population management issue.
-It becomes a very interwoven issue, 
-relating to all aspects of the process.
-Generally, premature convergence is
-remedied by improving individual components.
-We relate the effects of theses limitations,
-and other remedies, on premature convergence
-as we come to them.
-
-
-
-#### Bloat
-
-Equation bloat is the growth of average candidate size
-over course of evolution.
-Bloat is inherent in any variable length representation\cite{langdon} [190].
-The general consensus for the cause of bloat
-is the disruptiveness of crossover,
-though \cite{Banzhaf} [22] speculated 
-that fitness causes bloat.
-
-Parsimony pressure is meant to control bloat,
-but the disruptiveness of crossover,
-more often than not,
-overpowers the Pareto front's benefits.
-Several schemes have been proposed
-for reducing the probability of 
-disrupting partial solutions.
-
-% disruptiveness of crossover
-% probability argument
-% create extra material  -g/L sin(theta) + 0.0001 * theta * x
-%  - no justification
-
-
-#### Disruptiveness of Crossover
-
-% \tony{diagram: tree with probabilities} \ref{fig:coeff-probs}
+**diagram: tree with probabilities**
 
 Crossover is the main explorative operator of SR. 
 Crossover facilitates large changes to an equation. 
@@ -964,42 +662,34 @@ under perform the parent.
 
 
 
+#### Equation Bloat 
+
+the growth in tree size to reduce probability of
+node selection. Bloat emerges to protect good partial solutions.
+
+Equation bloat is the growth of average candidate size
+over course of evolution.
+Bloat is inherent in any variable length representation\cite{langdon} [190].
+The general consensus for the cause of bloat
+is the disruptiveness of crossover,
+though \cite{Banzhaf} [22] speculated 
+that fitness causes bloat.
+
+Parsimony pressure is meant to control bloat,
+but the disruptiveness of crossover,
+more often than not,
+overpowers the Pareto front's benefits.
+Several schemes have been proposed
+for reducing the probability of 
+disrupting partial solutions.
 
 
-#### Population Diversity
 
-A major issue through the course of evolution
-is maintaining the proper diversity 
-within the population of candidate solutions.
-One can often find a solution spreading quickly through the population,
-destroying diversity and causing good partial solutions to vanish.
-Generally speaking, diversity should be
-greater at the early stages and reduce
-as time progresses. 
+#### Equation Redundancy 
 
+results from multiple copies of the same 
+equation. Compounded by commutative and associative properties.
 
-If we allow too much diversity,
-the algorithm cannot refine the candidates
-and fails to converge to any optima.
-If we force too little diversity,
-the algorithm converges too quickly 
-and doesn't thoroughly search the space.
-
-Population diversity is 
-difficult to diagnose and address.
-There are many factors which 
-effect the population diversity
-through the course of evolution.
-The population size, the mating pool size,
-elitism, survival scheme.
-The difficult in diagnosis is likely
-the lack of a good measure.
-We introduce a structure
-for comparing unique to total 
-equation forms in section \ref{sec-pge-ipt}.
-
-
-#### Redundancy of Candidate Solutions
 
 Redundancy of solutions is the propagation,
 of a particular form, throughout the population.
@@ -1043,6 +733,72 @@ are weaker models than their parents.
 
 
 
+
+
+#### Loss of Population Diversity 
+
+results when a partial solution dominates
+the population. Caused by bloat and good partial solutions.
+
+
+A major issue through the course of evolution
+is maintaining the proper diversity 
+within the population of candidate solutions.
+One can often find a solution spreading quickly through the population,
+destroying diversity and causing good partial solutions to vanish.
+Generally speaking, diversity should be
+greater at the early stages and reduce
+as time progresses. 
+
+
+If we allow too much diversity,
+the algorithm cannot refine the candidates
+and fails to converge to any optima.
+If we force too little diversity,
+the algorithm converges too quickly 
+and doesn't thoroughly search the space.
+
+Population diversity is 
+difficult to diagnose and address.
+There are many factors which 
+effect the population diversity
+through the course of evolution.
+The population size, the mating pool size,
+elitism, survival scheme.
+The difficult in diagnosis is likely
+the lack of a good measure.
+We introduce a structure
+for comparing unique to total 
+equation forms in section \ref{sec-pge-ipt}.
+
+
+#### Premature Convergence 
+
+results when a search converges upon a local
+optimum. Caused by loss of population diversity then next point.
+
+GP is a highly stochastic process and thus
+promotes contradictory and inconsistent solutions.
+Often, GP reaches a local optima and further
+progress cannot be made towards an acceptable solution.
+This behavior is known as premature convergence.
+It is effected by all components of the GP process
+and becomes the term to describe the event, in GP, 
+when the algorithm is stuck on the wrong answer.
+
+Premature convergence is usually the result 
+of a loss of diversity among the population.
+This in turn is a population management issue.
+It becomes a very interwoven issue, 
+relating to all aspects of the process.
+Generally, premature convergence is
+remedied by improving individual components.
+We relate the effects of theses limitations,
+and other remedies, on premature convergence
+as we come to them.
+
+
+
 #### Inefficacy of Coefficient Tuning
 
 GP traditionally represents parameters to an equation
@@ -1063,7 +819,7 @@ substituted during crossover.
 The second way is to select the 
 coefficient for mutation and then
 update it to the correct value.
-Common mutation rates are 10\% and below,
+Common mutation rates are 10% and below,
 and the multiplicative factor for updating
 coefficients is similarly low.
 
@@ -1075,7 +831,7 @@ mutation rate to obtain the overall chance of selection.
 Figure \ref{fig:coeff-probs}
 shows the resultant coefficients for 
 both binary and n-ary trees,
-assuming mutation rate of 10\%.
+assuming mutation rate of 10%.
 These are the rates just for
 selection and do not include the
 update factor. 
@@ -1143,17 +899,20 @@ N-ary  & $0.1*\frac{1}{9} = 0.0111$ & $0.1*\frac{1}{14} = 0.00714$  & $0.1*\frac
 
 
 
-
-
-
-
-
 <div id="enhancements"></div>
 <a class="right" href="#top">top</a>
 
 ### Enhancements
 
-Since Koza's initial formulation of GP and SR \cite{koza:1992:gen_prog},
+1. **Selection Improvements** - Parent recombination and archives.
+1. **Variations on crossover** - Grammar guided and probabilistic.
+1. **The Island Model** - Run several GP instances with message passing.
+1. **Co-evolution** - Evolve fitness predictors in parallel with equations.
+1. **Hierarchical GP** - Abstract Expression Grammar and sub-searches.
+1. **Hybrid Algorithms** - Feature selection and non-linear regression.
+
+
+Since Koza's initial formulation of GP and SR,
 there has been a plethora of research from 
 generalized implementation enhancements 
 to improvements addressing the issues of 
@@ -1164,92 +923,15 @@ relevance to our discussion,
 though it will necessarily be abridged
 due to space limitations.
 
-Will attempt to section in such a 
-way that mirrors the limitations
-with the enhancements meant to address them.
-Some enhancements inevitably effect multiple limitations
-and others don't fit nicely into a single category.
 
 
-These enhancements come in two classes,
-remedies addressing specific issues
-and improvements that effect
-many aspects of the algorithm.
-
-% improvements to GP
-% remedy vs improvement
-
-% fixed: determined prior to run
-% static or dynamic
-% feedback mechanism
-
-% bootstrap initialization
+#### Selection
 
 
-#### Population level improvements
+##### Brood selection
 
-Selection is arguably the most important
-aspect of GP,
-determining which solutions 
-continue contributing to the search
-and which results will ultimately be returned.
-The Pareto non-dominated sort,
-or Pareto front, 
-balances the trade-off between opposing goals
-in multi-objective optimization 
-\cite{fonseca:1993:genetic,horn:1994:niched,van:1998:evolutionary,luke:2002:lexicographic,smits:2005:pareto}.
-Various methods 
-improve the diversity along the Pareto front,
-and/or maintain archives of good solutions:
-NSGA-II~\cite{deb:2000:fast}, 
-SPEA2~\cite{zitzler:2001:spea2}, 
-SPEA2+~\cite{kim:2004:spea2+}, and
-PESA-II~\cite{corne:2001:pesa}.
-These algorithms all aim to improve the
-quality of solutions in a population.
-Age Layered Population Structure (ALPS)~\cite{hornby:2006:alps}
-partition the population by age to
-restrict competition and breeding interactions,
-combating premature convergence.
+Parents recombine multiple times for variation.
 
-At the individual genome level, changes to
-representation, crossover, and coefficient optimization
-have been explored.
-Tree-based representation is standard,
-others include linear, grammar-based~\cite{mckay:2010:grammar},
-and graph or Cartesian GP~\cite{miller:2000:cartesian}.
-Invalid mathematical operations are removed
-in~\cite{keijzer:03:improving,kotanchek:2008:trustable}
-and restricted by the grammar in TAG3P~\cite{hoai:2001:framework,hoai:2002:solving,hoai:2003:tree}.
-Additionally, TAG3P only allows crossover points
-to be of the same s-expression type.
-Context-aware crossover~\cite{majeed:2006:using}
-selects a snip in one tree and 
-substitutes it at all valid locations
-in the other parent.
-\cite{korns:2008:large} extends this to include
-all possible valid snip replacements from both parents.
-Semantically Aware Crossover (SAC)~\cite{nguyen:2009:semantic} 
-biases crossover to exchange semantically different material and
-Semantic Similarity-based Crossover (SSC)~\cite{uy:2011:semantically} 
-extends this, by limiting the size of material to small, manageable snips.
-Real-valued coefficient optimization, 
-a known difficulty for GP,
-has been improved by 
-local gradient search,
-non-linear regression,
-and swarm intelligence~\cite{topchy:2001:faster,raidl:1998:hybrid,eberhart:2001:swarm}.
-
-
-
-#### Bloat
-% \tony{depth based probability}
-
-% bloat counters \cite{panait:2004:alternative}
-
-% Counter: (Brood Selection, More intelligent cross point selection, hill climbing)
-
-##### Brood Selection
 
 \begin{figure}[htb]
 \centering
@@ -1297,7 +979,77 @@ survival and replication selection phases.
 % \#, the increases size of the offspring population
 % directly increases the time spent evaluating.
 
+
+
+##### Pareto Front
+
+The Pareto front is a central
+component to the SR framework.
+As such, it has received much
+research attention which has
+resulted in progress.
+NGSA [srinivas:1994:muiltiobjective](), 
+NSGA-II [deb:2000:fast](), 
+SPEA [zitzler:1998:evolutionary](), 
+SPEA2 [zitzler:2001:spea2](), 
+SPEA2+ [kim:2004:spea2]()}, 
+PAES [knowles:1999:pareto](), 
+PESA [corne:2000:pareto](),
+PESA-II [corne:2001:pesa]()
+are all algorithms which aim to improve the
+quality of solutions.
+SPEA, PESA, MOGA --- aim to improve diversity by accounting for density along the front.
+SPEA2, NSGA, NSGA-II --- use an archive to maintain the population of good solutions.
+NSGA-II, SPEA2+ --- improve the time complexity of the Pareto sort itself.
+The overall goal is to include individuals 
+near the front and reward uniqueness and diversity
+among the candidate solutions.
+
+
+Selection is arguably the most important
+aspect of GP,
+determining which solutions 
+continue contributing to the search
+and which results will ultimately be returned.
+The Pareto non-dominated sort,
+or Pareto front, 
+balances the trade-off between opposing goals
+in multi-objective optimization 
+\cite{fonseca:1993:genetic,horn:1994:niched,van:1998:evolutionary,luke:2002:lexicographic,smits:2005:pareto}.
+Various methods 
+improve the diversity along the Pareto front,
+and/or maintain archives of good solutions:
+NSGA-II~\cite{deb:2000:fast}, 
+SPEA2~\cite{zitzler:2001:spea2}, 
+SPEA2+~\cite{kim:2004:spea2+}, and
+PESA-II~\cite{corne:2001:pesa}.
+These algorithms all aim to improve the
+quality of solutions in a population.
+Age Layered Population Structure (ALPS)~\cite{hornby:2006:alps}
+partition the population by age to
+restrict competition and breeding interactions,
+combating premature convergence.
+
+
+
+
+
+
+#### Variations on crossover
+
+Grammar guided and probabilistic.
+
+
+
+% - improvements to components
+% -- variation operators
+% ---- crossover: brood meant to decrease effect of destructive crossover
+% ---- context aware crossover [139,216]
+% ---- smarter crossover [131] uses subtree eval contribution
+% ---- depth dependent [123] favored shallower points
+
 ##### Ideal point selection
+
 
 Ideal point selection aims to 
 choose crossover points wisely.
@@ -1309,78 +1061,155 @@ Shallower points are favored to limit the
 disruption of good subtrees.
 
 
-% - improvements to components
-% -- variation operators
-% ---- crossover: brood meant to decrease effect of destructive crossover
-% ---- context aware crossover [139,216]
-% ---- smarter crossover [131] uses subtree eval contribution
-% ---- depth dependent [123] favored shallower points
+\textbf{SAW}
+
+\noindent
+Stepwise Adaptive Weights (SAW) 
+alters the fitness function
+with information gained during the search process \cite{eggermont:2000:stepwise}.
+SAW weights each sample point,
+periodically updating the weights
+using the error of the best candidate solution.
+If the informing candidate has non-zero error, then
+either a constant is added to the weight (CSAW),
+or a precision value is added (PSAW).
+By variating the sample weights,
+SAW accentuates points which
+are not modeled well.
+This exerts pressure on the
+evolutionary process to 
+produce better models
+geared towards explaining
+the difficult points.
+
+\noindent
+\textbf{TAG3P}
+
+\noindent
+Tree-Adjunct Grammar Guided Genetic Programming (TAG3P)
+uses a grammar to enforce syntactical constraints on a solution
+\cite{hoai:2001:framework, hoai:2002:solving, hoai:2003:tree}.
+TAG3P is basically the same as GP,
+having the same representation and components.
+However, TAG3P differs is a couple of ways.
+TAG3P only allows crossover points
+where the non-terminals are the same.
+A similar constraint is enforced
+during mutation. Only subtrees
+of the same root node can be
+substituted into the parse tree.
+TAG3P can also incorporate the use of
+tree rewriting systems \cite{Joshi:1975:TAG}.
+By produces only syntactically valid solutions,
+TAG3P biases the search towards those solutions \cite{hoai:2001:framework, hoai:2002:solving}.
+\newline
 
 
-#### Population Diversity
-
-Maintaining population diversity 
-is one of the most pressing issues
-in GP. A diverse population is 
-required to search effectively.
-Many aspects of the GP
-algorithm effect diversity.
-Archive selection schemes
-maintain a separate population
-of equations so that 
-good solutions are not lost.
-The island model uses
-separate GP searches
-so that the population is distributed.
-This prevents one individual from
-dominating the entire population
-and migration allows the separate
-process by sharing information.
 
 
-% ancestry information
-% archive selection
-% Island model
 
-% -- initialization
-% ---- multiple brief pre-runs to create diverse initial pop
-% ---- RAND_tree [132,30] uniform sampling of tree-derivation grammar
-
-% % \textbf{Redundancy of Candidate Solutions}
-
-% results in redundancy within population, premature convergence, excessive evaluation
-
-
-#### coefficient tuning
-% Counter: open research question
-
-% local gradiant search of numeric leaf values
-% \cite{topchy:2001:faster}
-
-% We believe that we can remove the process of 
-% coefficient tuning from the GP process.
-% This is done by using placeholder coefficients
-% rather than floating point coefficients.
-% The equations with placeholders are
-% sent to a linear or non-linear solver
-% which returns the best values of these coefficients.
-% This causes the evaluation cost of a 
-% single equations to rise substantially.
-% However, as we will show in our contributions to GPSR, 
-% tuning coefficients this way allows GPSR
-% to focus on form rather than function.
-% Despite the increased cost of candidate evaluation,
-% our results show that this 
-% ...
-% Reduces the time/steps to convergence
-% increases the correct convergence rate
-% ... 
+At the individual genome level, changes to
+representation, crossover, and coefficient optimization
+have been explored.
+Tree-based representation is standard,
+others include linear, grammar-based~\cite{mckay:2010:grammar},
+and graph or Cartesian GP~\cite{miller:2000:cartesian}.
+Invalid mathematical operations are removed
+in~\cite{keijzer:03:improving,kotanchek:2008:trustable}
+and restricted by the grammar in TAG3P~\cite{hoai:2001:framework,hoai:2002:solving,hoai:2003:tree}.
+Additionally, TAG3P only allows crossover points
+to be of the same s-expression type.
+Context-aware crossover~\cite{majeed:2006:using}
+selects a snip in one tree and 
+substitutes it at all valid locations
+in the other parent.
+\cite{korns:2008:large} extends this to include
+all possible valid snip replacements from both parents.
+Semantically Aware Crossover (SAC)~\cite{nguyen:2009:semantic} 
+biases crossover to exchange semantically different material and
+Semantic Similarity-based Crossover (SSC)~\cite{uy:2011:semantically} 
+extends this, by limiting the size of material to small, manageable snips.
+Real-valued coefficient optimization, 
+a known difficulty for GP,
+has been improved by 
+local gradient search,
+non-linear regression,
+and swarm intelligence~\cite{topchy:2001:faster,raidl:1998:hybrid,eberhart:2001:swarm}.
 
 
-#### Other Advancements
 
 
-% \textbf{Cost of Evaluation}
+
+
+
+#### The Island Model
+
+Run several GP instances with message passing.
+
+
+
+The island model [cohoon:1987:punctuated]()
+splits a unified population
+onto several concurrent GP searches
+called islands. 
+The interconnections between these
+islands form lines of communication.
+At one extreme there is no connection
+and each island as a completely
+separate GP search with a smaller population.
+If we follow the usual scheme of communication
+then we have what is called migration.
+At regular intervals, and island
+informs its neighbors of its search progress.
+This usually takes the form of sending
+several good candidates to be included
+in the neighbors equation pool.
+Connection settings vary from 
+a ring, fully connected, random connections,
+and several other variants [alba:2000:influence]()
+In [lassig:2010:benefit](),
+a proof is given that islands
+are needed to achieve polynomial
+time convergence.
+Without communication, the islands
+become basic GP searches and don't
+receive the added benefit of information sharing.
+
+Using the island model with migration,
+several topologies of interaction arise.
+These topologies are undirected graphs.
+At the extremes, 
+the ring topology connects each island to one neighbor on each side
+and full topology connects each island to every other island.
+Other topologies connect to N random neighbors, bringing the ring
+topology closer to a fully connected graph.
+Using the island model for GP
+permits for easy GP parallelization
+[alba:2002:parallelism](http://liacs.leidenuniv.nl/~emmerichmtm/tomassini02parallel-ea.pdf).
+[alba:2001:analyzing](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.452.1693&rep=rep1&type=pdf)
+Analyzing synchronous and asynchronous parallel distributed genetic algorithms
+and found that there was no meaningful difference in ability.
+In [alba:2002:super-linear](http://atarazanas.sci.uma.es/docs/tesisuma/16640299.pdf),
+they claim super-linear speed up
+by running several GP searches in parallel.
+However, they incorporated information sharing
+between the processes which
+alters the algorithm's behavior so much
+that should really be considered different implementations. 
+
+
+**DIAGRAMS FOR ISLAND MODEL AND ARCHIVE SELECTION**
+
+
+
+
+
+#### Co-evolution
+
+Evolve fitness predictors in parallel with equations.
+
+
+
 
 % Counter: Fitness Predictors
 % these also help with solution bloat
@@ -1432,25 +1261,16 @@ and increased search ability justify using co-evolution.
 
 % competitive vs cooperative
 
-% --------------
-
-
-
-% - innovative ideas enhancing GP performance
-% -- simplification [339]
-% -- layered learning (hierarchy) [57,125,126,141,295]
 
 
 
 
-% - ensemble, in effort to make trustable \cite{kotanchek:2008:trustable}
 
 
-% - hybrid tried by many
-% -with non-lin, interval arithm, \cite{raidl:1998:hybrid}
-% -- results not very parsimonious
+#### Hierarchical 
 
-#### Advanced GP Systems
+Abstract Expression Grammar and sub-searches.
+
 
 **Abstract Expression Grammar** (AEG)~\cite{korns:2011:abstract},
 uses several concurrent searches
@@ -1477,32 +1297,52 @@ AEG was shown to make many problems tractable with current techniques~\cite{korn
 Additionally, almost any SR algorithm can be used within the AEG framework.
 
 
-**Eureqa**
+
+
+
+#### Hybrid Algorithms
+
+Feature selection and non-linear regression.
+
+
+
+% - innovative ideas enhancing GP performance
+% -- simplification [339]
+% -- layered learning (hierarchy) [57,125,126,141,295]
 
 
 
 
+% - ensemble, in effort to make trustable \cite{kotanchek:2008:trustable}
 
----
+
+% - hybrid tried by many
+% - with non-lin, interval arithm, \cite{raidl:1998:hybrid}
+% -- results not very parsimonious
+
+
+
+GP && FFX
+
 
 Due to issues with
-benchmarking SR algorithms~\cite{McDermott:2012:benchmarks},
+benchmarking SR algorithms [McDermott:2012:benchmarks](),
 as well as generally poor accuracy
-from state-of-the-art GP algorithms~\cite{korns:2011:accuracy},
+from state-of-the-art GP algorithms [korns:2011:accuracy](),
 several recent works have proposed
 hybrid or alternative techniques to SR.
-\cite{topchy:2001:faster,raidl:1998:hybrid,eberhart:2001:swarm}~use
+[topchy:2001:faster]()raidl:1998:hybrid,eberhart:2001:swarm} use
 hybrid approaches to speed equation parameter fitting.
-Abstract Expression Grammar (AEG)~\cite{korns:2011:abstract},
+Abstract Expression Grammar (AEG) [korns:2011:abstract](),
 uses several concurrent GP searches
 with abstract place-holders.
 This enables the optimization methods
 to focus on smaller areas of the search space in parallel.
-Fast Function eXtraction (FFX)~\cite{McConaghy:2011:FFX}
+Fast Function eXtraction (FFX) [McConaghy:2011:FFX]()
 is a non-GP, deterministic algorithm for SR.
 In FFX, the model is a Generalized Linear Model and
-pathwise regularized learning~\cite{zou:2005:regularization,friedman:2010:regularization} is used to optimize model parameters.
-In~\cite{bongard:2013:improving}, a hybrid GP-FFX algorithm
+pathwise regularized learning [zou:2005:regularization]()friedman:2010:regularization} is used to optimize model parameters.
+In [bongard:2013:improving](), a hybrid GP-FFX algorithm
 in proposed, where FFX is used for feature selection
 prior to a GP search
 Their approach was shown to be more effective than either one alone.
@@ -1512,30 +1352,30 @@ functional and data parallelism,
 and as such, there exists
 a significant amount of literature on the subject.
 The first investigation was done by the originator of GP,
-Koza~\cite{koza:1995:parallel}.
+Koza [koza:1995:parallel]().
 The effects of (a)synchronous execution in distributed GP
-were investigated in \cite{alba:2001:analyzing},
+were investigated in [alba:2001:analyzing](),
 concluding that asynchronous execution achieved
 equivalent or better results in less time.
-\cite{alba:2000:influence} investigates the influence
+[alba:2000:influence]() investigates the influence
 of migration policy on distributed GA's and
-\cite{lassig:2010:benefit} proves that
+[lassig:2010:benefit]() proves that
 migration is required for convergence.
-In~\cite{hodjat:2014:maintenance},
+In [hodjat:2014:maintenance](),
 the effects on, and maintenance of, long-running GP systems
 is investigated.
 Work towards implement GP systems on cloud providers
-is explored in~\cite{veeramachaneni:2013:learning,derby:2013:cloud}.
-Other research~\cite{langdon:2010:large,harding:2011:implementing,augusto:2013:accelerated}
+is explored in [veeramachaneni:2013:learning]()derby:2013:cloud}.
+Other research [langdon:2010:large]()harding:2011:implementing,augusto:2013:accelerated}
 has focused on utilizing the GPU
 to speed up evaluation.
 Several advanced GP systems have also
 emerged as the field has matured,
 including:
-AEG~\cite{korns:2011:abstract},
-Ec-Star~\cite{oreilly:2013:ecstar},
-Eurequa~\cite{hod:09:science}, and
-FlexGP~\cite{derby:2013:flexgp}.
+AEG [korns:2011:abstract](),
+Ec-Star [oreilly:2013:ecstar](),
+Eurequa [hod:09:science](), and
+FlexGP [derby:2013:flexgp]().
 
 In addition to research on scaling GP for BigData,
 many works have investigated
@@ -1545,28 +1385,160 @@ on differential equations and dynamical systems,
 but the body of literature is filled with applications
 to many fields.
 General application to dynamical systems
-are investigated in~\cite{lay:1994:application,cao:2000:evolutionary,tsoulos:2006:solving,hod:08:mining,iba:2008:inference,seaton:2010:analytic}.
+are investigated in [lay:1994:application]()cao:2000:evolutionary,tsoulos:2006:solving,hod:08:mining,iba:2008:inference,seaton:2010:analytic}.
 Specific applications to
-metabolic networks can be found in~\cite{cho:2006:identification,schmidt:2011:automated}
-and genetics in~\cite{sakamoto:2001:inferring,qian:2008:inference}.
-In~\cite{hod:07:pnas}, it was shown that
+metabolic networks can be found in [cho:2006:identification]()schmidt:2011:automated}
+and genetics in [sakamoto:2001:inferring]()qian:2008:inference}.
+In [hod:07:pnas](), it was shown that
 the equations to a dynamical system
 could be searched in parallel
 by using a partitioned evaluation scheme.
 Dynamical systems with multiple-time-scale,
 with signals composed of simpler signals operating at different time-scales,
-is investigated in~\cite{cornforth:2012:symbolic}.
-\cite{cornforth:2013:inference} showed that
+is investigated in [cornforth:2012:symbolic]().
+[cornforth:2013:inference]() showed that
 equations for unobserved variables in dynamical systems
 can be recovered in some instances.
 Invariants, or conserved quantities, were shown
-recoverable in~\cite{hod:09:implicit_long,hod:09:science}.
+recoverable in [hod:09:implicit_long]()hod:09:science}.
 Hybrid dynamical systems,
 which feature both discrete and continuous components,
-were shown tractable in~\cite{ly:2012:learning}.
+were shown tractable in [ly:2012:learning]().
 Much of these works use simulated data from known systems.
 There are, however, many references to use of GP on
 real-world problems and data as well.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Enhancements
+
+
+% improvements to GP
+% remedy vs improvement
+
+% fixed: determined prior to run
+% static or dynamic
+% feedback mechanism
+
+% bootstrap initialization
+
+
+
+
+##### Population Management
+
+
+
+Population size becomes an important parameter 
+to the success of a particular GP implementation.
+The population can be small and granular,
+at the extreme a cellular population
+with each equation a separate population.
+The population can be big and unified
+becoming a single gene pool.
+
+
+
+
+
+
+
+
+#### Population Diversity
+
+Maintaining population diversity 
+is one of the most pressing issues
+in GP. A diverse population is 
+required to search effectively.
+Many aspects of the GP
+algorithm effect diversity.
+Archive selection schemes
+maintain a separate population
+of equations so that 
+good solutions are not lost.
+The island model uses
+separate GP searches
+so that the population is distributed.
+This prevents one individual from
+dominating the entire population
+and migration allows the separate
+process by sharing information.
+
+
+
+#### coefficient tuning
+% Counter: open research question
+
+% local gradiant search of numeric leaf values
+% \cite{topchy:2001:faster}
+
+% We believe that we can remove the process of 
+% coefficient tuning from the GP process.
+% This is done by using placeholder coefficients
+% rather than floating point coefficients.
+% The equations with placeholders are
+% sent to a linear or non-linear solver
+% which returns the best values of these coefficients.
+% This causes the evaluation cost of a 
+% single equations to rise substantially.
+% However, as we will show in our contributions to GPSR, 
+% tuning coefficients this way allows GPSR
+% to focus on form rather than function.
+% Despite the increased cost of candidate evaluation,
+% our results show that this 
+% ...
+% Reduces the time/steps to convergence
+% increases the correct convergence rate
+% ... 
+
 
 
 
@@ -1579,14 +1551,23 @@ real-world problems and data as well.
 
 ### Fundemental Issues
 
+1. **Non-determinism** - The √root of evil in GP
+1. **Redundant Candidates** - From bloat as well as permutations on binary
+   tree and terminal nodes. Due to associativity and commutativity in algebra.
+1. **Structural Information Loss** - Randomized exploration operators
+   lack information about the search space and equation relations.
+1. **Inconsistencies in Research** - in benchmarking, metrics, and with
+   cross-comparisons between implementations*.
+1. **Lack of Reproducibility** - Inherent in the non-determinism that is required
+   for polynomial time convergence. Also an issue with the literature*.
+ 
+ 
+* This seems to be getting better
 
 
+#### Non-determinism
 
-\textbf{Non-determinism}
-\label{section-gp-issues-non-determinism}
-
-\textbf{Benchmarking}
-\label{section-gp-issues-benchmarking}
+#### Benchmarking
 
 
 
@@ -1594,7 +1575,7 @@ Candidate fitness metrics,
 methods for comparing implementations,
 and benchmark problems
 vary widely across the GP field.
-Last year, \cite{McDermott:2012:benchmarks} 
+Last year, [McDermott:2012:benchmarks]() 
 surveyed three years of literature from EuroGP and GECCO GP track,
 bringing this issue to the forefront of the community.
 Their aim was to start a discussion

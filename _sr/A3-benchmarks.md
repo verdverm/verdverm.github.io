@@ -21,15 +21,6 @@ For all of these, add links to
 1. data files
 1. notebooks
 
-make each an accordian and back reference
-experimental setups for each data/notebook
-
-Basically... 
-here's a dataset,
-here's its context,
-this is what and how it's testing
-this is why it's useful and relavent
-
 Details of data sets and
 this is about why we chose each problem.
 
@@ -40,11 +31,16 @@ this is about why we chose each problem.
 
 #### Explicit Equations
 
-**Explicit problems** are drawn from the SR literature.
-  The main source is a paper from titled
-  ["GP Needs Better Benchmarks."](https://cs.gmu.edu/~sean/papers/gecco12benchmarks3.pdf)
+**Explicit equations** are drawn from the SR literature.
+  The main source is a paper titled
+  ["GP Needs Better Benchmarks."](https://cs.gmu.edu/~sean/papers/gecco12benchma3ks4.pdf)
   We select a subset of these problems,
   those that have been used more often in published work.
+  In several cases we added parameters to the equations for two reasons.
+  The first is to bring the scale of the data into a reasonable range. 
+  We did this so that we could add percentage noise based on the variance of the data.
+  The second reason was to make the equation more complex,
+  thus making the regression tasks more difficult.
 
 
 ##### **Single Variable**
@@ -52,11 +48,10 @@ this is about why we chose each problem.
 
 {% for item in site.data.sr.benchmarks.explicit_1var %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/notebooks/benchmarks/explicit_problems_1d.ipynb">Notebook</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/notebooks/benchmarks/explicit_problems_1d.ipynb">Notebook</a></span></div>
 </div>
 <div class="row">
 	<div class="col offset-s1 s6">
@@ -73,11 +68,10 @@ this is about why we chose each problem.
 
 {% for item in site.data.sr.benchmarks.explicit_2var %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/notebooks/benchmarks/explicit_problems_2d.ipynb">Notebook</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/notebooks/benchmarks/explicit_problems_2d.ipynb">Notebook</a></span></div>
 </div>
 <div class="row">
 	<div class="col offset-s1 s6">
@@ -94,11 +88,10 @@ this is about why we chose each problem.
 
 {% for item in site.data.sr.benchmarks.explicit_5var %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/notebooks/benchmarks/explicit_problems_5d.ipynb">Notebook</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/explicit/{{item.tag}}_noisy.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/explicit/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/notebooks/benchmarks/explicit_problems_5d.ipynb">Notebook</a></span></div>
 </div>
 <div class="row">
 	<div class="col offset-s1 s6">
@@ -130,11 +123,10 @@ this is about why we chose each problem.
 
 {% for item in site.data.sr.benchmarks.nist-linear %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/nist-linear/{{item.tag}}.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/nist-linear/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/nist-linear/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="{{item.link}}">NIST</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/nist-linear/{{item.tag}}.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/nist-linear/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="{{item.link}}">NIST</a></span></div>
 </div>
 <div class="row">
 	<div class="col offset-s1 s6">
@@ -149,11 +141,10 @@ this is about why we chose each problem.
 
 {% for item in site.data.sr.benchmarks.nist-nonlinear %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/nist-nonlinear/{{item.tag}}.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/nist-nonlinear/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/nist-nonlinear/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="{{item.link}}">NIST</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/nist-nonlinear/{{item.tag}}.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/nist-nonlinear/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="{{item.link}}">NIST</a></span></div>
 </div>
 <div class="row">
 	<div class="col offset-s1 s6">
@@ -178,11 +169,10 @@ For each of these, additionally add
 
 {% for item in site.data.sr.benchmarks.diffeqs %}
 <div class="row">
-	<div class="col m4 s12"><span><b>{{item.name}}</b></span></div>
-	<div class="col m2 s3"><span><a href="/sr/img/benchmarks/diffeq/{{item.tag}}_noisy.png">Chart</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/diffeq/{{item.tag}}.json">JSON</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/data/benchmarks/diffeq/{{item.tag}}.csv">CSV</a></span></div>
-	<div class="col m2 s3"><span><a href="/sr/notebooks/benchmarks/diffeq.ipynb">Notebook</a></span></div>
+	<div class="col m3 s12"><span><b>{{item.name}}</b></span></div>
+	<div class="col m3 s4"><span><a href="/sr/img/benchmarks/diffeq/{{item.tag}}_noisy.png">Chart</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/data/benchmarks/diffeq/{{item.tag}}.csv">CSV</a></span></div>
+	<div class="col m3 s4"><span><a href="/sr/notebooks/benchmarks/diffeq.ipynb">Notebook</a></span></div>
 </div>
 <div class="row">
 	{% for eqn in item.latex %}

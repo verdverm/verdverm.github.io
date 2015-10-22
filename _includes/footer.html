@@ -35,13 +35,19 @@
     </div>
   </footer>
 
+  <script type="text/javascript">
+    var jsfiles = [
+      "https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js",
+      "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML",
+      "/js/init.js",
+    ];
 
-
-  <!--  Scripts-->
-  <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="/js/materialize.js"></script>
-  <script src="/js/init.js"></script>
+    head.load(jsfiles, function() {
+      // do something
+      console.log("jshead files loaded")
+    });
+  </script>
 
   </body>
 </html>

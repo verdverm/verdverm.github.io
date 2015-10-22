@@ -1,16 +1,16 @@
 - name: "Koza 01"
   tag: "koza_01"
-  latex: "x + x^{2} + x^{3} + x^{4}"
+  latex: "2.3x + 1.4x^{2} + 0.5x^{3} + 0.2x^{4}"
   nvars: 1
 
 - name: "Koza 02"
   tag: "koza_02"
-  latex: "x + x^{5} -2*x^{3}"
+  latex: "1.5x + 0.07x^{5} -2*x^{3}"
   nvars: 1
 
 - name: "Koza 03"
   tag: "koza_03"
-  latex: "x^{2} + x^{6} -2*x^{4}"
+  latex: "1.3x^{2} + 0.3x^{6} -2*x^{4}"
   nvars: 1
 
 
@@ -22,12 +22,12 @@
 
 - name: "Lipson 02"
   tag: "lipson_02"
-  latex: "e^{|x|}\\sin(x)"
+  latex: "0.1e^{|x|}\\sin(x)"
   nvars: 1
 
 - name: "Lipson 03"
   tag: "lipson_03"
-  latex: "x^2e^{\\sin(x)} + x + \\sin(\\frac{\\pi}{4}-x^3)"
+  latex: "x^2 e^{\\sin(x)} + x + \\sin(\\frac{\\pi}{4}-x^3)"
   nvars: 1
 
 
@@ -44,22 +44,22 @@
 
 - name: "Nguyen 03"
   tag: "nguyen_03"
-  latex: "x + x^{2} + x^{3} + x^{4} + x^{5} "
+  latex: "-x - 3.4x^{2} + 1.2x^{3} + 0.3x^{4} - 0.05x^{5} "
   nvars: 1
 
 - name: "Nguyen 04"
   tag: "nguyen_04"
-  latex: "x + x^{2} + x^{3} + x^{4} + x^{5} + x^{6} "
+  latex: "x + 3.2x^{2} + 0.8x^{3} - 0.4x^{4} + 0.2x^{5} + 0.04x^{6} "
   nvars: 1
 
 - name: "Nguyen 05"
   tag: "nguyen_05"
-  latex: "\\sin(x^{2}) * \\cos(x) - 1"
+  latex: "3.3\\sin(x^{2}) * \\cos(x) - 1"
   nvars: 1
 
 - name: "Nguyen 06"
   tag: "nguyen_06"
-  latex: "\\sin(x) + \\sin( x + x^{2} ) "
+  latex: "3.2\\sin(x) + 1.4\\sin( x + x^{2} ) "
   nvars: 1
 
 - name: "Nguyen 07"
