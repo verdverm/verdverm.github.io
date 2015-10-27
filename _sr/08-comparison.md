@@ -1,8 +1,11 @@
 ---
-layout: post
-title: Comparitve Results
-brief: Comparitive results across Symbolic Regression publications
+layout: sr
+title: Comparing Implementations
+brief: Comparitive results across Symbolic Regression systems
 
+prev: 07-gp
+next: 09-conclusions
+nextname: Conclusions
 ---
 
 Test competing methods

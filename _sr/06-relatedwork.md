@@ -1,7 +1,10 @@
 ---
-layout: post
+layout: sr
 title: Related Work
 brief: Standing on the shoulders of others
+prev: 05-experiments
+next: 07-gp
+nextname: Genetic Programming
 sections:
   - name: Fast Function eXtraction
     tag: ffx

@@ -2,6 +2,9 @@
 layout: sr
 title: Enhancing PGE
 brief: Overcoming limitations in the original formulation
+prev: 03-pge
+next: 05-experiments
+nextname: Experiments
 sections:
   - name: Algorithm
     tag: algorithm

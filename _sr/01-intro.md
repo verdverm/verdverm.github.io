@@ -2,6 +2,9 @@
 layout: sr
 title: Introduction
 brief: Symbolic Regression for mathematical discovery
+prev: 00-forward
+next: 02-sr
+nextname: Symbolic Regression
 sections:
   - name: Motivation
     tag: motivation
@@ -12,6 +15,7 @@ sections:
   - name: Reproducibility
     tag: reproducibility
 ---
+
 
 
 
@@ -91,8 +95,9 @@ from observation to mathematical formula.
 
 
 
-<div id="motivation"></div>
+<div id="motivation">
 <a class="right" href="#top">top</a>
+</div>
 
 
 ##### A First Example
@@ -113,8 +118,9 @@ this looks like a strong linear relationship,
 scores to go up with
 hours spent studying.
 
+<div>
 <img class="responsive-img" src="/sr/img/intro/linreg-p1.png">
-
+</div>
 
 We know that you can only study so much
 before the law of diminishing returns 
@@ -122,14 +128,16 @@ and burnout sets in.
 So how does a 2nd-order polynomial
 fit with the data?
 
+<div>
 <img class="responsive-img" src="/sr/img/intro/linreg-p2.png">
-
+</div>
 
 This model looks much better and the $$R^2$$ value has improved as well.
 How about a 3rd-order polynomial?
 
+<div>
 <img class="responsive-img" src="/sr/img/intro/linreg-p3.png">
-
+</div>
 
 Even better, though only a marginal improvement.
 If we continue down this path,
@@ -159,8 +167,9 @@ Mmmmmm beer!
 [The Art of Fermentation](http://www.amazon.com/The-Art-Fermentation-Exploration-Essential-ebook/dp/B0083JQCF2))
 
 
-
+<div>
 <img class="responsive-img" src="/sr/img/intro/yeast.png">
+</div>
 
 
 It took humans years of study and analysis
@@ -204,8 +213,9 @@ on the order of minutes.
 
 
 
-<div id="contributions"></div>
+<div id="contributions">
 <a class="right" href="#top">top</a>
+</div>
 
 ##### Contributions
 
@@ -250,16 +260,56 @@ in several ways.
 
 
 
-<div id="results"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="results">
 <a class="right" href="#top">top</a>
+</div>
 
 ##### Results
 
 Will fill this in later after the chapter(s) are written.
 
 
-<div id="reproducibility"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="reproducibility">
 <a class="right" href="#top">top</a>
+</div>
 
 
 ##### Reproducibility

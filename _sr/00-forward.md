@@ -2,6 +2,8 @@
 layout: sr
 title: Forward
 brief: By the author
+next: 01-intro
+nextname: Introduction
 ---
 
 

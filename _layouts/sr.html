@@ -8,7 +8,14 @@
 		<div id="top"></div>
 
 	    <br>
-	    <a class="right flow-text" href="/sr/">toc</a>
+	    <span class="right flow-text">
+	    	{% if page.prev %} <a href="/sr/{{page.prev}}">prev</a> {% endif %}
+		    <span>&nbsp;</span>
+	    	{% if page.next %} <a href="/sr/{{page.next}}">next</a> {% endif %}
+		    <span>&nbsp;</span>
+		    <a href="/sr/">index</a>
+	    </span>
+	    <br>
 	    <h2 class="text-blue">{{page.title}}</h2>
 	
 
@@ -24,6 +31,17 @@
 
 			{{ content }}
 
+
+			<br>
+		    <span class="flow-text">
+		    	{% if page.prev %}
+			    <a class="left" href="/sr/{{page.prev}}">prev</a>
+			    {% endif %}
+		    	{% if page.next %}
+			    <a class="right" href="/sr/{{page.next}}">next ({{page.nextname}})</a>
+			    {% endif %}
+		    </span>
+		    <br><br><br>
 
 			<!-- COMMENT SECTION -->
 			<div id="disqus_thread"></div>

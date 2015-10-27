@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: sr
 title: Appendix D - Abreviations
 brief: A quick reference
 ---

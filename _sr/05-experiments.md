@@ -2,6 +2,9 @@
 layout: sr
 title: Experiments
 brief: This chapter focuses on testing the PGE algorithm
+prev: 04-enhancements
+next: 06-relatedwork
+nextname: Related Work
 sections:
   - name: Overview
     tag: overview
