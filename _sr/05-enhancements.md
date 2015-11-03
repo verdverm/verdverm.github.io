@@ -2,8 +2,8 @@
 layout: sr
 title: Enhancing PGE
 brief: Overcoming limitations in the original formulation
-prev: 03-pge
-next: 05-experiments
+prev: 04-pge
+next: 06-experiments
 nextname: Experiments
 sections:
   - name: Algorithm
@@ -448,9 +448,12 @@ this information with increasingly complex processing.
 
 
 
+**Equation Relationships**
 
-\subsection{Equation Relationships}
-
+<div class="center-align">
+<span><b>Figure #</b> - The Search Space Graph</span>
+<img class="responsive-img" src="/sr/img/PGE_Search_Space_Graph.png" />
+</div>
 
 
 deeper equation abstractions,
@@ -543,26 +546,28 @@ focus is on relationships and improving information gain
 <div id="decoupling"></div>
 <a class="right" href="#top">top</a>
 
-#### Decoupling
-
-
-
+### Decoupling
 
 In order to address todays
 challenging big data problems,
 PGE needs to be scaled to the cloud.
 This section describes how
-PGE can be decoupled into a set of services,
-each service contained in a Docker,
-and the set services deployed to
-a cloud environment.
-It is worth noting that PGE
-the original authors chose Go
-with it's builtin CSP primitives.
-This proved to greatly simplify
-the development of, and
-communication within,
-a distributed PGE algorithm
+PGE can be decoupled into a set of services.
+We decoupled the PGE algorithm
+into three services:
+algebraic manipulations,
+model evaluation,
+and the search loop.
+These three services were
+initially chosen
+because they constituted the
+majority of the runtime.
+We believe it also possible
+to decouple the expansion and
+memoization functionality into
+their own services.
+
+
 \begin{figure}[h!]
 \caption{Diagram of cPGE Phases and Flow}
 \label{fig:diagram}
@@ -572,42 +577,7 @@ a distributed PGE algorithm
 % \vspace*{-.15in}
 \end{figure}
 
-\subsection{Sets of Services}
 
-We decoupled the PGE algorithm
-into three services:
-algebraic manipulations,
-model evaluation,
-and the search loop.
-We believe it also possible
-to decouple the expansion and
-memoization functionality into
-their own services.
-
-After decoupling the services,
-the expansion phase became the
-most time-consuming part of the algorithm.
-The surmise reason for this is two-fold,
-though it warrants further investigation.
-First, the time required to process a
-model in the algebra and services
-became less than the time required
-to send messages, even when the other services
-are co-located.
-In addition to the network latency,
-there was additional overhead in our
-original messages due to using
-a human readable format for the equation
-over the wire. This required the equations
-to be printed and then parsed at both service ends.
-After converting the message to
-use the same integer serialization
-used in the memoization process,
-we saw a 20\% reduction
-in overall runtimes.
-%
-% Need to also parse int-sequence at python end
-%
 
 The algebra and evaluation service functionality
 are presented as JSON APIs.

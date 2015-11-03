@@ -18,6 +18,36 @@ sections:
 
 
 
+The primary setting for this work is Symbolic Regression (SR),
+the task of deriving mathematical formula
+from observational data without any fore-knowledge
+of the domain or problem.
+In essence, this is the scientific process
+performed by a computer.
+Hypotheses are formulated,
+tested against the observations,
+and compared for explanatory value.
+Because the resulting models are
+mathematical formula, SR can assist
+domain experts in almost all fields.
+
+The main contribution of this work is
+Prioritized Grammar Enumeration (PGE),
+a deterministic machine learning
+algorithm for solving Symbolic Regression.
+Working with a grammar’s rules, PGE prioritizes
+the enumeration of mathematical expressions
+in order to find the best fit model.
+By recognizing large overlaps in the search space
+and introducing mechanisms for memoization,
+PGE can exploring the space of all equations efficiently.
+Most notably, PGE provides
+reproducibility of results,
+a key aspect to any system
+used by scientists at large.
+
+
+
 
 ##### A Brief Computational History
 

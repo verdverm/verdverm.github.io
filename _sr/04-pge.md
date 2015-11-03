@@ -2,8 +2,8 @@
 layout: sr
 title: Prioritized Grammar Enumeration
 brief: Deterministic, reproducible, and reliable Symbolic Regression
-prev: 02-pge
-next: 04-enhancements
+prev: 03-relatedwork
+next: 05-enhancements
 nextname: Enhancements
 sections:
   - name: Overview
@@ -32,23 +32,35 @@ sections:
 
 
 
-Prioritized Grammar Enumeration (PGE) is the result
-of our rethinking Symbolic Regression.
+
+Prioritized Grammar Enumeration (PGE) is a
+deterministic and highly efficient algorithm for 
+Symbolic Regression (SR). 
+It was the result of a burning desire
+to enforce determinism upon the entire system.
+This idea forced us to rethink 
+the fundamental approach to SR.
+PGE is the result of this process.
 To our knowledge, 
 PGE is the first SR implementation that is both
 deterministic and tree-based.
-
-
 PGE's unique perspective on SR
-enable vast reductions in effort
-
+brings structure to the forefront.
+At the same time, it
+enables vast reductions in effort
 and opens the door to
 advanced analyses not
 possible with other methods.
+PGE also offers consistency,
+capability, and reliability 
+not available with other methods.
+In short, we believe PGE is 
+the first usable SR technology.
 
 
-PGE brings Symbolic Regression
-to the realm of a usable technology.
+
+
+
 
 
 
@@ -62,97 +74,76 @@ to the realm of a usable technology.
 
 ### Overview
 
-
-
 Prioritized Grammar Enumeration (PGE) is a
-deterministic, dynamic programming algorithm for SR.
-Being largely influenced by GP,
-PGE maintains the parse tree representation for equations 
-and incorporates the Pareto non-dominated sort.
-PGE diverges in how it
-organizes, explores, and
-processes the search space.
-PGE replaces the genetic operators
-with grammar production rules
-and random selections with well defined choices.
-In doing so, PGE becomes an algorithm
-offering reliability and reproducibility 
-that a non-deterministic implementation cannot.
-
-
-
-The first
-key aspect to PGE is its
-strictly deterministic search execution.
-
-In addition to creating a
-consistent and reproducible algorithm for SR,
-PGE also brings to light
-and then addresses several, some overlooked,
-limitations to the GP algorithm.
-
-
-PGE solves the symbolic regression problem by 
-working *with* a grammar, 
+deterministic algorithm for SR.
+PGE solves the SR problem 
+from a language point of view, 
 to prioritize the enumeration of expressions in that grammar.
-PGE reverses a grammar's rules into productions
-to expand simple basis functions 
-into increasingly complex expressions. 
+By recognizing the structure of the search space,
+PGE turns the SR problem into a graph traversal problem.
+PGE also recognizes multiplicity of points in
+in the search tree and overlaps them, resulting in the search graph.
+PGE uses dynamic programming techniques that memoizes previous results
+and prevent the compounding duplication of effort.
 
-PGE considers a model *form* only once,
-by employing memoization,
-a priority queue, and non-linear regression. 
-
-
-PGE iteratively refines equations
-by applying the grammar's 
-production rules recursively.
-PGE removes the top equations
-from the queue, prioritizing 
-the first Pareto frontier.
-The top equations are then expanded
-according to the production rules.
-The resultant expanded equations 
-are checked for uniqueness
-by the Integer Prefix Tree (IPT).
-The unique set of trees that remain are
-fit using non-linear regression,
-evaluated for fitness,
-and pushed into the Pareto Priority Queue (PPQ).
-The main PGE loop continues
-in this way until the
-stopping criteria is reached.
+PGE further shrinks the search space by
+reducing models to a canonical form
+with the rules of algebra and simplification.
+Recursion and generating functions are applied
+to produce new forms from the current model.
+By placing valueless parameters, 
+which are later deermined with non-linear regression,
+PGE additionally separates the search for model form
+from the optimization of any given form.
 
 
+PGE takes reductionism one step further,
+fully optimizing an equation in the search space
+the first time it is encountered
+and remembering which equations
+it has discovered thus far.
 
-PGE contrasts randomized search algorithms,
-such as Genetic Programming,
-in several ways.
-First, 
-PGE uses the grammar directly.
-This eliminates the possibility of generating invalid expressions
-and, more importantly, provides the rules for searching its space.
-Second, 
-PGE is a dynamic programming algorithm that memoizes previous results.
-This prevents the compounding duplication of effort
-from production rules being applied to the
-same equation more than once and 
-in the evaluation of an equation.
-Third, 
-PGE fits an equation's coefficients to the training data.
-This separates the search for form
-from the optimization of that form.
-Finally, 
-PGE uses no random number generation.
-This eliminates the initial condition,
-consistency, and reliability issues 
-that are inherent in any
-randomized algorithm.
+Partial ordering, coupled with 
+the trie representation and simplifications,
+yields many-fold reductions of the search space.
+Invalid and ineffectual expressions are removed,
+variations of associative forms are limited,
+and isomorphs are combined,
+shrinking the number of representable equations 
+that need to be explored by a SR implementation.
+
+To consolidate this space, PGE
+imposes operator restrictions,
+simplifies equations,
+and partially orders sub-expressions.
+When combined, these methods 
+only allow syntactically valid equations to be considered,
+merge isomorphic equations into a canonical form,
+reduce the overall size of the search space,
+and create a structural ordering to the search space.
+
+The third observation PGE makes
+is that the search for an equations form,
+its structural configuration,
+can be separated for the optimization
+of that form's parameters.
 
 
-PGE also offers consistency and reliability 
-that GP cannot as a randomized algorithm.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
 
 <div id="theory">
 <a class="right" href="#top">top</a>
@@ -161,7 +152,7 @@ that GP cannot as a randomized algorithm.
 
 ### Theory
 
-1. **Search Space Organization** - Understanding and desiging the structure of the search space.
+1. **Search Space Organization** - Understanding and designing the structure of the search space.
 1. **Evaluating Forms Once** - Designing the model for detection and avoidance of overlapping subproblems.
 1. **Removing Non-determinism** - Creation of a completely reproducible SR algorithm.
 
@@ -185,108 +176,98 @@ of the software which implements the algorithm.
 
 #### Search Space Organization
 
-
-Partial ordering, coupled with 
-the $n$-ary tree representation and simplifications,
-yields many-fold reductions of the search space.
-Invalid and ineffectual expressions are removed,
-variations of associative forms are limited,
-and isomorphs are combined,
-shrinking the number of representable equations 
-that need to be explored by a SR implementation.
-PGE takes reductionism one step further,
-fully optimizing an equation in the search space
-the first time it is encountered
-and remembering which equations
-it has discovered thus far.
-These features enable PGE 
-to discard equations it
-has already seen
-and is described next.
-% \ken{Make sure that what you mean by "optimizing" is explained here or before this point, or use some kind of backwards/forward reference.}
-
-
-##### Tree Representation Combinatorics 
-
 The size of the space defined by a grammar
 is infinite, even when disregarding the 
 increase brought by considering real valued coefficients.
-This is the result of a grammar's production rules
-being applicable recursively and indefinitely.
-Adding to the multiplicity, 
-an equation will usually have 
-several derivations for each parse tree
-and isomorphs through manipulations 
-with basic algebra techniques.
-Consider the equation $a \cdot b \cdot c$ (Figure \ref{fig:eqn-combis}). 
-This equation has 12 different binary tree representations,
-from six leaf permutations and two shape permutations.
-If we use both addition and multiplication,
-this number of trees is 48.
+The main contributions are combinatorial components
+at both the search space and model levels of the problem.
+PGE's great efficiency gains are the result
+of methods designed to combat the combinatorial components.
+We begin at the model level, where the main tool
+is the trie based representation.
+It is dynamic programming which comes to the rescue
+at the search space level.
 
-As the number of operations,
-operands, and tree complexity are increased,
-the size of the search space
-undergoes a combinatorial explosion.
-To consolidate this space, PGE
-imposes operator restrictions,
-simplifies equations,
-and partially orders sub-expressions.
-When combined, these methods 
-only allow syntactically valid equations to be considered,
-merge isomorphic equations into a canonical form,
-reduce the overall size of the search space,
-and create a structural ordering to the search space.
 
+**Tree Representation Combinatorics**
+
+PGE primarily uses the trie based representation
+for the models, as detailed in the last chapter.
+The reason for this is the combinatorial
+number of different binary tree representations
+for the equivalent model.
+These different representations arise
+from permutations of the leaf nodes
+and from variations in the tree structure.
+Consider the equation `a•b•c` (Figure \ref{fig:eqn-combis}). 
 
 <div class="center-align">
 <span><b>Figure #</b> - Combinatorics of the Tree</span>
 <img class="responsive-img" src="/sr/img/eqn-combis.png" />
 </div>
 
-**Binary Tree Permutations**
+This equation has 12 different binary tree representations,
+from six leaf permutations and two shape permutations.
+If we account for both addition and multiplication,
+the number of trees grows to 48.
+As you can imagine, with 
+increasing numbers of operations and operands, 
+the tree complexity and this number
+undergoes a combinatorial explosion.
 
-**Commutitivity and Associativity**
+The advantage of the trie based model
+is the ability to take advantage of the
+commutative and associative properties
+of addition and multiplication.
+Because of these properties,
+we are free to order the operands,
+sub-trees in the model trie, as we choose.
 
-Partial ordering of sub-expressions
-provides the necessary machinery for comparing 
-and thus sorting terms of associative operators.
-In PGE, partial ordering is created by
-placing a relative order on each building block type.
-Terminals are less than non-terminals,
-variables are less than constants,
-and unary functions are less than binary functions.
-Since addition and multiplication are the only associative operators,
-they are the only building blocks affected by sorting of sub-expressions.
+Commutativity is the ability to rearrange parentheses
+and is associated with the multiple tree representations
+for the same expression. By using the trie,
+we flatten a binary tree and metaphorically 
+erase the parentheses from the expression.
+
+Associativity means that we can sort 
+the operands to addition and multiplication.
+By sorting them, we create a consistent ordering
+which can be treated as the canonical form for a model.
+In doing so, we remove the combinatorial element
+associated with the permutation of leaf nodes.
+Sorting is possible by 
+creating a ordering on node types.
+This is easily achievable by assigning
+an integer to each node type.
+
+By turning binary trees into tries
+and by sorting the tries,
+each model can have a canonical form.
 Figure \ref{fig:eqn-combis}, right column, shows 
-the canonical form of $a \cdot b \cdot c$ with a $n$-ary tree and sorting. 
-If $a<b<c$, then there is 
-only one representation for each of the expressions,
-reducing the original 48 to just 4.
-The savings created by sorting 
-become larger as equations
+the canonical form of `a•b•c`. 
+After applying the reductions,
+the original 48 models is now just 4.
+This savings created by sorting 
+become even more important as equations
 become more complex.
-% \ken{Complete details would be nice, if there is time and space.}
-
 
 
 **Algebraic simplifications**
 
-Simplifications group like terms together ($x+x$), 
+There are other sub-expressions which arise
+that we would also like to remove and reduce.
+
+Simplifications group like terms together ($$x+x$$), 
 replace sub-expressions which evaluate 
-to a constant value ($\sin\pi$, $\frac{x}{x}$, or $x-x$),
-and reduce unnecessarily complex expressions such as $\frac{1}{\frac{1}{x}}$.
+to a constant value ($$\sin\pi$$, $$\frac{x}{x}$$, or $$x-x$$),
+and reduce unnecessarily complex expressions such as $$\frac{1}{\frac{1}{x}}$$.
 The resulting equations are equivalent,
 simpler forms.
-% These algorithms replace 
-% sub-expressions with simpler versions
-% which evaluate to the same value,
-% % convert one parse tree to an simpler, equivalent tree,
-% and are reminiscent of algebraic transformations.
-% , known as tree rewriting systems 
-% \cite{Joshi:1975:TAG,dershowitz:1982:orderings,huet:1980:equations},
+
+
 There is debate as to how
-simplification effects the SR process \cite{kinzett:2008:using,kinzett:2009:online,mcree:2010:symbolic}.
+simplification effects the SR process 
+\cite{kinzett:2008:using, kinzett:2009:online, mcree:2010:symbolic}.
 Certainly, changing the tree effects
 the Pareto trade-off which in turn
 has consequences on selection and 
@@ -295,6 +276,7 @@ Questions still remain as to
 how much and which simplifications should be applied, 
 which forms of the equation should be kept,
 and the overall effects simplification has on the search process. 
+
 Despite these questions,
 PGE still employs 
 the use of the aforementioned simplifications. 
@@ -313,41 +295,113 @@ out parts of the search space
 which are redundant, and also
 return results which are more comprehensible.
 
-% \ken{It may be a good idea to actually list the actual rewrite rules used.}
-
-% other why's of PGE's use of simplification
-% (reducing the search space)
-% see last paragraph of this section
-
-##### Canonical Form
-
-The aforementioned enable a canonical form 
-for an equation...
-
-
-##### Equation Relationships
+PGE uses the simplification techniques
+which are present in the SymPy Python library.
+This and further implementation details
+can be found in [Appendix-A1](/sr/A1-pypge).
 
 
 
-
-<div class="center-align">
-<span><b>Figure #</b> - The Search Space Graph</span>
-<img class="responsive-img" src="/sr/img/PGE_Search_Space_Graph.png" />
-</div>
 
 
 
 #### Evaluating Forms Once
 
-The third observation PGE makes
-is that the search for an equations form,
-its structural configuration,
-can be separated for the optimization
-of that form's parameters.
-This is a significant advantage over GP,
-which classically and usually relies
-on the crossover and mutation operators
-to update the parameter values.
+At its core, PGE is a dynamic programming algorithm
+which aims to evaluate each sub-problem once.
+
+<blockquote>
+A dynamic-programming algorithm solves each subsubproblem
+just once and then saves its answer in a table, 
+thereby avoiding the work of recomputing the answer 
+every time it solves each subsubproblem.
+<br><span class="right">~ Cormen:2009:algorithms</span>
+</blockquote>
+
+
+In PGE and SR, a sub-problem is a specific form, 
+namely the parse tree for an equation and its terminals.
+Recall that PGE uses placeholders
+for the parameters, so an equation form accounts
+for the existence of a parameter
+without knowing its value.
+
+
+The key to evaluating forms once
+is to fully optimize a form the first time it is seen
+and to remember the forms which have already been explored.
+PGE fully optimizes forms by fitting the
+valueless parameters with non-linear regression,
+thus assigning it a value.
+In order to memoize the equation forms,
+they are converted to a linear representation
+and then recorded in a lookup structure
+called the Integer Prefix Trie.
+This is possible because 
+each equation has a canonical form
+which is unique.
+
+
+
+**Non-linear Regression** is not unique to PGE, or GP for that matter,
+but it is a central component of PGE's
+ability to evaluate an equation form once.
+As PGE encounters new equation forms,
+it fits the abstract parameters using non-linear regression,
+resulting in the 'best' version of that form on the training data.
+PGE uses the
+Levenberg-Marquardt (LM) optimization algorithm [CITE]()
+to fully fit an equation to a set of data.
+In cases were an equation is linear w.r.t.
+the parameters, the LM algorithm library
+returns in one iteration by using
+singular value decomposition (SVD).
+
+PGE's treatment of parameters
+and use of non-linear regression 
+enables the separation of search for equation form,
+from optimization of a form's parameters.
+In this way, the search for form,
+and the optimization of coefficients
+are split into separate tasks.
+
+This separation has a profound
+implications on the efficiency and effectiveness of PGE.
+It enables an equation form
+to be fully evaluated once,
+removing duplication of effort that GP experiences
+when using genetic operators to 
+optimize the coefficients of an equation form.
+Some GP implementations have
+incorporated the use of regression
+for fitting coefficients.
+However, they make no use of memoization,
+and therefore still suffer from duplication of effort
+which results from multiple copies of the same equation.
+
+
+
+**Memoization**
+
+
+
+
+Canonical forms for equations 
+reduced one source of combinatorics in the SR problem.
+A second source is from multiple derivations.
+That is multiple paths over the graph which
+reach the same node.
+
+<div class="center-align">
+<span><b>Figure #</b> - Multiple Derivations</span>
+<img class="responsive-img" src="/sr/img/a_b_c.png" />
+</div>
+
+In this diagram...
+
+
+
+
 PGE makes use of abstract parameters,
 valueless placeholders in the equation,
 to capture the existence and location of a
@@ -356,94 +410,6 @@ These abstract parameters are used
 during the memoization process to capture the form
 and in the evaluation phase to fully optimize an
 equation the first time it is encountered.
-In the optimization phase,
-PGE uses the
-Levenberg-Marquardt optimization algorithm~\cite{lourakis04LM}
-to fully fit an equation to a set of data.
-In particular, the analytical Jacobian
-w.r.t. the parameters is used,
-which requires a symbolic derivative to be calculated.
-In Section \ref{section:decouple},
-we extract the evaluation process
-from the main loop into a service.
-We then extract the Jacobian calculation
-from the evaluation service
-and replace it with
-an API call in the algebra service.
-
-
-At its core, PGE is a dynamic programming algorithm
-which aims to evaluate each sub-problem once.
-In PGE and SR, a sub-problem is a particular
-equation form, namely the parse tree and its parameters or coefficients.
-The key to evaluating forms once
-is to fully optimize a form the first time it is seen
-and to remember the forms which have already been explored.
-PGE optimizes forms by fitting 
-abstract parameters with non-linear regression and
-by recording which equations it has already seen with a lookup trie.
-
-
-<blockquote>
-  
-A dynamic-programming algorithm solves each subsubproblem
-just once and then saves its answer in a table, 
-thereby avoiding the work of recomputing the answer 
-every time it solves each subsubproblem''
-
-<br><span class="right">~ Cormen:2009:algorithms</span>
-</blockquote>
-
-Because we have a Canonical Form...
-
-
-##### Non-linear Regression
-
-Non-linear regression is not unique to PGE, or GP for that matter,
-but it is a central component of PGE's
-ability to evaluate an equation form once.
-As PGE encounters new equation forms,
-it fits the abstract parameters using non-linear regression,
-resulting in the 'best' version of that form on the training data.
-PGE uses the Levmar C library implementation of the 
-Levenberg-Marquardt optimization algorithm \cite{lourakis04LM}.
-The analytical Jacobian version is used
-by symbolically calculating the derivations
-of an equation w.r.t. each coefficient.
-In cases were an equation is linear
-to the coefficients, the Levmar library
-returns in one iteration by using
-singular value decomposition (SVD).
-Training performance is used as the metric
-for fitness comparison, along with equation size,
-as is usual when using Pareto fronts.
-The fully optimized form is later
-evaluated on unseen testing data 
-to provide an unbiased measure of accuracy.
-
-PGE's treatment of coefficients
-is in direct contrast
-to the probabilistic optimization
-GP uses through its genetic operators.
-Abstract parameters and non-linear regression 
-enables the separation of search for equation form,
-from optimization of a form's parameters.
-% \ken{Good point, I think.}
-This separation, in turn, enables an equation form
-to be fully evaluated once,
-removing duplication of effort that GP experiences
-when using genetic operators to 
-optimizing the coefficients of an equation form.
-
-
-##### Memoization
-
-Canonical forms for equations 
-reduced one source of combinatorics in the SR problem.
-A second source is from multiple derivations.
-That is multiple paths over the graph which
-reach the same node.
-
 
 
 PGE us dynamic programming techniques
@@ -451,10 +417,9 @@ to consider an equation form only once.
 This feature is enabled by 
 memoization, a priority queue, and non-linear regression. 
 
-<div class="center-align">
-<span><b>Figure #</b> - Multiple Derivations</span>
-<img class="responsive-img" src="/sr/img/a_b_c.png" />
-</div>
+
+Use the IPT and linear representation,
+described below...
 
 
 
@@ -468,92 +433,44 @@ Removing sources of non-determinism
 was a central theme to the development of PGE.
 The aim was to produce an algorithm
 which would give the same results with each invocation.
-To achieve this deterministic behavior, 
-%PGE operates in a single thread of execution
-%% Multithreaded code can still be algorithmically deterministic. -Ken
+The reason for this goal was the 
+detrimental effects non-determinism has
+in Genetic Programming. We believe
+it to be an inherent and unavoidable
+difficulty present in the GP algorithm.
+You can find details on GP in [Chapter 7](/sr/07-gp)
+
+To achieve deterministic behavior, 
 PGE makes no use of random number generation.
 It performs the exact same algorithmic steps
 given the same parameters and same training data.
-PGE replaces 
-the initialization, breeding and
-selection mechanisms of GP.
-The first two are detailed here and
-the selection policy is described 
-in Section \ref{subsec:dir-search}.
+This requires several aspects of the PGE algorithm
+to be defined deterministically.
+
+**Initialization** establishes the starting points
+from which PGE searches. Determinism starts here
+by constructing a set of basis functions
+from the input variables. 
+
+**Prioritization** determines which points 
+in the space to search next. This process
+uses a priority queue coupled with a
+Pareto non-dominated sorting algorithm.
+
+**Exploration** discovers new models by
+making small changes to a given model.
+To maintain determinism, PGE makes 
+all possible changes to a model,
+given the particular exploration scheme in use.
+
+**Communication** occurs when PGE uses
+parallel execution. In order to maintain
+deterministic behavior, well defined
+synchronization points are used.
 
 
-
-The initialization and generating functions,
-determine the set of reachable expressions in a SR search.
-As with the equations themselves,
-there is a trade-off between
-space and complexity;
-how wide and how deep a search can explore.
-The expansion methods discussed above
-enable PGE to remove 
-non-determinism at the individual level.
-To fully remove non-determinism, and give direction to the search,
-the selection strategy still needs to be replaced.
-
-
-
-##### Initialize basis functions consistently
-
-To determine the SR starting points,
-GP uses methods like grow, full, and ramped half-and-half 
-to randomly generate initial equations.
-In contrast, PGE initializes a search with 
-a set of basis functions, such as
-$c_0*x_i$, $c_0 + c_1*x_i$, $\frac{c_0}{x_i}$, and $c_0*f(x_i)$.
-These starting points are the simplest functions
-and are predetermined by the usable building blocks.
-Instead of growing equations at the beginning,
-PGE starts with simple functions,
-expanding them to reach 
-new, unseen areas of the search space.
-% PGE may be seeded with an even richer set of basis function,
-% and even allow complete sub-trees to become building blocks.
-
-
-
-
-##### Deterministic exploration functions
-
-To expand a candidate equation,
-%the currently discovered, most promising equations,
-PGE uses generating functions 
-derived from the grammar's production rules.
-Generating functions are the deterministic replacement 
-for the non-deterministic genetic operators,
-crossover and mutation.
-Each generation function corresponds to
-one or more of the grammar's production rules. 
-The generation functions are policies
-for how to expand and modify
-an equation's parse tree to obtain 
-functions `close' to the current one.
-New equations are produced by recursively applying
-the generating functions over the parse tree.
-From a single tree, this process produces
-a set of reachable equations within
-one step of the input equation.
-As the production rules are applied recursively,
-the current node's type determines
-the appropriate generation function(s) to apply.
-
-
-##### Direct search with priority queue
-
-PGE's selection policy is deterministic.
-With each independent PGE invocation,
-and each iteration,
-the same equations will be at the front of the queue.
-This means the same equations will be expanded,
-the same productions will be applied,
-and the same results will be returned.
-\newline
-
-##### Synchronize communication points
+Details of each aspect will be expanded upon
+in the upcoming sections and next chapter.
 
 
 
@@ -578,6 +495,9 @@ and the same results will be returned.
 
 
 
+
+
+<br>
 
 <div id="components">
 <a class="right" href="#top">top</a>
@@ -585,7 +505,7 @@ and the same results will be returned.
   
 ### Components
 
-1. **Representation** - Use a trie and linear representation with valueless parameters
+1. **Representation** - Trie and linear representations with valueless parameters
 1. **Evaluation** - Nonlinear regression for parameters, fitness metric for models
 1. **Optimization** - Exploration, prioritization, and regularization
 1. **Memoization** - Detecting overlapping subproblems to avoid duplicate work
@@ -607,18 +527,21 @@ by prioritizing equations over one another.
 
 #### Representation
 
+PGE uses multiple representations for an equation.
+The syntax trie is used for optimization.
+The integer sequence is used for memoization.
 
 
-**N-ary syntax tree**
+**Syntax Trie**
 
-PGE uses n-ary trees, 
+PGE uses trees, 
 where operands can have a variable number of children.
-In the $n$-ary tree representation,
-the associative operators can have $n$ sub-trees,
+In the n-ary tree representation,
+the associative operators can have n sub-trees,
 flattening and reducing the tree's size.
 This is a slight modification from the usual binary tree;
 only affecting the associative operators addition and multiplication.
-The $n$-ary tree does not change the 
+The n-ary tree does not change the 
 modeling ability of the equation,
 but will effect the
 trade-off between parsimony and accuracy.
@@ -627,7 +550,7 @@ the selection operation of any SR implementation,
 though we do not investigate this issue here.
 
 In addition to the reductions in parse tree size, 
-the $n$-ary representation eases the 
+the n-ary representation eases the 
 design of sorting and simplification algorithms.
 These algorithms, detailed next,
 work within the parse tree
@@ -638,11 +561,51 @@ while simultaneously adding structure
 to the search space.
 
 
-**Linear integer sequence**
+**Linear integer sequence** is 
+the prefix notation representation
+of an equation, mapped to the integers.
+It is equivalent to the trie representation
+with one-to-one correspondence.
+The linear integer sequence is obtained by
+mapping each node type to a different integer
+and the performing a pre-order traversal
+of the trie, collecting the integers
+by appending them to a list.
+
+The usefulness of this representation
+is for efficiency in implementation.
+Integers can be used for constant time
+lookups, where otherwise we may have been
+limited to a higher complexity operation.
+The linear representation is mainly used
+in conjunction with the Integer Prefix Trie (IPT)
+during the memoization process.
+The IPT is an efficient data structure
+for recording and looking up equations
+and will be detailed shortly.
+
+Additionally, the linear representation 
+can be used for interprocess and network
+communication. It's main benefit there
+is on the receiving side, where
+we can avoid the complexity of parsing
+the human readable version of an equation.
 
 
-
-**Abstract Coefficients**
+**Abstract parameters** are the valueless
+placeholders used as coefficients
+in equations. They signify that a parameter
+is present and where in an equation it occurs.
+The benefit of abstract parameters is two-fold.
+First, equation form matching and memoization
+can happen without regard to their value.
+Second, they enable the optimization
+of the parameters to be performed
+in a separate process, via non-linear regression.
+This is the key to separating
+the optimization of a given form,
+from the optimization which occurs
+at the global scale, in the space of all equations.
 
 
 
@@ -653,10 +616,8 @@ to the search space.
 
 
 **Non-linear parameter fitting**
-
-Though not unique to PGE, or GP for that matter,
-non-linear regression is 
-a central component to the PGE algorithm.
+though not unique to PGE, or GP for that matter,
+is a central component to the PGE algorithm.
 It enables the separation of search for form 
 and optimization of that form's parameters.
 Great gains in efficacy are realized by
@@ -664,7 +625,7 @@ separating the search for equation form,
 from the optimization of parameters.
 
 PGE achieves this separation by
-handling the parameters differently.
+using abstract parameters.
 Parameters are indexed into an array, 
 which means they do not store their value internally.
 The indexed parameters contribute only to form,
@@ -672,41 +633,45 @@ taking on value only after non-linear fitting.
 Handling parameters in this manner 
 is analogous to the way variables are treated,
 which only contribute to fitness during evaluation.
-In this way, the search for form,
-and the optimization of coefficients
-are split into separate tasks.
-This separation has a profound
-implications on the efficiency and effectiveness of PGE.
-
-PGE's treatment of parameters
-is in direct contrast
-to the probabilistic optimization
-GP uses through its genetic operators.
-Some GP implementations have
-incorporated the use of regression
-for fitting coefficients.
-However, they make no use of memoization,
-and therefore still suffer from duplication of effort.
 
 
 
-**Fitness metric**
+**Fitness metrics** are composite metrics
+which combine a notion of accuracy and complexity.
+They are used to compare the relative
+fitness between two models or equations.
+They are the multi-objective value
+which SR implementations seek to optimize.
+The most common fitness metric is to
+use the tree size and the mean squared error.
+Many values for accuracy and complexity
+may be used, and more than one may be used.
+Additionally, the values in the fitness metric
+may be weighted to give preference.
+Another useful practice is to normalize
+the values used in the fitness metric,
+across the set, before sorting
+into successive non-dominated sets.
+The Pareto non-dominated sorting methods,
+described in the previous chapter,
+use fitness metrics to determine
+the successive non-dominated sets of equations.
 
 
-size and "score"
 
-where score is an error metric
 
-multi-objective optimization
 
-pareto non-dominated sort
 
 
 
 #### Optimization
 
-SR seeks to optimizes both the
-parsimony and accuracy of equations.
+
+SR is a multi-objective optimization
+seeks to maximize accuracy
+while minimizing complexity.
+
+
 PGE uses a priority queue to express
 which points in the search space
 to expand next. 
@@ -716,16 +681,21 @@ the PGE search
 can exploit and optimize 
 the trade-off between competing objectives
 in a deterministic order.
-\newline
 
 
-**Exploration Operators**
+**Exploration Operators** are
+the means by which PGE searches
+the space of all equations.
+Each exploration operator is a policy
+for how to expand and modify
+an equation's parse tree to obtain 
+functions 'close' to the current one.
 
 <div class="center-align"><b>Figure #</b>: PGE Exporation Functions</div>
 
 {% highlight Python linenos %}
 
-def grow(model):
+def Grow(model):
     add_expands = add_extend(model)
     mul_expands = mul_extend(model)
     var_expands = var_substitution(model)
@@ -752,50 +722,29 @@ def var_substitution(model):
 {% endhighlight %}
 
 
-Generating functions are
-the means by which PGE searches
-the space of all equations.
-They are the deterministic
-replacement for the
-non-deterministic genetic operators,
-crossover and mutation, used by GP.
-Each generating function is a policy
-for how to expand and modify
-an equation's parse tree to obtain 
-functions 'close' to the current one.
+
+
 
 PGE uses the grammar's production rules 
 expand previously encountered equations.
 New equations are produced by applying
-the function \textit{Generate}, from Listing \ref{expand},
+the function *Grow*, from Listing \ref{expand},
 while recursing over the parse tree.
 
-The \textit{Generate} function determines the
+The *Grow* function determines the
 current node's type and applies the appropriate
 production function. 
 Each production function corresponds to
 one or more of the grammar's production rules. 
 \textit{AddTerm} increases
 the number of terms in a summation, such as
-$aX + bY \Rightarrow aX + bY + cZ$. 
+$$aX + bY \Rightarrow aX + bY + cZ$$. 
 \textit{WidenTerm} increases
 the number of terms in a product, such as
-$aXY^2 \Rightarrow aX^2Y^2$ or $aXY^2 \Rightarrow aXY^2Z$.
+$$aXY^2 \Rightarrow aX^2Y^2$$ or $$aXY^2 \Rightarrow aXY^2Z$$.
 \textit{DeepenTerm} increases
 the complexity of a term, such as
-$aXY \Rightarrow a(X+bZ)Y$ or $aSin(X) \Rightarrow aSin(X+Y)$.
-
-\begin{figure}[h!]
-\lstset{caption={Grammar for Mathematical Equations in PGE},label=pge-grammar}
-\begin{lstlisting}
-START -> E
-E -> E + T | T          // subtraction handled by negatives & constants
-T -> T * N | T / N | N
-N -> Sqrt(E) | Cos(E) | Sin(E) | Tan(E) | Log(E) | Exp(E) | L
-L -> (E) | -(E) | (E)^(E) | TERM 
-TERM -> Constant | Variable
-\end{lstlisting}
-\end{figure}
+$$aXY \Rightarrow a(X+bZ)Y$$ or $$aSin(X) \Rightarrow aSin(X+Y)$$.
 
 
 The generating functions define
@@ -851,10 +800,8 @@ that results from the GP Pareto sort
 during selection.
 
 
-**Regularization, Pareto-front**
 
-In the search to model a data set or system
-we desire parsimonious and accurate equations.
+
 The Pareto Priority Queue (PPQ) 
 determines the order 
 the space of equations is searched.
@@ -879,23 +826,33 @@ This is the same as Pareto sorted array
 that results from the GP Pareto sort
 during selection.
 
-When processing, we remove the top 
-$p$ equations (3 in our experiments)
+
+**Regularization** is the process of
+introducing a penalty for complexity
+in order to avoid overfitting.
+In PGE and GP, this is an implicit process
+which is part of the Pareto non-dominated sort.
+PGE uses the PPQ and a pop count to
+control the amount of regularization.
+
+During processing, we remove the top 
+*p* equations (3 in our experiments)
 when selecting the next areas to search.
 By doing so, we select the $p$ smallest 
-equations from the Pareto frontier.
+equations from the first Pareto frontier.
 This gives variation across the trade-offs
 for the equations to be expanded,
 and thus variation in the search direction too.
-If the PPQ operated like a heap,
+If we only remove one equation,
 the smallest equations would be replaced
 from the next front and the search
-would progress through the space by size.
-The same is true if we only remove one equation.
+would progress through equation space by size.
 If we remove too many,
-then we get overly complex and over fit expressions.
-This causes bloat to ensue,
-and the search slows down due to computational effects.
+then PGE starts to produce
+complex and over fit models.
+
+
+
 
 
 
@@ -905,14 +862,14 @@ and the search slows down due to computational effects.
 #### Memoization
 
 **Detect overlapping subproblems**
-
+is the key to the dynamic programming approach taken by PGE.
 In PGE, a sub-problem is equivalent 
 to a particular equation form.
 Sub-problems are encountered
 when an equation has
-several parse derivations
-and isomorphs to an equation
-exist through algebraic manipulations.
+several derivations,
+or paths over the search graph
+which reach the same node.
 This means there are multiple 
 orderings of the production rules which
 result in the same equation
@@ -921,8 +878,7 @@ appear in more than one form,
 as several equivalent points 
 within a grammar's representable space.
 
-Detecting previously encountered equations
-is the key to the dynamic programming approach taken by PGE.
+
 The memoization of form allows PGE 
 to consider a form just once.
 PGE matches equations by comparing 
@@ -931,14 +887,14 @@ Serialization transforms an equation into a sequence of integers
 by assigning a unique value to each node type.
 The resulting integer sequence is equivalent
 to the prefix notation of the equation.
+Since each sequence represents a unique equation,
+the parse tree is recoverable from the sequence.
 Also, since PGE uses abstract coefficients,
 they are all converted to the same value.
 This means PGE only memoizes their existence and location.
 
-##### Integer Prefix Tree
 
-
-The Integer Prefix Tree (IPT) is at the core 
+**The Integer Prefix Tree** (IPT) is at the core 
 of the PGE dynamic programming framework. 
 The IPT detects overlapping subproblems
 by comparing integer sequences,
@@ -947,25 +903,11 @@ Detecting overlapping subproblems
 enables us to eliminate duplication of effort
 in an exponentially growing search space.
 
-In PGE, a subproblem is a particular equation form.
-Subproblems are encountered
-because the search space of equations
-is a graph and not a tree. 
-This means there are multiple paths, to a particular equation,
-through the search space.
-This is a consequence of the multiple orderings
-for application of generating functions
-which will produce the same parse tree.
-Figure \ref{fig:abc} shows how the equation $a+b+c$
-has multiple derivations.
-One con imagine how the number of derivations
-increases exponentially as the 
-equation complexity increases. 
-(see figure \ref{fig:eqn-combis} for some further examples)
-
 The IPT was inspired by the 
 suffix tree algorithm for string matching 
-\cite{Weiner:1973:LPM,Farach:1997:OST,Skiena:1998:ADM}.
+[[Weiner:1973:LPM](),
+[Farach:1997:OST](),
+[Skiena:1998:ADM]()].
 The suffix tree algorithm 
 gives log-time lookup for
 string existence in a piece of text.
@@ -977,32 +919,11 @@ in a mathematical mapping sense,
 we can use any sized alphabet,
 or equivalently, range of integers.
 
-The serialization process transforms
-an equation into a sequence of integers.
-By assigning a unique integer
-to each node type,
-and performing a in order traversal of the tree,
-the prefix notation of the equation is generated.
-For addition and multiplication
-we also append the number of children.
-This is done since we use
-an n-ary tree instead of a binary tree
-as described in section \ref{sec-sr-rep}.
-Each sequence represents a unique equation
-and the parse tree is recoverable from the sequence.
-
-% \tony{show several examples in a table or diagram with tree/table ??? }
-% % also with,
-% %  lines between segments of the serial
-% % and the parse tree
-% % in a diagram
-
-% \ken{What are you memoizing? The key is a sub-expression, right? What's not clear is what the value is}
 
 PGE uses the IPT memoization tree defined in Listing \ref{pretree}.
 The IPT is a recursive structure and insertion algorithm
 which memoizes a sequence of integers.
-We build the IPT as we encounter new expressions.
+The IPT is built up as new expressions are encountered.
 As each node in the IPT is visited,
 its associated counter is incremented.
 If the insertion algorithm has to create
@@ -1018,46 +939,35 @@ and n is the size of the alphabet.
 The depth of the IPT is equal to 
 the length of the longest serial encountered. 
 
-% \tony{I underlined O(mlogn), I think it's correct}
-% - m to traverse the serial
-% - logn to lookup/insert at each node
-%   (map == balanced binary tree at each node)
-
-At each node of the IPT,
-the current node type in the serial
-is looked up in a balanced binary tree ($PrefixNode\rightarrow next$).
-If the node does not exist in the IPT,
-then it is created.
-The creation of an IPT node
-implies that this serial has not been seen before. 
-Recursion continues until the 
-serial has been completely traversed.
 The IPT also tracks the number of times
 each node in the structure has been visited.
-We keep counts for total visits as recurse,
-and unique visits as the stack unwinds after an insertion.
+We keep counts for total visits 
+and unique visits.
 This allows us to do some accounting
 of the number of unique equations
 as well as how many times each
 equation is produced by the generation functions.
+There has been no previous research on the topic
+of unique equations in relation to the
+total number of equations created or evaluated.
+We believe this to be due to the lack of 
+a method for matching equations, which is 
+due to the lack of canonical forms in the literature.
 We use the IPT to compare
 the efficiency of GP and PGE in section \ref{sec-results-efficient}.
 
-The IPT conceptually turns the search space from
+The IPT is also the enabling structure
+which conceptually turns the search space from
 a tree into a graph by matching and memoizing
 subproblems, or equations.
-This greatly reduces the amount of work \ken{how is a graph easier to search than a tree?}
+This greatly reduces the amount of work,
+by eliminating duplication,
 that the PGE must perform
 while searching for ideal equations.
-As mentioned in Chapter {chapter-symreg},
-the search space is also reduced by
+As mentioned earlier,
+the search space is also reduced in size by
 sorting equations into a canonical form and 
 simplifying them by rewrite rules.
-We believe the rewrite rules 
-can be combined with the IPT
-into a hyper-graph.
-This, however, will be the
-subject of a future work.
 
 <div class="center-align"><b>Figure #</b>: Integer Prefix Tree</div>
 {% highlight Python linenos %}
@@ -1106,126 +1016,6 @@ class Node:
 
 
 
-**Integer Prefix Trie**
-
-PGE uses a trie structure, implemented as an 
-integer prefix tree (IPT),
-for the lookup table of
-currently explored equations.
-An equation serial is the key
-that the IPT uses to return a boolean value,
-indicating if the respective equation is new or not.
-The IPT was inspired by the 
-suffix tree algorithm for string matching 
-\cite{Weiner:1973:LPM,Farach:1997:OST}.
-The suffix tree algorithm 
-gives log-time lookup for
-string existence in a piece of text.
-Similarly, the IPT provides log-time determination, 
-w.r.t. the size of the equation alphabet (terminals \& non-terminals),
-and linear-time to the length of the serial (a sequence of integers),
-as to whether an equation has been encountered before.
-If the IPT is reasonably balanced, 
-then it has log-time w.r.t. the number of
-equations encountered thus far,
-with worst case being linear-time.
-
-Listing \ref{pretree} provides the psuedocode for the IPT.
-The IPT is a recursive structure
-which is iteratively built as new equations are encountered.
-To perform a lookup, and possible insertion,
-a serial $S$ and the root \textit{memoNode}
-are passed to the \textit{Insert} function.
-At each recursive call, 
-equivalently each \textit{memoNode} of the IPT
-and position in the serial $S$,
-the first element of $S$ (the current node type)
-is looked up in a balanced binary tree ($memoNode.next$).
-If the node does not exist,
-it implies that this serial has not been seen before,
-and thus, that this is a new equation. 
-When this happens, a new \textit{memoNode}
-is created and each successive recursive call
-will produce a new \textit{memoNode}.
-Recursion continues until the 
-serial has been completely traversed.
-If no new nodes have been inserted,
-then it means that this equation
-has been encountered before,
-and is subsequently discarded.
-
-The IPT also tracks 
-the number of total unique visits.
-This allows PGE to report
-the total number of unique
-equations evaluated,
-which is the same as the total
-number of equations evaluated in PGE.
-Due to the reductions of isomorphs
-to a canonical form, the reported amount of space 
-explored by PGE is much larger in the
-original, unreduced search space.
-To our knowledge, no one has 
-before reported the unique number 
-of equations evaluated.
-The IPT is easily incorporated
-into almost any SR implementation,
-and we believe that it can improve the reporting
-of the extent to which the search space was explored,
-as well as the amount of effort expended
-on searching for form versus 
-optimizing forms.
-
-
-
-
-% \ken{It's still not clear.  What are you memoizing? The key is a sub-expression, right? What's not clear is what the value is}
-
-% \dken{Why do you need the IPT?  Why not use a red-black tree? The IPT sounds a bit like a trie. How is it different?}
-% \dken{It's clear how memoization can save work, but how does it detecting overlapping subproblems?
-% Give details, and an example would also probably be helpful.}
-
-
-% \tony{We haven't seen anything like the IPT in SR before}
-
-\begin{figure}[t!]
-% \vspace*{-.3in}
-\caption{Memoziation Tree}
-\lstset{label=pretree}
-\begin{lstlisting}
-struct memoNode {
-  int               curr_type
-  map[int,memoNode] next
-  
-  int unique
-}
-
-func Insert(S []int, N memoNode) bool {
-  inserted = false
-  in = N.next[S[0]]
-
-  // does this branch exist?
-  if in == nil
-    in = new(memoNode)
-    in.curr_type = S[0]
-    N.next[S[0]] = in
-    inserted = true
-  
-  // recursive call to insert
-  if len(S) > 1 
-    inserted = Insert(S[1:],in) || inserted
-  
-  // visitation accounting  
-  if inserted == true
-    N.unique++
-
-  return inserted
-}
-\end{lstlisting}
-\vspace*{-.3in}
-\end{figure}
-
-
 
 
 
@@ -1247,6 +1037,34 @@ func Insert(S []int, N memoNode) bool {
 </div>
   
 ### Searching
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| init     | low     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| init     | med     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_3 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| init     | high    |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_4 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:3]} \Big) + C $$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Var sub  | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Var sub  | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Var sub  | high    |  $$ \big \{Add Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Mul grow | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Mul grow | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Mul grow | high    |  $$ \big \{Mul Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \}$$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Add grow | low     |  $$ \big \{ a * \vec{x}C_1 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| Add grow | med     |  $$ \big \{ a * \vec{x}C_2 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| Add grow | high    |  $$ \big \{Add Med \big \} \bigcup a* \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
 
 
 Initially, PGE starts with 
@@ -1281,6 +1099,32 @@ or a computational threshold is reached.
 <span><b>Figure #</b> - Multiple Derivations</span>
 <img class="responsive-img" src="/sr/img/PGE_flow_diagram.png" />
 </div>
+
+
+PGE reverses a grammar's rules into productions
+to expand simple basis functions 
+into increasingly complex expressions. 
+To expand a candidate equation,
+%the currently discovered, most promising equations,
+PGE uses generating functions 
+derived from the grammar's production rules.
+Generating functions are the deterministic replacement 
+for the non-deterministic genetic operators,
+crossover and mutation.
+Each generation function corresponds to
+one or more of the grammar's production rules. 
+The generation functions are policies
+for how to expand and modify
+an equation's parse tree to obtain 
+functions `close' to the current one.
+New equations are produced by recursively applying
+the generating functions over the parse tree.
+From a single tree, this process produces
+a set of reachable equations within
+one step of the input equation.
+As the production rules are applied recursively,
+the current node's type determines
+the appropriate generation function(s) to apply.
 
 
 Use expansion operators to grow 
@@ -1433,6 +1277,27 @@ given infinite space and an unlimited amount of time.
 
 
 
+PGE iteratively refines equations
+by applying the grammar's 
+production rules recursively.
+PGE removes the top equations
+from the queue, prioritizing 
+the first Pareto frontier.
+The top equations are then expanded
+according to the production rules.
+The resultant expanded equations 
+are checked for uniqueness
+by the Integer Prefix Tree (IPT).
+The unique set of trees that remain are
+fit using non-linear regression,
+evaluated for fitness,
+and pushed into the Pareto Priority Queue (PPQ).
+The main PGE loop continues
+in this way until the
+stopping criteria is reached.
+
+
+
 
 
 
@@ -1497,6 +1362,36 @@ of each term in the summation.
 
 % \dken{Is every expansion applied to every node?}
 
+
+
+
+
+To determine the SR starting points,
+GP uses methods like grow, full, and ramped half-and-half 
+to randomly generate initial equations.
+In contrast, PGE initializes a search with 
+a set of basis functions, such as
+$c_0*x_i$, $c_0 + c_1*x_i$, $\frac{c_0}{x_i}$, and $c_0*f(x_i)$.
+These starting points are the simplest functions
+and are predetermined by the usable building blocks.
+Instead of growing equations at the beginning,
+PGE starts with simple functions,
+expanding them to reach 
+new, unseen areas of the search space.
+% PGE may be seeded with an even richer set of basis function,
+% and even allow complete sub-trees to become building blocks.
+
+The initialization and generating functions,
+determine the set of reachable expressions in a SR search.
+As with the equations themselves,
+there is a trade-off between
+space and complexity;
+how wide and how deep a search can explore.
+The expansion methods discussed above
+enable PGE to remove 
+non-determinism at the individual level.
+To fully remove non-determinism, and give direction to the search,
+the selection strategy still needs to be replaced.
 
 
 
@@ -1753,7 +1648,7 @@ evaluates, selects, and generates
 new candidates from old ones.
 
 
-##### Parameters
+**Parameters**
 
 
 PGE is nearly a parameter free
@@ -1800,7 +1695,7 @@ a notoriously difficult task.
 
 
 
-##### Evaluations
+**Evaluations**
 
 Evaluation is the most 
 time consuming phase
@@ -1835,7 +1730,7 @@ consuming portion of the search process.
 
 
 
-##### Selection
+**Selection**
 
 To prioritize the enumeration of expressions,
 we maintain, what we will refer to as, a Pareto Priority Queue (PPQ).
@@ -1882,7 +1777,7 @@ any larger equations.
 
 
 
-##### Population and Breeding
+**Population and Breeding**
 
 In PGE, there is no need to
 maintain a diverse population

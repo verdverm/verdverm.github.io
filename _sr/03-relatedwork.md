@@ -1,28 +1,39 @@
 ---
 layout: sr
-title: Genetic Programming
-brief: The original SR algorithm
-prev: 06-relatedwork
-next: 08-comparison
-nextname: Comparing Implementations
+title: Related Work
+brief: Standing on the shoulders of others
+prev: 02-sr
+next: 04-pge
+nextname: Genetic Programming
 sections:
-  - name: Algorithm
-    tag: algorithm
-    brief: Details of the Genetic Programming algorithm
-  - name: Limitations
-    tag: limitations
-    brief: Problems with the original formulation
-  - name: Enhancements
-    tag: enhancements
-    brief: Improvements to the baseline
-  - name: Fundamental Issues
-    tag: issues
-    brief: Which arise from randomized searches
+  - name: Genetic Programming
+    tag: gp
+    brief: The original Symbolic Regression algorithm
+  - name: Fast Function eXtraction
+    tag: ffx
+    brief: The first deterministic algorithm
+  - name: Memoization
+    tag: memoization
+    brief: Recalling overlapping sub-problems
+  - name: Graph Algorithms
+    tag: graph
+    brief: Graph techniques related to PGE
 ---
 
 
-This focus of this chapter is 
-Genetic Programming (GP),
+
+
+
+<br>
+
+<div id="gp">
+<a class="right" href="#top">top</a>
+</div>
+
+
+### Genetic Programming
+
+Genetic Programming (GP) is
 the original implementation of
 Symbolic Regression (SR).
 Traditionally much of the literature has used 
@@ -45,16 +56,6 @@ And when we use Symbolic Regression,
 we mean the generalized regression problem,
 limiting our examples to equation regression,
 which we consider a specific sub-problem of Symbolic Regression.
-
-
-
-<br>
-
-<div id="algorithm">
-<a class="right" href="#top">top</a>
-</div>
-
-
 
 
 ### The Algorithm
@@ -1600,106 +1601,361 @@ process by sharing information.
 
 
 
-Candidate fitness metrics,
-methods for comparing implementations,
-and benchmark problems
-vary widely across the GP field.
-Last year, [McDermott:2012:benchmarks]() 
-surveyed three years of literature from EuroGP and GECCO GP track,
-bringing this issue to the forefront of the community.
-Their aim was to start a discussion
-on unifying and standardizing the evaluation process
-in GP.
-We agree with these ideals and
-use 22 of their SR target functions
-for the evaluation of PGE.
-Further, we believe PGE can contribute to this effort,
-as a deterministic, base-line algorithm,
-against which evolutionary methods can measure themselves.
-% \tony{(last paragraph of Section 5) [copied into tex file]}
-We do, however, disagree with the assumption in ~\cite{McDermott:2012:benchmarks},
-that results should not be expected to be repeatable,
-and thus unverifiable by a third party.
-A non-GP practitioner will not likely
-use a tool which gives different
-answers each time it is used.
-This has been partially addressed by 
-\textit{rate of convergence}
-(how often an implementation finds an answer)
-and 
-\textit{cumulative probability of success}
-(the probability that an ideal solution would be found on or prior to generation $i$).
-Both of these methods require many trials.
-Nevertheless, we agree that the optimum is less obtainable
-and that a consensus needs to be reached 
-on unbiased methods for comparison between different implementations. 
-
-% \tony{
-% want to add a paragraph about metrics for implementations and benchmarks.
-% covering the many methods, but definitely
-% rate of convergence in its two forms 
-% (1) how often a solution is found
-% (2) how long before the algorithm reaches a local optima and stops making progress
-% Then bring in paper about "GP needs better benchmarks"
-% and comment on their comment about 
-% finding exact solutions isn't important as accuracy
-% b/c in industry solutions are not known
-% (my comment is that industry won't trust an implementation
-% that can't return the correct answer to known problems)
-% they do comment on the lack of rigor in benchmarking GP
-% and have sought to bring unity to this (which I like)
-% }
 
 
-% 5. APPROPRIATE STATISTICS
-% Suggesting or adopting standard benchmarks in itself is
-% not enough to produce meaningful results: the statistical
-% procedure for comparing methods is crucial, and effective
-% comparison benefits from consistency in the literature in this
-% regard. How should we perform such comparisons?
-%
-% A large portion of early (and indeed current) GP results
-% were measured using ideal solution counts: whether or how
-% often the optimum, or some threshold near the optimum,
-% was reached. The most common approach [32] defined the
-% computational effort measure as an estimate of the minimum
-% number of individuals to be processed in a generational
-% algorithm in order to achieve a z = 99% probability of
-% discovering a solution. More formally, this was defined as
-%
-% min_i m × (i + 1) ×  { ln(1−z) / ln(1−P(m,i)) }
-%
-% , where i was a generation
-% number, m was the population size, and P (m, i) was the
-% cumulative probability of success, that is, the probability that
-% an ideal solution would be found on or prior to generation i,
-% as gathered through samples.
-%
-% This measure has received significant criticism [51, 7, 43, 47,
-% 4]. Critics have noted that ideal solution counts are really a
-% measure of how well a method solves trivial problems, rather
-% than the nontrivial ones found in real world applications.
-% Attempts have since been made to address another central
-% criticism: poor accuracy and statistical invalidity [8, 68].
-%
-% We think that benchmark comparison measures should
-% instead assume that techniques will be applied, ultimately,
-% to problems where the optimum is not expected to be discov-
-% ered, much less repeatedly and easily. For single objective
-% problems, two obvious candidates are best fitness of run (ap-
-% propriate for problems where the goal is optimization) and
-% generalizability measures such as final testing against a with-
-% held generalization set, or K-fold validation (appropriate for
-% problems where the goal is to perform model-fitting).
 
-% \com{Interesting discussion paragraph to add.
-% Very comprehensive background of GP for a conference paper.  If you need room, you could probably cut some of the details here.
-% Question about flow:
-% As it appears to me now, I see:
-% Intro GP, lots of ways it gets done,  then a bit on other SR methods, then back to applications of GP, then metrics and benchmarks.
-% Consider reorganizing: equal amounts on GP (can focus on more recent advances) and SR (maybe less on SR since you touch  on it in the intro).  Keep the two topics as separate as possible to make the discussion easier to follow.
+<br>
 
-% You do a good job highlighting the limitations of each approach, and that's a good thing to keep, especially if PGE does not have those limitations.}
+<div id="ffx">
+<a class="right" href="#top">top</a>
+</div>
+
+
+### Fast Function eXtraction
+
+Fast Function eXtraction (FFX)
+is the first deterministic SR implementation
+[ [McConaghy:http:FFX](http://trent.st/ffx/), 
+[McConaghy:2011:GPTP](http://trent.st/content/2011-GPTP-FFX-paper.pdf),
+[McConaghy:2011:CICC](http://trent.st/content/2011-CICC-FFX-paper.pdf) ].
+FFX does not use genetic operators,
+tree based representations,
+or random number generation.
+Instead, FFX uses a Generalized Linear Model (GLM).
+and a set of basis functions derived from the input features.
+FFX then applies a series of regressions to fit
+the parameters of the basis functions
+to a desired complexity
+This makes FFX very fast, but also
+limits its flexibility and 
+the complexity of solutions.
+
+
+
+#### Algorithm
+
+FFX uses a Generalized Linear Model (GLM) of the form:
+
+$$ y = F(\vec{x},\vec{w}) = \sum \limits_b^B w_b  f_b(\vec{x}) $$
+
+The GLM has linear coefficients to terms of the summation,
+and is a flexible version of ordinary linear regression.
+[ [McCullagh:1972:Paper](), [McCullagh:1989:Book]() ]
+The $$f_b(\vec{x})$$ are not required to be linear functions themselves,
+but rather linear in coefficients, to the terms of the summation.
+In other words, there are no
+coefficients inside any of the $$f_b(\vec{x})$$.
+
+To learn the coefficients of the GLM, FFX uses
+Pathwise Regularized Learning (PRL).
+PRL augments least squares by adding regularization terms
+and then sweeping across and returning multiple parameter vectors
+[ [ZouHastie:2005:Paper](), [Friedman:2010:Paper]() ].
+PRL also has some interesting properties:
+
+1. Learning speed is comparable or better than least squares
+1. Can learn when there are fewer samples than coefficients
+1. Can learn thousands or more coefficients
+1. Sets of coefficient vectors are returned trading off the number of coefficients and training accuracy
+
+
+<div class="center-align"><b>Figure #</b>: FFX Algorithm</div>
+
+{% highlight Python linenos %}
+
+def FFX(Data):
+    bases = createBasisFunctions(features)
+
+    for b in range(1,B):
+        alpha = 1.0
+        while complexityOf(eqn) != b:
+            eqn := PathwiseLearning(Data,alpha)
+            adjustLambda(eqn,alpha)
+        
+        best.Push(eqn)
+  
+    return best
+
+{% endhighlight %}
+
+
+Following the psuedo code,
+FFX first creates a set of 
+basis functions for the GLM.
+To do this, univariate bases from each variable
+with the operations ($$x^{\pm 0.5}, x^{\pm 1}, x^{\pm2}, abs(x),log(x)$$).
+In their example this produced 176 bases.
+Next, the univariate bases were combined
+to produce 3374 bivariate bases,
+resulting in 3550 total bases.
+By allowing bases to be in both the
+numerator and the denominator,
+the overall number of bases doubles to 7100.
+
+Then, for all $$b$$ from $$1 \rightarrow B$$,
+FFX derives a linear combination of
+$$b$$ basis functions.
+To learn a model, FFX applies
+pathwise regularized learning
+to fit the GLM coefficients.
+This learning method uses
+a coefficient threshold value $$\alpha$$ ...
+
+This has the effect of alternating between 
+increasing and decreasing the number of bases
+and contiunues until
+the number of function bases equals the desired model complexity.
+
+FFX repeats this process for a number
+of desired complexities so that
+a variation of models is returned.
+
+FFX then learns a linear combination of
+$$b$$ basis functions, from $$1 \rightarrow B$$, 
+
+
+This enables similar behavior to 
+GP returning the first Pareto Frontier.
+
+
+#### Limitations
+
+FFX works well for many problems,
+requiring far fewer computations GP,
+FFX, however, suffers from two significant limitations: 
+
+(1) there are no coefficients 
+or parameters within the bases,
+meaning more difficult, 
+non-linear relationships are beyond its abilities.
+This issue could be addressed 
+by using non-linear regression
+and abstract coefficients.
+
+(2) individual terms of the summation
+are limited in complexity
+to a pair-wise combination of uni-variate and bi-variate
+bases determined at initialization.
+Seeding with increased basis functions
+could become prohibitive as the number of
+terms grows through pair-wise basis combinations.
+In the 13 variable example provided,
+the initial number of GLM basis functions was 7100.
+
+
+
+but is limited in the complexity of solutions.
+This limitation of FFX is due to only using
+a linear combination of univariate and bivariate bases.
+Equations such as $v = x*y*z$ are beyond the
+abilities of FFX.
+Additionally, there are no coefficients 
+or parameters within the bases.
+FFX can use non-linear functions,
+like $\cos$ and $log$,
+but non-linear fitting is not possible.
+Thus, equations such as $e^{a-bx}$ and $a\cos(b+\theta)$
+are also unsolvable by FFX.
+As FFX is incapable of finding
+many of the benchmarks,
+we did compare against it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<div id="regression">
+<a class="right" href="#top">top</a>
+</div>
+
+### Regression Techniques
+
+There are many methods for regression,
+which generally attempt to explain the
+relationship between variables.
+Here, we highlight several
+which are common or relavent
+to the subject matter.
+
+
+#### Linear Regression
+
+Linear regression is a technique for modelling
+a dependent variable from
+a set of independent variables
+and unknown parameters.
+The most common method for
+determining the parameters
+is least squares,
+which minimizes the squared residuals
+[ [Legrand:1805:orbites_des_comietes](https://books.google.com/books/about/Nouvelles_m%C3%A9thodes_pour_la_d%C3%A9terminati.html?id=FRcOAAAAQAAJ)].
+The key is that the dependent variable
+is linear to the parameters of the
+basis terms constructed
+from the independent variables.
+Nonlinear functions map be used,
+so long as parameters remain linear.
+
+
+#### Nonlinear Regression
+
+Nonlinear regression is an extension
+to the linear variation where the 
+independent variable can now have
+more complex, nonlinear relationships
+to the parameters and depenent variables.
+Unlike linear regression, no guarentee
+can be made to the optimality of the
+final parameter estimate.
+Most methods for estimating the parameters
+incorporate successive iterations
+which improve upon the accuracy.
+Signifcant algorithms include
+Gauss-Newton,
+Levenberg–Marquardt,
+and gradient descent
+[ [Fletcher:2000:Book](http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471494631.html),
+  [Madsen:2004:Methods](http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3215/pdf/imm3215.pdf)].
+
+
+
+#### Support Vector Regression
+
+Support Vector Regression Machines (SVRM) ere proposed
+as a variation on the original Support Vector Machine (SVM)
+[ [Vapnik:1996:SVRM](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.10.4845) ].
+In SVM, a classification boundary is sought which
+maximizes the margin between the classes.
+In SVRM, the basic idea is to flip around the SVM problem
+and find a line with where the deviation is minimized.
+SVM and SVRM work for both linear and nonlinear models
+and is a convex optimization problem
+[ [Smola:1996:Tutorial](http://lasa.epfl.ch/teaching/lectures/ML_Phd/Notes/nu-SVM-SVR.pdf) ].
+
+#### Ridge, Lasso, Elastic Net
+
+**Ridge** regression is a regularization method
+for ordinary least squares. 
+It uses the L2-norm of the parameter vector,
+imposing a penalization is added for excessively large parameters.
+Often a scaling term is used to control
+the effect of the penalty.
+[[Tikhonov:1943:stability](http://a-server.math.nsc.ru/IPP/BASE_WORK/tihon_en.html)]
+
+**Lasso** regression is similar to Ridge
+as a regularization method on ordinary least squares.
+Lasso uses the L1-norm, which causes
+terms to have zero valued parameters,
+thus effectively removing them from the model
+[ [Tibshirani:1996:lasso](http://www-stat.stanford.edu/~tibs/lasso/lasso.pdf),
+ [stanford:http:lasso](http://statweb.stanford.edu/~tibs/lasso.html) ]
+
+**Elastic Net** is the linear combination of 
+Ridge and Lasso techniques
+[[Zou:2005:elastic](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.124.4696)].
+This method uses the offsetting features 
+of both methods to find a sparse model
+with few non-zero terms.
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<div id="graph">
+<a class="right" href="#top">top</a>
+</div>
+
+### Graph Algorithms
+
+We include several graph problems and algorithms
+as they served as seeds of thought
+that grew into the PGE algorithm.
+
+#### Minimum Spanning Tree
+
+The Minimum Spanning Tree (MST)
+of a graph is a tree which
+minimizes the sum of edges which
+connect all vertices in a graph.
+MST is solvable in polynomial time
+using a greedy algorithm.
+
+**Prim's** algorithm is a greedy algorithm 
+for finding the MST of an undirected graph. 
+The algorithm starts with an arbitrary vertex
+and constructs the MST by adding the
+lowest weight edge of a node
+which is already in the MST.
+A priority queue is used
+to efficiently determine 
+the next lowest cost edge to add.
+[ [Prim:1957:Shortest](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=6773228) ]
+
+**Kruskal's** algorithm is also a greedy algorithm
+for finding the MST of an undirected graph.
+The algorithm starts by treating each
+vertex as a separate MST.
+It then proceeds to select the minimum
+edge from all remaining edges.
+If the edge connects two distinct MSTs,
+then it is included, otherwise, the edge
+introduces a cycle and is subsequently discarded.
+A disjoint-set data structure can be used
+to effeciently determine this condition.
+[ [Kruskal:1956:Shortest](http://www.ams.org/journals/proc/1956-007-01/S0002-9939-1956-0078686-7/home.html) ]
+
+#### Single-source Shaortest Path
+
+The single-source shortest path (SSSP) problem
+is to find the shortest path to all nodes,
+given a starting point.
+
+**Dijkstra's** algorithm for SSSP is
+a greedy algorithm which resembles Prim's.
+[ [Dijkstra:1959:algorithm](http://www-m3.ma.tum.de/twiki/pub/MN0506/WebHome/dijkstra.pdf) ].
+At each step, the next closest vertex
+is added to the already visited set, 
+thus expanding outwards in a greedy manner.
+A priority queue is used as well
+to improve upon runtime complexity.
+The difference is that at each step,
+the distances to vertices on the frontier
+are updated to reflect the latest addition,
+and thus possibly changing the order
+of the priority queue.
+Knuth generalized Dijkstra's algorithm to hyper-graphs
+[ [Knuth:1977:generalization](http://www.sciencedirect.com/science/article/pii/0020019077900023)].
+
+
+**A\* search** is a graph traversal algorithm
+proposed as an extension to Dijksta's algorithm
+with better runtime performance.
+[ [Hart:1968:astar](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=4082128)]
+The A\* algorithm cuts down on the size of the subgraph that must be explored,
+by using a heuristic to estimate a lower bound on the "distance" to the target.
+Similarly, it uses a priority queue to determine
+the next vertice to include.
+The difference is that the current distance
+is added to the estimated distance to the target.
 
 
 

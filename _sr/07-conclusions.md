@@ -2,7 +2,7 @@
 layout: sr
 title: Conclusions
 brief: Final thoughts and places to go
-prev: 08-comparison
+prev: 06-comparison
 next: A1-pypge
 nextname: PyPGE
 ---
