@@ -968,17 +968,6 @@ due to space limitations.
 
 **Brood selection**
 
-Parents recombine multiple times for variation.
-
-
-\begin{figure}[htb]
-\centering
-\includegraphics[scale=0.33, clip=true, trim=20 262 20 20]{imgs/gpbrood/gp-brood.pdf}
-\caption{Brood selection in Genetic Programming}
-\label{fig:gp-basic}
-\end{figure}
-
-
 Brood selection is a technique to
 create better offspring 
 from the crossover operation.
@@ -1005,17 +994,7 @@ survival and replication selection phases.
 
 % \cite{tackett_1994}
 
-% Brood selection effects the GPSR algorithm
-% in both good and bad ways.
-% First, selecting better crossover points
-% reduces solution bloat caused by
-% the destructive effects of crossover.
-% \#, because good partial solutions
-% have a lower chance of being disrupted,
-% they can proliferate through the population,
-% destroying diversity in the process.
-% \#, the increases size of the offspring population
-% directly increases the time spent evaluating.
+
 
 
 
@@ -1192,15 +1171,9 @@ alters the algorithm's behavior so much
 that should really be considered different implementations. 
 
 
-**DIAGRAMS FOR ISLAND MODEL AND ARCHIVE SELECTION**
-
-
-
 
 
 #### Co-evolution
-
-**Add Diagram** 
 
 
 Co-evolution is the simultaneous evolution
@@ -1242,10 +1215,6 @@ and increased search ability justify using co-evolution.
 cite: 
 [packard:1988:...]()
 [kaufman:1991:...]()
-
-
-% competitive vs cooperative
-
 
 
 
@@ -1490,22 +1459,15 @@ $$b$$ basis functions.
 To learn a model, FFX applies
 pathwise regularized learning
 to fit the GLM coefficients.
-This learning method uses
-a coefficient threshold value $$\alpha$$ ...
-
+FFX will then adjust the $$alpha$$ value
+to change the emphasis in the Pathwise Learning.
 This has the effect of alternating between 
-increasing and decreasing the number of bases
-and contiunues until
+increasing and decreasing the number of bases,
+continuing until
 the number of function bases equals the desired model complexity.
-
 FFX repeats this process for a number
 of desired complexities so that
 a variation of models is returned.
-
-FFX then learns a linear combination of
-$$b$$ basis functions, from $$1 \rightarrow B$$, 
-
-
 This enables similar behavior to 
 GP returning the first Pareto Frontier.
 
@@ -1514,7 +1476,7 @@ GP returning the first Pareto Frontier.
 
 FFX works well for many problems,
 requiring far fewer computations GP,
-FFX, however, suffers from two significant limitations: 
+FFX, however, has its own limitations: 
 
 (1) there are no coefficients 
 or parameters within the bases,
@@ -1524,7 +1486,8 @@ This issue could be addressed
 by using non-linear regression
 and abstract coefficients.
 
-(2) individual terms of the summation
+(2) Equations such as $v = x*y*z$ are beyond the
+abilities of FFX. Individual terms of the summation
 are limited in complexity
 to a pair-wise combination of uni-variate and bi-variate
 bases determined at initialization.
@@ -1534,20 +1497,6 @@ terms grows through pair-wise basis combinations.
 In the 13 variable example provided,
 the initial number of GLM basis functions was 7100.
 
-
-
-but is limited in the complexity of solutions.
-This limitation of FFX is due to only using
-a linear combination of univariate and bivariate bases.
-Equations such as $v = x*y*z$ are beyond the
-abilities of FFX.
-Additionally, there are no coefficients 
-or parameters within the bases.
-FFX can use non-linear functions,
-like $\cos$ and $log$,
-but non-linear fitting is not possible.
-Thus, equations such as $e^{a-bx}$ and $a\cos(b+\theta)$
-are also unsolvable by FFX.
 As FFX is incapable of finding
 many of the benchmarks,
 we did compare against it.

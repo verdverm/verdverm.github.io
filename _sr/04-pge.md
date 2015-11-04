@@ -360,6 +360,7 @@ every time it solves each subsubproblem.
 <br><span class="right">~ Cormen:2009:algorithms</span>
 </blockquote>
 
+<br>
 
 In PGE and SR, a sub-problem is a specific form, 
 namely the parse tree for an equation and its terminals.
@@ -427,41 +428,48 @@ which results from multiple copies of the same equation.
 
 
 
-
 Canonical forms for equations 
 reduced one source of combinatorics in the SR problem.
 A second source is from multiple derivations.
 That is multiple paths over the graph which
-reach the same node.
+reach the same node. Below is a diagram
+which demonstrates this.
 
 <div class="center-align">
 <span><b>Figure #</b> - Multiple Derivations</span>
 <img class="responsive-img" src="/sr/img/a_b_c.png" />
 </div>
 
-In this diagram...
+In this diagram, we start with models
+which consist of a single variable.
+Now we could take each of these models
+and add a different variable to it.
+Consider though that we could 
+start with $$x$$ and add $$y$$
+or
+start with $$y$$ and then add $$x$$,
+both arriving at the canonical for $$ x+y $$.
+Repeat this process, adding a third variable,
+and we have six paths to the model $$ x+y+z $$.
 
+It is important that we detect this situation,
+by determining that each of the six $$ x+y+z $$
+are really the same model.
+If we do not detect the separate models as one,
+would would end up repeating a lot of work.
+This repetition would become a combinatorial
+explosion of exponential proportions.
 
+PGE uses dynamic programming techniques
+to detect multiple derivations and
+consider an equation form only once.
+This feature of PGE is enabled by 
+the Integer Prefix Trie and
+an integer linear representation
+for the equation models.
+The next section will fill in the details
+of both representation and memoization.
 
-
-PGE makes use of abstract parameters,
-valueless placeholders in the equation,
-to capture the existence and location of a
-models parameters.
-These abstract parameters are used
-during the memoization process to capture the form
-and in the evaluation phase to fully optimize an
-equation the first time it is encountered.
-
-
-PGE us dynamic programming techniques
-to consider an equation form only once.
-This feature is enabled by 
-memoization, a priority queue, and non-linear regression. 
-
-
-Use the IPT and linear representation,
-described below...
 
 
 
@@ -1551,32 +1559,6 @@ Python & Scikit-Learn code
   
 ### Relation to Genetic Programming
 
-In PGE, processing follows a deterministic execution path.
-It uses no random number generation. % or asynchronous execution.
-%and runs in a single thread of execution.
-%% Multithreaded code can still be deterministic.  -Ken
-%% I was thinking about that for future work (parallelizing the eval code with sync points)
-Given a parameter setting and training data,
-PGE will execute the same way every time.
-Further, the PGE search algorithm only has to be run
-once in order to obtain conclusive results.
-This is an advantage over GP implementations, 
-which are run multiple times to produce
-statistically significant results
-for the number of successful trials.
-PGE has no analogue to the percentage
-of successful trials that GP has.
-
-The first
-key aspect to PGE is a
-strictly deterministic search execution.
-The inherent non-determinism in GP
-results from using RNGs during
-the selection and recombination phases.
-These are the points where decisions
-about the search progress are made.
-
-
 Prioritized Enumeration is 
 heavily influenced by GP.
 It uses the same parse tree representation
@@ -1584,6 +1566,10 @@ for candidate equations.
 PGE, however, differs in how it
 evaluates, selects, and generates
 new candidates from old ones.
+This section is meant to help
+those familiar with GP
+to understand where and what
+the analogous processes are.
 
 
 **Parameters**
@@ -1614,7 +1600,6 @@ the building blocks, generating functions,
 the value of $p$, and termination criteria
 be established prior to
 beginning an equation search.
-% \ken{Has peel count been defined? I know what it is, but should do it for the reviewers.}
 Since building blocks are 
 generally established by the benchmarks,
 and stopping criteria are relatively
@@ -1651,7 +1636,6 @@ fitness on the testing set.
 In GP, one evaluation
 per data point, per equation
 is required for both training and testing.
-
 
 
 Regressing the coefficients
@@ -1693,7 +1677,7 @@ is the first Pareto front,
 we prioritize the smallest
 equations first
 
-The more equations we \textit{peel} (remove)
+The more equations we *peel* (remove)
 from the front of the heap,
 the more of the search space
 we consider concurrently.
@@ -1740,189 +1724,6 @@ it requires no further consideration.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-============
-============
-============
-============
-============
-
-
-
-
-PGE removes the non-determinism by
-using a Pareto Priority Queue (PPQ) to
-select the next search points
-and production functions
-to expand the search
-from the selected points.
-PGE actually pops several equations
-from the PPQ at once, so as to
-balance the trade-off between
-accuracy and parsimony.
-
-Deterministic execution has benefits.
-First, the algorithm is consistent and repeatable.
-This means that researchers are able to reproduce
-results easily.
-This is an important feature with
-large portions of research
-unable to be replicated~\cite{moraila:2013:measuring}.
-Second,
-deterministic execution means that
-modifications to the algorithm can
-be studied in isolation with their
-effects becoming much easier to measure.
-Third,
-the PGE algorithm only needs to be
-run once on a given data set.
-This is a significant advantage over GP
-which requires 30 or more trials
-in order to obtain statistically significant results.
-In all of our modifications to the algorithm,
-we maintained PGE's deterministic execution nature.
-
-\ken{Following paragraph too long.}
-A second key aspect to PGE is
-the reductions it makes to the search space.
-The net result is the removal of three factorial
-components of the problem.
-PGE is enabled in this way by
-with a few keen observations and several
-sub-algorithms which work together.
-The first observation is that
-addition and multiplication are special operators in SR
-because of their commutative and associative properties.
-PGE uses a $n$-ary tree to gather the
-operands to these two operators in one node
-as opposed to a binary tree representation.
-This flattens the tree,
-removing the first combinatorial element that results
-from varying tree shapes of the same equation.
-This is akin to removing parentheses in the written form
-and takes advantage of the commutative property.
-The second observation was that
-an arbitrary numbering could be
-placed on the nodes and leafs of a tree.
-Doing so enables the removal of another
-two factorial elements to the problem.
-First,
-the numbering creates an ordering,
-albeit arbitrary,
-and allows the equation to be
-sorted recursively through its syntax tree.
-This only effects addition and multiplication
-putting their operands into a consistent order.
-In doing so,
-the permutations of the operands
-are reduced to a single ordering
-and the second factorial is removed.
-The second benefit from numbering the nodes
-is the prefix-notation, integer-sequence representation
-that is obtained by a pre-order printing traversal of the tree.
-The linear, integer sequence is unique to each equation
-and used with the Integer Prefix Tree (IPT),
-a recursive map based on prefix-string matching,
-to provide the necessary machinery for memoization.
-The need for memoization arises because
-the same equation (syntax-tree) is reachable
-through different orderings of the expansion functions.
-If left undetected, these multiple copies would
-be treated as different equations and
-duplication of effort would compound over iterations.
-To detect these situations,
-PGE uses the IPT to lookup and store
-one unique copy of each equation.
-In addition to the equation,
-its current state of processing
-(discovered, evaluated, or expanded).
-is maintained in the IPT.
-In Section \ref{section:algorithm}
-we will expand the state information
-maintained in the IPT to enable our multi-PPQ processing.
 
 
 
