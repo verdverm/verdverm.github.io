@@ -4,11 +4,8 @@ title: Prioritized Grammar Enumeration
 brief: Deterministic, reproducible, and reliable Symbolic Regression
 prev: 03-relatedwork
 next: 05-enhancements
-nextname: Enhancements
+nextname: Enhancing PGE
 sections:
-  - name: Overview
-    tag: overview
-    brief: The gist of PGE
   - name: Theory
     tag: theory
     brief: Rethinking the Symbolic Regression problem.
@@ -36,16 +33,16 @@ sections:
 Prioritized Grammar Enumeration (PGE) is a
 deterministic and highly efficient algorithm for 
 Symbolic Regression (SR). 
-It was the result of a burning desire
-to enforce determinism upon the entire system.
-This idea forced us to rethink 
+It answers the question, how would you solve SR
+without using random number generators?
+This requirement forced us to rethink 
 the fundamental approach to SR.
 PGE is the result of this process.
 To our knowledge, 
 PGE is the first SR implementation that is both
 deterministic and tree-based.
 PGE's unique perspective on SR
-brings structure to the forefront.
+brings the problem structure to the forefront.
 At the same time, it
 enables vast reductions in effort
 and opens the door to
@@ -54,25 +51,13 @@ possible with other methods.
 PGE also offers consistency,
 capability, and reliability 
 not available with other methods.
-In short, we believe PGE is 
-the first usable SR technology.
+We believe PGE is the forefront
+of SR technology.
 
 
+ 
 
-
-
-
-
-
-
-<br>
-
-<div id="overview">
-<a class="right" href="#top">top</a>
-</div>
-  
-
-### Overview
+#### An Overview
 
 Prioritized Grammar Enumeration (PGE) is a
 deterministic algorithm for SR.
@@ -92,7 +77,7 @@ with the rules of algebra and simplification.
 Recursion and generating functions are applied
 to produce new forms from the current model.
 By placing valueless parameters, 
-which are later deermined with non-linear regression,
+which are later determined with non-linear regression,
 PGE additionally separates the search for model form
 from the optimization of any given form.
 
@@ -152,10 +137,20 @@ of that form's parameters.
 
 ### Theory
 
+1. **Removing Non-determinism** - Creation of a completely reproducible SR algorithm.
 1. **Search Space Organization** - Understanding and designing the structure of the search space.
 1. **Evaluating Forms Once** - Designing the model for detection and avoidance of overlapping subproblems.
-1. **Removing Non-determinism** - Creation of a completely reproducible SR algorithm.
 
+
+PGE was born from the process of removing
+random number generators from GP.
+This required methods for 
+selection, survival, and replication
+to all be replaced. 
+The replacement process
+brought to light several issues
+which have not been addressed
+by the GP community.
 
 The theory underlying PGE
 is based on intuitive principles.
@@ -170,6 +165,53 @@ Third, remove all sources of non-determinism
 to create a completely reproducible algorithm. 
 This also simplifies development and debugging
 of the software which implements the algorithm.
+
+
+
+#### Removing Non-determinism
+
+Removing sources of non-determinism 
+was a central theme to the development of PGE.
+The aim was to produce an algorithm
+which would give the same results with each invocation.
+The reason for this goal was the 
+detrimental effects non-determinism has
+on search algorithms. We believe
+it to be an inherent and unavoidable
+difficulty present in the GP algorithm.
+You can find details on GP in [Chapter 7](/sr/07-gp)
+
+To achieve deterministic behavior, 
+PGE makes no use of random number generation.
+It performs the exact same algorithmic steps
+given the same parameters and same training data.
+This requires several aspects of the PGE algorithm
+to be defined deterministically.
+
+**Initialization** establishes the starting points
+from which PGE searches. Determinism starts here
+by constructing a set of basis functions
+from the input variables. 
+
+**Prioritization** determines which points 
+in the space to search next. This process
+uses a priority queue coupled with a
+Pareto non-dominated sorting algorithm.
+
+**Exploration** discovers new models by
+making small changes to a given model.
+To maintain determinism, PGE makes 
+all possible changes to a model,
+given the particular exploration scheme in use.
+
+**Communication** occurs when PGE uses
+parallel execution. In order to maintain
+deterministic behavior, well defined
+synchronization points are used.
+
+
+Details of each aspect will be expanded upon
+in the upcoming sections and next chapter.
 
 
 
@@ -199,10 +241,10 @@ for the equivalent model.
 These different representations arise
 from permutations of the leaf nodes
 and from variations in the tree structure.
-Consider the equation `a•b•c` (Figure \ref{fig:eqn-combis}). 
+Consider the equation `a•b•c` (Figure 4-1). 
 
 <div class="center-align">
-<span><b>Figure #</b> - Combinatorics of the Tree</span>
+<span><b>Figure 4-1</b> - Combinatorics of the Tree</span>
 <img class="responsive-img" src="/sr/img/eqn-combis.png" />
 </div>
 
@@ -243,7 +285,7 @@ an integer to each node type.
 By turning binary trees into tries
 and by sorting the tries,
 each model can have a canonical form.
-Figure \ref{fig:eqn-combis}, right column, shows 
+Figure 4-1, right column, shows 
 the canonical form of `a•b•c`. 
 After applying the reductions,
 the original 48 models is now just 4.
@@ -267,7 +309,7 @@ simpler forms.
 
 There is debate as to how
 simplification effects the SR process 
-\cite{kinzett:2008:using, kinzett:2009:online, mcree:2010:symbolic}.
+[ [kinzett:2008:using](), [kinzett:2009:online](), [mcree:2010:symbolic]() ].
 Certainly, changing the tree effects
 the Pareto trade-off which in turn
 has consequences on selection and 
@@ -425,52 +467,6 @@ described below...
 
 
 
-
-
-#### Removing Non-determinism
-
-Removing sources of non-determinism 
-was a central theme to the development of PGE.
-The aim was to produce an algorithm
-which would give the same results with each invocation.
-The reason for this goal was the 
-detrimental effects non-determinism has
-in Genetic Programming. We believe
-it to be an inherent and unavoidable
-difficulty present in the GP algorithm.
-You can find details on GP in [Chapter 7](/sr/07-gp)
-
-To achieve deterministic behavior, 
-PGE makes no use of random number generation.
-It performs the exact same algorithmic steps
-given the same parameters and same training data.
-This requires several aspects of the PGE algorithm
-to be defined deterministically.
-
-**Initialization** establishes the starting points
-from which PGE searches. Determinism starts here
-by constructing a set of basis functions
-from the input variables. 
-
-**Prioritization** determines which points 
-in the space to search next. This process
-uses a priority queue coupled with a
-Pareto non-dominated sorting algorithm.
-
-**Exploration** discovers new models by
-making small changes to a given model.
-To maintain determinism, PGE makes 
-all possible changes to a model,
-given the particular exploration scheme in use.
-
-**Communication** occurs when PGE uses
-parallel execution. In order to maintain
-deterministic behavior, well defined
-synchronization points are used.
-
-
-Details of each aspect will be expanded upon
-in the upcoming sections and next chapter.
 
 
 
@@ -667,7 +663,7 @@ the successive non-dominated sets of equations.
 #### Optimization
 
 
-SR is a multi-objective optimization
+SR is a multi-objective optimization task
 seeks to maximize accuracy
 while minimizing complexity.
 
@@ -969,6 +965,7 @@ the search space is also reduced in size by
 sorting equations into a canonical form and 
 simplifying them by rewrite rules.
 
+
 <div class="center-align"><b>Figure #</b>: Integer Prefix Tree</div>
 {% highlight Python linenos %}
 
@@ -1036,35 +1033,7 @@ class Node:
 <a class="right" href="#top">top</a>
 </div>
   
-### Searching
-
-
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| init     | low     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
-| init     | med     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_3 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
-| init     | high    |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_4 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:3]} \Big) + C $$ |
-
-
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Var sub  | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Var sub  | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Var sub  | high    |  $$ \big \{Add Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
-
-
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Mul grow | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Mul grow | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Mul grow | high    |  $$ \big \{Mul Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \}$$ |
-
-
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Add grow | low     |  $$ \big \{ a * \vec{x}C_1 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
-| Add grow | med     |  $$ \big \{ a * \vec{x}C_2 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
-| Add grow | high    |  $$ \big \{Add Med \big \} \bigcup a* \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
+### The Search Loop
 
 
 Initially, PGE starts with 
@@ -1096,7 +1065,7 @@ or a computational threshold is reached.
 
 
 <div class="center-align">
-<span><b>Figure #</b> - Multiple Derivations</span>
+<span><b>Figure #</b> - PGE Flow Diagram</span>
 <img class="responsive-img" src="/sr/img/PGE_flow_diagram.png" />
 </div>
 
@@ -1142,30 +1111,7 @@ $aXY^2 \Rightarrow aX^2Y^2$ or $aXY^2 \Rightarrow aXY^2Z$.
 the complexity of a term, such as
 $aXY \Rightarrow a(X+bZ)Y$ or $aSin(X) \Rightarrow aSin(X+Y)$.
 
-\begin{figure}[t!]
-% \vspace*{-.3in}
-\caption{PGE Expansion Functions}
-\lstset{label=expand}
-\begin{lstlisting}
-func AddTerm(E Expr) {
-  E %* $\rightarrow$ *) E + c*TERM
-  E %* $\rightarrow$ *) E + c*N(TERM)
-}
-func WidenTerm(T Expr) {
-  T %* $\rightarrow$ *) T * TERM
-  T %* $\rightarrow$ *) T * N(TERM)
-  T %* $\rightarrow$ *) T / TERM
-  T %* $\rightarrow$ *) T / N(TERM)
-}
-func DeepenTerm(N Expr) {
-  N %* $\rightarrow$ *) N + c*TERM 
-  N %* $\rightarrow$ *) N + c*N(TERM)
-  N %* $\rightarrow$ *) (c*TERM) / N 
-  N %* $\rightarrow$ *) N / (c*TERM) 
-}
-\end{lstlisting}
-\vspace*{-.3in}
-\end{figure}
+
 
 Directing the Search
     Pareto Priority Queue (PPQ)
@@ -1198,9 +1144,6 @@ the extra material increases the
 number of expansion points of the tree,
 creating even more similarly accurate
 expressions with ineffectual sub-expressions.
-
-% \ken{Can you add another sentence to explain why/how that happens?}
-
 
 
 The PGE search proceeds as follows.
@@ -1593,11 +1536,6 @@ Python & Scikit-Learn code
 
 
 
-In~\cite{meier:2014:symbolic},
-PGE derived simple, compact functions for predicting
-precrash severity in automobile accidents in less than 2ms,
-exceeding the required real-time constraint
-by several orders of magnitude.
 
 
 

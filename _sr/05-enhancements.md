@@ -27,560 +27,254 @@ sections:
 ---
 
 
-
-
-<div id="algorithm"></div>
-<a class="right" href="#top">top</a>
-
-#### Algorithm
-
-
-
-
-
-This section describes our alterations
+This chapter describes our enhancements
 to the original PGE algorithm.
-The first alteration involves
-extending PGE to search for
-differential equation and does not change
-the control-flow of PGE.
-The second alteration incorporates
-multiple priority queues into
-the main search loop
-and does require modifications to
-the control-flow of PGE.
-In all of our modifications,
-we preserve the spirit
-of deterministic execution
-of the original PGE algorithm.
-
-
-\subsection{Representation}
-
-
-\subsubsection{Equation Types}
-
-
-\subsubsection{Differential Equations}
-
-Differential equations are a mathematical model
-which describe the time-derivative of
-a state variable as a function of its current state.
-When several state variables are measured and
-used as features in the input vector,
-a dynamical system can be used to describe the system.
-A dynamical system is a set of ODE's,
-one for each state variable,
-possibly using any or all of the input features.
-Dynamical systems are deterministic models
-which describe the relationships between the features.
-Once found for a real-world system,
-dynamical systems can be used to predict behavior of the system
-or examine it under different conditions.
-Applications of ODE's and dynamical systems
-is pervasive throughout science.
-With the growth of data-driven science,
-PGE can be a tool for reverse-engineering
-ODE's from todays massive and complex data sets.
-We begin our modifications to PGE by
-enabling it to uncover differential equations.
-This is a simple task,
-only requiring the time-derivatives of the
-data to be numerically calculated at initialization
-and
-a new evaluation method to be written to handle the derivative data.
-
-With dynamical systems,
-Runge-Kutta-4 numerical integration
-is used to simulate the system and produce a trace
-from a given set of initial conditions.
-This requires all equations to be present
-and all points to be evaluated four times,
-an expensive proposition.
-We draw on two works which address these limitations.
-In~\cite{hod:07:pnas},
-partitioned evaluation is used to
-search for a single equation,
-allowing all equations to be searched in parallel.
-In partitioned evaluation,
-the measured values for the missing equations
-is substituted into the RK4 integration
-and only the equation being evaluated
-needs to be integrated.
-In~\cite{hod:08:mining},
-numerical derivatives are calculated for the input features
-and equations can be optimized for the time-derivative value.
-This has several benefits \ken{Garbled.}
-First,
-point evaluations by four because the equation can be explicitly evaluated on the time-derivative.
-Second,
-because point evaluation is explicit and no longer integration,
-the point evaluations are independent,
-allowing them chosen without concern for order or position.
-It also means we can get a good estimate of fitness
-by selecting just a few points from critical areas
-of the input feature time-series.
-Third,
-evaluating on the time-derivatives
-produces simpler equations during the search process
-due to the lower-level of comparison being made
-and that the effect of small perturbations in the equation
-have more significant effects on the output.
-(Usually the time-derivative is on a much smaller scale than the state value,
-It's certainly more sensative to minor changes)
+After acheiving a proof-of-concept
+the limitations of the original implementation
+began to materialize.
+As with many iterative processes,
+each enhancement brought to light
+a new limitation.
+The enhancements described here
+follow the sequence in which
+they were implemented.
+in order to relate
+how solutions addressed one limitation
+and the limitations that then came to light.
 
 
 
 
 
 
-\subsection{Series of Heaps}
-\label{section:heaps}
 
+<br>
 
+<div id="evaluation">
+<a class="right" href="#top">top</a>
+</div>
 
+### Waterfall Evaluation
 
-Arguably, the most resource intensive
-phase of both GP and PGE is the evaluation phase.
-Extensive work has been done in both
-making this phase parallel and distributed.
-Another useful idea is evaluating models
+One of the issues in PGE is that 
+a significant amount of effort
+is spent evaluating models
+which end up with poor fit.
+A useful idea is to evaluate models
 on a subset of the data. This method has
 been shown to provide good estimates
-with as few as just 8 data points~\cite{hod:08:coevo_fp}
+with as few as just 8 data points
+[ [hod:08:coevo_fp]() ].
 
-We use the idea of subsampling and
+We use this idea of subsampling and
 introduce an extra stage of processing,
-which we call \textit{peeked evaluation}.
+which we call *peeked evaluation*.
 Peeked evaluation is used to provide
 a quick estimate of fitness from
 a small number of training points.
-First, the training data is uniformly sampled
-to produce a much small data set.
-More sophisticated methods could be
-used and interesting research questions
-lie in selection and predictiveness
-of sampling techniques.
-These questions, however,
-are beyond the scope of this work.
+The training data is uniformly sampled
+to the reduced data set.
 
-With peeked evaluation, each equation can now
-exist in five states (in order):
-discovered,
-estimated,
-fully fit,
-expanded,
-scored on test data.
-The first two states do not
-require a priority queue, as
-an equation is estimated when it is discovered
-and scored when it has been completely processed.
-The middle three states have a
-priority queue between them,
-and with the respective phases,
-form a cyclic relationship
-depicted in Figure \ref{figure:cyclic}.
-An equation flows through this
-cycle by being popped from a queue
-to proceed to the next stage,
-and is as follows.
-First, a model results from
-the expansion of another equation.
-If it's unique, then
-it gets Peek evaluated and pushed into the FitQueue,
-otherwise it's discarded.
-Next, it gets popped from the FitQueue,
-undergoes full Fit before
-being pushed into the ExpandQueue.
-If the model is of sufficient
-accuracy, it will eventually
-be popped from the ExpandQueue,
-Scored on the testing data,
-and be used to create new models,
-which are then checked for uniqueness
-and Peek evaluated,
-thus closing the loop.
+With peeked evaluation, 
+each equation must pass
+through an additional priority queue.
+The idea is to get a quick estimate
+of accuracy, and then prioritize
+full evaluation from these estimates.
+The main reason for incorporating
+peeked evaluation is to avoid
+fully evaluating models which
+will be poor candidates.
+Only models which are fully fit
+can be entered into the priority
+queue for expansion candidacy.
+In this way, there is an extra
+barrier to poor models producing
+more poor models.
+
+Figure "peeked" below shows the
+psuedo code with the additional
+phases for evaluation and prioritization.
 
 
-The main loop itself,
-is constructed as a
-sequence pop-process-push sequence
-for each stage operate in sequence themselves.
-The main loop starts by popping
-estimated models from the FitQueue,
-fully Fits them, and pushes them
-into the ExpandQueue.
-Next the ExpandQueue is popped,
-the outgoing models scored,
-then used to create new models.
-These new models are checked for
+<div class="center-align"><b>Figure #</b>: PGE Peeked Flow</div>
+{% highlight Python linenos %}
+
+for each iteration:
+    to_eval = FitQueue.Pop()
+    fullfitEvaluate(to_eval)
+    ExpandQueue.Push(to_eval)
+
+    to_expand = ExpandQueue.Pop()
+    expanded = expand(to_expand)
+    unique = memoize(expanded)
+    peekEvaluate(unique)
+    FitQueue.Push(unique)
+{% endhighlight %}
+
+
+
+The loop is now composed of
+two pop-process-push sequences.
+At the begining of the iteration
+all equations have already
+been estimate under peeked evaluation.
+The `FitQueue` then has several
+models popped for full evaluation
+and subsequent pushing into
+the `ExpandQueue`.
+
+Next the `ExpandQueue` is popped
+to select models to serve
+as the next expansion points.
+The new models are checked for
 uniqueness, estimated, and
-pushed into the FitQueue.
-In this way, a single model can flow
-through all three tiers of evaluation
+pushed into the `FitQueue`.
+Under this scheme, a single model can pass
+through all phases
 in a single iteration.
 
-always maintain deterministic execution
 
 
-\begin{figure}[t!]
-% \vspace*{-.3in}
-\caption{PGE Sequential Loop with Multiple Heaps}
-\lstset{label=pgeloop1}
-\begin{lstlisting}
-for each iteration:
-    peeks := PeekHeap.Pop(4*P)
-    fullfitEvaluate(peeks)
-    FullfitHeap.Push(peeks)
 
-    ffits := FullfitHeap.Pop(2*P)
-    scoreEvaluate(ffits)
-    ScoreHeap.Push(ffits)
 
-    to_expand := ScoreHeap.Pop(P)
-    expanded := expand(to_expand)
-    unique := memoize(expanded)
-    peekEvaluate(unique)
-    PeekHeap.Push(unique)
-\end{lstlisting}
-\vspace*{-.3in}
-\end{figure}
 
-% \begin{figure}[t!]
-% % \vspace*{-.3in}
-% \caption{PGE Concurrent Loop with Multiple Heaps}
-% \lstset{label=pgeloop2}
-% \begin{lstlisting}
-% for each iteration:
-%   run in parallel:
-%   1)  peeks := PeekHeap.Pop(4*P)
-%       fullfitEvaluate(peeks)
 
-%   2)  ffits := FullfitHeap.Pop(2*P)
-%       scoreEvaluate(ffits)
 
-%   3)  to_expand := ScoreHeap.Pop(P)
-%       expanded := expand(to_expand)
-%       unique := memoize(expanded)
-%       peekEvaluate(unique)
 
-%   sync point:
-%     FullfitHeap.Push(peeks)
-%     ScoreHeap.Push(ffits)
-%     PeekHeap.Push(unique)
-% \end{lstlisting}
-% \vspace*{-.3in}
-% \end{figure}
+<br>
 
-
-
-
-
-\subsection{Feature Selection}
-
-Pre-selection
-
-post-selection
-
-online
-
-
-\subsection{Evaluation}
-
-\subsubsection{Multiple Experiments}
-
-2 methods
- - one sr with extra features
- - two sr, requires more experimental data?
-
-
-System Parameters
-
-Equations generalize better
-
-
-
-\subsubsection{Other Metrics}
-
-Info Gain
-
-More from Search Improvements
-
-
-
-
-
-
-\subsection{Optimization}
-
-
-Variations on the PGE algorithm
-can be created by altering how initialize PGE
-and step through the grammar via its production rules.
-We can seed PGE with a richer set of basis function,
-and even allow complete sub-trees to become building blocks.
-Further, by enriching the production rules applied at each node,
-we can enlarge the set of equations generated at each point in the search space.
-
-\subsubsection{Generating Functions}
-\label{subsec-pge-vari-genfuncs}
-
-The basic PGE method restricts the grammar 
-by removing productions which result in
-non-distributed expressions like $ax*(b+cx*(d+x^2))$.
-The second method adds back the previously mentioned restriction.
-A third method is FFX inspired,
-but runs reverse to FFX.
-A series of univariate bases are created
-and then grown into a summation of multiplications
-by adding and widening terms.
-
-
-We can seed PGE with a richer set of basis function,
-such as those used in FFX. We also believe that
-PGE may be able to run the FFX process in reverse,
-growing the linear combination as opposed to pruning it.
-
-The building blocks in PGE define the scope of the search space.
-The more we have the larger the space and the faster it grows.
-We can provide different sets of building blocks,
-to the PGE algorithm, performing a search for each set.
-When all searches have finished, we can
-combine the searches to give a richer set of results.
-
-By removing the restrictions from the current method,
-we can increase the number of equations derivable from a given expression.
-This is done by enriching the production rules applied at each node,
-which will in turn enrich the set of equations generated.
-This will result in duplication through
-the representation of on equation in different forms.
-These representations are not equivalent through
-our current rewrite rules.
-
-All of these methods will determine
-how much of, and how deep into, the
-space of equations PGE will search.
-As with the equations themselves,
-there is a trade-off between
-space and complexity which
-is often difficult to balance.
-
-% basic: described in chapter 4\\
-% method2: implements deeper expansions, creating multiple forms of same equation,
-% but allows terminals to be replaced with more complex expressions\\
-% method3: FFXish, create univariate bases (...) and use addTerm, widenTerm to create linear combos of
-
-
-% \tony{psuedocode for variations}
-
-\subsubsection{Parallel and Tiered PGE}
-
-Drawing on the ideas of the island model,
-we can run multiple PGE searches in parallel.
-For GP it's multiple copies
-of the same search, 
-sharing information by migration.
-In PGE we use different searches
-with different parameters and productions.
-Our implementation doesn't share information yet,
-but it is easily incorporated by
-checking incoming migrants with IPT.
-Those that are unique would get pushed into the PPQ.
-
-Another variation on the parallel theme is
-to spread one search process across multiple
-computation units, distributing work.
-This would operate the same as a non-parallel
-implementation, but just faster.
-
-A different variation on the parallel implementation
-is to have a tiered PGE.
-The first level would use
-the simplest basis functions and production rules.
-The first tier could have a restricted
-operator set, such as removing non-linear functions,
-and a reduced variable set with feature selection \cite{steve:12:thesis}.
-Progressive tiers can increase
-the number of operators, variables, and
-the complexity of the generating functions.
-This would allow PGE to search deeply
-into the simpler spaces and exploit
-this information with increasingly complex processing.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="memoization"></div>
+<div id="decoupling">
 <a class="right" href="#top">top</a>
-
-#### Memoization
-
-
-\subsection{More Abstract Memoization}
-
-
-
-
-
-**Equation Relationships**
-
-<div class="center-align">
-<span><b>Figure #</b> - The Search Space Graph</span>
-<img class="responsive-img" src="/sr/img/PGE_Search_Space_Graph.png" />
 </div>
 
-
-deeper equation abstractions,
-richer relationships,
-and a persistent formula library.
-
-
-
-
-
-
-\subsection{Persistant Library}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="searching"></div>
-<a class="right" href="#top">top</a>
-
-#### Searching
-
-
-
-
-\subsection{The Search Space Graph}
-
-\subsection{Node Centric Searching}
-
-focus is on models and reducing error
-
-\subsection{Edge Centric Searching}
-
-focus is on relationships and improving information gain
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="decoupling"></div>
-<a class="right" href="#top">top</a>
-
-### Decoupling
-
-In order to address todays
-challenging big data problems,
-PGE needs to be scaled to the cloud.
-This section describes how
-PGE can be decoupled into a set of services.
+### Decoupling into Services
+
+Evaluation is the most time consuming process
+in any SR implementation, 
+generally exceeding 90% of the total time.
+
+The main reasons for this are:
+
+1. Floating point calculations take longer
+1. Implementations generate many candidate models
+1. Volume of data for training is increasing
+1. The other phases tend not to require much time
+
+One of the nice properties of SR, and evaluation,
+is that it has both data and functional parallelism.
+As a result, research into 
+parallel and distributed GP has been 
+extensive and fruitful (see Chapter 3).
+
+We follow suit with PGE by splitting the algorithm
+into a set of services and deploying them to
+cloud infrastucture. 
 We decoupled the PGE algorithm
 into three services:
-algebraic manipulations,
-model evaluation,
-and the search loop.
-These three services were
-initially chosen
-because they constituted the
-majority of the runtime.
+
+1. Main Search Loop
+1. Evaluation (for parallel benefits)
+1. Algebra (for a mature CAS)
+
+We elected for the additional algebra service 
+so that a mature Computer Algebra System (CAS)
+could be used. We chose SymPy because
+it had the desired functionality
+and was simple to integrate.
 We believe it also possible
 to decouple the expansion and
 memoization functionality into
 their own services.
+This is however, beyound the scope of this work.
+This enhancement was also made in conjunction
+with the last enhancement, waterfall evaluation.
 
 
-\begin{figure}[h!]
-\caption{Diagram of cPGE Phases and Flow}
-\label{fig:diagram}
-\center
-\includegraphics[scale=0.4, clip=true, trim=0 350 0 0]{imgs/diagram.pdf}
-% \includegraphics[scale=0.5, clip=true, trim=20 20 20 165]{imgs/diffeq_time_compare.pdf}
-% \vspace*{-.15in}
-\end{figure}
+<div class="center-align">
+<span><b>Figure #</b> - Decoupled PGE</span>
+<img class="responsive-img" src="/sr/img/cPGE-diagram.png" />
+</div>
+
+#### The Three Services
+
+
+**Algebra Service**
+
+The original PGE algorithm
+internally implemented
+basic algebra operations to
+collect terms and perform
+simple rewrites.
+While decoupling this service,
+we opted to replace the internal algorithms
+with a third-party library.
+We chose Sympy for algebraic manipulations
+as it offers more mature
+and well tested set of functionalities.
+
+Initially we used the string representation
+of an equation when sending messages between services.
+To alleviate some of the overhead
+we converted to using the same
+integer serialization as is used in the
+memoization process.
 
 
 
-The algebra and evaluation service functionality
-are presented as JSON APIs.
+**Evaluation Service**
+
+As evaluation is the most resource
+intensive part of the search,
+this was the first natural choice
+to decouple. Each PGE search
+will require several evaluator instances
+and so we chose to have them only
+concerned with a single data set
+at a time.
+
+PGE uses a third-party library, Levmar,
+to perform non-linear fitting
+of a model's parameters.
+PGE uses the analytical jacobian
+fitting function and thus requires
+the jacobian, w.r.t. the parameters,
+to be calculated.
+The evaluator service calls upon
+the algebra service to perform this
+operation on its behalf.
+Since both the subset and fullfit
+evaluation phases make use of
+the non-linear regression,
+they thus both require the jacobian
+to be available.
+
+Each evaluation service instance
+is first sent the necessary information
+for setup, including the parameters
+and the dataset to be used for evaluation.
+They then sit in an event loop waiting for
+a request to evaluate a model.
+
+
+
+**Search Service**
+
+The search loop exists
+as its own service and is the main
+control-flow structure.
+It remains basically the same
+as the original search loop.
+The main difference is 
+that function calls to the 
+algebra and evalutation service
+now require network activity.
+During each iteration, PGE delegates
+to the appropriate services
+at the neccessary times.
+
+
+**Service Interactions**
 
 The algebra service is independent and does not
 depend on the other two services.
@@ -608,128 +302,12 @@ for each case in the evaluation phase.
 The best setups are tied to both the problem at
 hand and the current implementation.
 
-Runtime profiling shows that the Python interpreter
-and the use of the 'eval' function from within Sympy
-are a performance bottleneck. Rewriting this service
-with a more efficient implementation will require
-a reorganization and restructuring of the service
-redundancy and sharing. The decoupling of the
-PGE search into several services allows
-
 Our preliminary experiences in decoupling allowed us
 to reduce the original count of algebra service instances after converting messages to use
 the serialization of a model, as opposed to
 the human readable versions of the model.
 This was most likely the result of removing
-the string processing necessary in tokenization and parsing into the syntax tree. The integer serialization maintains the syntactic information of the model.
-
-
-\subsection{Representation Service}
-
-The original PGE algorithm
-internally implemented
-basic algebra operations to
-collect terms and perform
-simple rewrites.
-While decoupling this service,
-we opted to replace the internal algorithms
-with a third-party library.
-We chose Sympy for algebraic manipulations
-as it offers more mature
-and well tested set of functionalities.
-
-We present the algebra service as a JSON API
-to
-
-Became the most expensive phase of
-the modified PGE algorithm.
-
-Initially we used the string representation
-of an equation when sending messages between services.
-To alleviate some of the overhead
-we converted to using the same
-integer serialization as is used in the
-memoization process.
-
-
-\subsection{Evaluation Service}
-
-As evaluation is the most resource
-intensive part of the search,
-this was the first natural choice
-to decouple. Each PGE search
-will require several evaluator instances
-and so we chose to have them only
-concerned with a single data set
-at a time.
-
-PGE uses a third-party library, Levmar,
-to perform non-linear fitting
-of a model's parameters.
-PGE uses the analytical jacobian
-fitting function and thus requires
-the jacobian, w.r.t. the parameters,
-to be calculated.
-The evaluator service calls upon
-the algebra service to perform this
-operation on its behalf.
-Since both the subset and fullfit
-evaluation phases make use of
-the non-linear regression,
-they thus both require the jacobian
-to be available.
-
-
-
-Each evaluation service instance
-is first sent the necessary information
-for setup, including the parameters
-and the dataset to be used for evaluation.
-They then sit in an event loop waiting for
-a request to evaluate a model.
-
-Peek evaluation makes a call to the algebra
-service to calculate the analytical jacobian
-and then uses Levmar to non-linearly
-regress the parameters to the model
-on a very small sampling of the data.
-
-Fullfit evaluation uses the evaluator services
-model cache to avoid a second, unnecessary
-call to the algebra service.
-Fullfit uses the entire training data
-to regress the parameters to the equation.
-
-Scoring evaluation calculates the models
-fitness on an independent testing set.
-
-
-
-\subsection{Memoization Service}
-
-
-Per instance 
-
-and
-
-Persistant Library
-
-
-
-
-
-
-\subsection{Search Service}
-
-The search loop exists
-as its own service and is the main
-control-flow structure.
-
-
-During each iteration, PGE delegates
-to the appropriate services
-for algebraic simplifications
-and the 3 evaluations tiers.
+the string processing necessary in tokenization and parsing into the syntax tree. 
 
 
 
@@ -742,10 +320,198 @@ and the 3 evaluations tiers.
 
 
 
-<div id="limitations"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<div id="selection">
 <a class="right" href="#top">top</a>
+</div>
 
-#### Remaining limitations
+### Metrics, Fitness, and Selection
+
+The original PGE algorithm used
+tree size and an error metric
+to calculate model fitness.
+It then used a simple
+Pareto sorting mechanism
+to sort the population.
+This section describes
+enhancements we make 
+to the metrics, 
+fitness, and selection processes.
+
+
+#### More metrics for models
+
+Our experience showed that
+modelling error was often 
+insufficient for effectively
+separating good models from the rest.
+We add several additional metrics
+for models which account for
+quality while penalizing complexity.
+This is separate from the
+complexity and accuracy
+tradeoff which happens
+at the global level.
+They do however have
+a benefical influence
+on the global selection and prioritization process.
+
+
+**Penalized complexity** is a tree size 
+calculation which adds a penalty to specific
+types of nodes. In our experiments,
+we applied it to function nodes
+from the triganomic and logarithmic families.
+The penalty accounts for
+increased relative computational complexity
+which we set at +2. The value, while effective,
+deserves further investigation than we provide.
+
+
+**R-squared** measures the goodness of fit
+for a model and attempts to account for
+the amount of variance explained.
+Values range from zero to one
+and can be interpreted as the percentage
+of variance the model explains.
+One issue with this metric
+is that extra variables can be 
+included to increase its value.
+The adjusted R-squared addresses 
+this by adding a penalty which 
+increases with each extra variable
+[[Taylor:1997:error](An_Introduction_To_Error_Analysis_The_Study_Of_Uncertainties_In_Physical_Measurements_Taylor_John)].
+
+
+**reduced Chi-squared** also
+measures the goodness of fit
+for a model. It includes the
+variance in the data and degrees of freedom.
+This effectively normalizes the value
+to the number of data points and model complexity
+[ [Taylor:1997:error](An_Introduction_To_Error_Analysis_The_Study_Of_Uncertainties_In_Physical_Measurements_Taylor_John),
+[Pearson:1900:chi](http://www.economics.soton.ac.uk/staff/aldrich/1900.pdf) ].
+
+
+**AIC/BIC** measure the relative
+quality of fit for models.
+Akaike information criterion (AIC) and
+Bayesian information criterion (BIC)
+do not say anything about the absolute
+quality of the model. Rather
+they measure the relative quality
+of models against eachother.
+Both add a penalty term
+based on the number of model parameters.
+BIC penalizes complexity more and
+is thus the more conservative metric
+[ [Akaike:1974:aic](http://www.unt.edu/rss/class/Jon/MiscDocs/Akaike_1974.pdf),
+[Schwarz:1978:bic](http://projecteuclid.org/euclid.aos/1176344136) ].
+
+
+
+#### Improvement over parent
+    
+Improvement over the parent refers to
+how much an accuracy or goodness of fit metric
+changes in an offspring, relative to the parent.
+We use a simple difference between the values,
+making sure to account for whether the metric
+is a minimizing or maximising one.
+
+One interesting situation happens when
+we find a new path to an existing model.
+In this case, we can look to Dijkstra's algorithm
+and *relax* to find a new relative improvement value.
+
+
+#### Model Fitness
+
+Model fitness is used to make relative comparisons
+during the selection process. The fitness for an
+individual model is usually a combination of 
+complexity and accuracy in an attempt to regularize.
+
+The original PGE algorithm used tree size
+and model accuracy, as determined by an error metric,
+as the components to the fitness metric.
+It then used a the basic Pareto non-dominated sort
+to prioritize the next models to be expanded.
+
+In our enhancements, we made several changes
+in how we used the metrics in fitness.
+In addition to being able to use any
+of the new metrics, we added the ability
+to use multiple metrics at once, allowing
+the number of components to grow beyond 
+just one for size and one for accuracy.
+We then added the ability to weight each 
+component separately. This proved beneficial
+as we discovered the best policy was to
+weight the complexity measure so that it 
+was equal to multiple accuracy metrics.
+We also found that competing certain metrics
+was beneficial, such as minimizing BIC
+while maximizing the improvement of BIC.
+
+One of the more significant changes we made
+was to normalize each of the values
+across the set of models.
+For each metric being used,
+we normalized across the models,
+and then used the new value
+as the component to the fitness for the model.
+This removed the effect of scale
+of values on the relative comparisons
+made during selection.
+With out normalization,
+one of the components can easily dominate 
+the solution. Additionally,
+the dominating component often
+changed as the search progressed.
+In example, as error tends towards zero
+the size becomes the dominate factor,
+and distinguishing between models on
+error gets more difficult for the algorithm.
+
+
+#### Density based Pareto methods
+
+The orginial PGE algorithm used
+a simlistic Pareto sorting algorithm.
+Research in GP has shown that 
+accounting for denisity along
+the frontier, better choices can be made.
+We settled on the NSGA-II algorithm
+for its good balance between
+effectiveness and computational complexity.
+
+In our experiments, the addition of
+NSGA-II did not, by itself, improve
+the prioritization process.
+It was its combined usage 
+when the fitness values
+contained more than two components.
+NSGA-II was able to distribute
+selection by accounting for
+density across all dimension,
+making the use of more dimensions
+beneficial.
 
 
 
@@ -754,17 +520,129 @@ and the 3 evaluations tiers.
 
 
 
-<div id="reproducibility"></div>
+
+
+
+
+
+
+<br>
+
+<div id="policies">
 <a class="right" href="#top">top</a>
+</div>
 
-#### Reproducibility
+### Expansion Policies
+
+1. ** Multiple, independent complexity levels **
+1. ** Context Aware **
+    
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| init     | low     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| init     | med     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_3 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| init     | high    |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_4 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:3]} \Big) + C $$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Var sub  | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Var sub  | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Var sub  | high    |  $$ \big \{Add Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Mul grow | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Mul grow | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| Mul grow | high    |  $$ \big \{Mul Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \}$$ |
+
+
+|  method  |  level  |  result set |
+| -------- | ------- | ------------|
+| Add grow | low     |  $$ \big \{ a * \vec{x}C_1 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| Add grow | med     |  $$ \big \{ a * \vec{x}C_2 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| Add grow | high    |  $$ \big \{Add Med \big \} \bigcup a* \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
 
 
 
 
 
-Still, even when distributed, enhanced
 
-numerical issues
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+<div id="expansion">
+<a class="right" href="#top">top</a>
+</div>
+
+### Waterfall Expansion
+
+1. ** Multiple tiers of increased expansion **
+1. ** Removes parameters and choices with policies **
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

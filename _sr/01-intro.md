@@ -328,6 +328,11 @@ Will fill this in later after the chapter(s) are written.
 
 
 
+In~\cite{meier:2014:symbolic},
+PGE derived simple, compact functions for predicting
+precrash severity in automobile accidents in less than 2ms,
+exceeding the required real-time constraint
+by several orders of magnitude.
 
 
 

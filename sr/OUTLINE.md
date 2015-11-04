@@ -38,8 +38,9 @@ Outline for Online Dissertation
         1. ** Other Implementations **
     1. Applications
         1. Explicit Equations
-        1. Differential Equations
+        1. **Differential Equations**
         1. Invariants and PDEs
+        1. **added extra diffeq stuff here...**
     1. ** Further Considerations **
         1. Separating Task and Implementation
         1. ** Benchmark Problems **
@@ -58,14 +59,15 @@ Outline for Online Dissertation
     1. ** Genetic Programming **
         1. ** Algorithm **
         1. ** Limitations **
-        1. ** Enhancements **
-        1. ** Inherient Difficulties **
+    1. ** Enhancements in GP**
+        1. ** Selection Improvements **
+        1. *Variations on Crossover*
+        1. *The Island Model*
+        1. *Co-evolutionary GP*
+        1. *Hybrid Algorithms*
     1. ** Fast Function Extraction **
         1. ** Algorithm **
         1. ** Limitations **
-    1. ** Multi-Objective Optimization **
-        1. ** Pareto Non-dominated sorting **
-        1. ** More general stuff? **
     1. Regression Techniques
         1. Linear Regression
         1. Nonlinear Regression
@@ -80,31 +82,22 @@ Outline for Online Dissertation
             1. A\* search
 
 1. ### *Prioritized Grammar Enumeration*
-    1. ** Overview **
     1. ** Theory **
-        1. ** Removing Non-determinism **
-            1. ** Motivating Desire **
-            1. ** Benefits of maintaining **
-        1. ** Search Space Organization **
-            1. ** Representation Combinatorics **
-                1. ** Leaf Permutations **
-                1. ** Form Permutations **
-                1. ** Create Canonical Forms **
-            1. ** Search Space Combinatorics **
-                1. ** Multiple Derivations **
-                1. ** Algebraic Manipulations **
+        1. Removing Non-determinism
+        1. Search Space Organization
         1. ** Evaluating Forms Once **
-            1. ** Dynamic Programming & Memoization **
-            1. ** Non-linear Regression **
+            1. Dynamic Programming
+            1. Non-linear Regression
+            1. ** Memoization **
     1. ** Components **
-        1. ** Representation **
-            1. ** N-ary trie **
-            1. ** Prefix notation **
-            1. ** Abstract Parameters **
-        1. ** Evaluation **
-            1. ** Non-linear parameter fitting **
-            1. ** Modelling Metrics **
-            1. ** Fitness Values **
+        1. Representation
+            1. N-ary trie
+            1. Prefix notation
+            1. Abstract Parameters
+        1. Evaluation
+            1. Non-linear parameter fitting
+            1. Modelling Metrics
+            1. Fitness Values
         1. ** Optimization **
             1. ** Exploration Operators **
             1. ** Prioritization Strategies **
@@ -132,23 +125,23 @@ Outline for Online Dissertation
     1. ** Relation to GP ??? **
 
 1. ### *PGE Enhancements*
+    1. Waterfall Evaluation
+        1. Multiple tiers of increased refinement
+        1. Allievates excessive evaluation on poor models
     1. ** Decoupling into Services **
-        1. ** Evaluation generally > 90% of time **
-        1. ** Deploy to cloud **
-        1. ** Three Services **
-            1. ** Main Search **
-            1. ** Evaluation (for parallel benefit) **
-            1. ** Algebra (for mature CAS) **
-    1. ** Metrics & Selection **
-        1. ** Increased model accuracy metrics **
-        1. ** Density based Pareto methods **
-        1. ** Use two together **
+        1. Evaluation generally > 90% of time
+        1. Data and Function parallelism
+        1. Three Services
+            1. Main Search
+            1. Evaluation (for parallel benefit)
+            1. Algebra (for mature CAS)
+    1. Metrics and Selection
+        1. More metrics for model accuracy
+        1. Density based Pareto methods
+        1. Use two together
     1. ** Expansion Policies **
         1. ** Multiple, independent complexity levels **
         1. ** Context Aware **
-    1. ** Waterfall Evaluation **
-        1. ** Multiple tiers of increased refinement **
-        1. ** Allievates excessive evaluation on poor models **
     1. ** Waterfall Expansion **
         1. ** Multiple tiers of increased expansion **
 

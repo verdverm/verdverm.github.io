@@ -4,7 +4,7 @@ title: Experiments
 brief: This chapter focuses on testing the PGE algorithm
 prev: 05-enhancements
 next: 07-conclusions
-nextname: Related Work
+nextname: Conclusions
 sections:
   - name: Overview
     tag: overview
@@ -416,8 +416,25 @@ can be found in [Appendix 3](/sr/A3-benchmarks/).
  
 
 
+Diffeq Comparisons
 
 
+|  Problem      |   GP-Time  |   GP-Evals  |   PGE-Time  |  PGE-Evals  |
+|---------------|------------|-------------|-------------|-------------|
+|  Glider-v     |   10.219   |     1030M   |     3.523   |    0.468M   |
+|  Glider-o     |    5.062   |      500M   |     0.895   |    0.223M   |
+|  BackResp-x   |   74.047   |     7590M   |    15.131   |    2.692M   |
+|  BackResp-y   |   30.547   |     3090M   |    21.929   |    3.825M   |
+|  PredPrey-x   |   81.718   |     8260M   |    94.879   |    9.008M   |
+|  PredPrey-y   |  290.578   |    29380M   |    81.592   |    8.323M   |
+|  BarMags-o1   |   11.750   |     1190M   |    10.344   |    1.883M   |
+|  BarMags-o2   |   15.609   |     1580M   |     3.551   |    1.005M   |
+|  ShearFlow-o  |    3.562   |      360M   |     0.216   |    0.168M   |
+|  ShearFlow-p  |   33.859   |     3420M   |     7.558   |    2.071M   |
+|  VanDerPol-x  |   25.547   |     2580M   |    13.779   |    1.544M   |
+|  VanDerPol-y  |    0.859   |       90M   |     0.354   |    0.089M   |
+|  LotkaVolt-x  |    4.250   |      430M   |     0.336   |    0.938M   |
+|  LotkaVolt-y  |    1.063   |      110M   |     0.449   |    0.952M   |
 
 
 
