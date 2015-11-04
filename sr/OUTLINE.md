@@ -15,7 +15,7 @@ Outline for Online Dissertation
     1. **The Components **
         1. **Representation **
             1. Linguistic Foundations
-            1.   *Binary Tree*
+            1. *Binary Tree*
             1. **Algebra Trie **
             1. **Linear Forms **
                 1. **Summation of Basis Terms**
@@ -23,10 +23,10 @@ Outline for Online Dissertation
             1. **Other Representations **
                 1. **Graph**
             1. **Restrictions and Simplifications**
-        1. **Evaluation **
-            1. **Point Evaluation **
-            1. **Accuracy Metrics **
-            1. **Fitness Values **
+        1. Evaluation
+            1. Point Evaluation
+            1. Accuracy Metrics
+            1. Fitness Values
         1. **Optimization **
             1. **Exploration Operators **
             1. **Selection Mechanisms **
@@ -54,16 +54,21 @@ Outline for Online Dissertation
             1. **Number of Models**
         1. **Reproducibility and Determinism **
 
-1. ### *Related Work*
-    1. **Genetic Programming **
-        1. **Algorithm **
-        1. **Limitations **
-    1. *Enhancements in GP*
-        1. *Selection Improvements*
-        1. *Variations on Crossover*
-        1. *The Island Model*
-        1. *Co-evolutionary GP*
-        1. *Hybrid Algorithms*
+1. ### Related Work
+    1. Genetic Programming 
+        1. Algorithm 
+            1. Overview
+            1. Representation
+            1. Evaluation
+            1. Optimization
+            1. Init & Termination
+        1. Limitations
+    1. Enhancements in GP
+        1. Selection Improvements
+        1. Variations on Crossover
+        1. The Island Model
+        1. Co-evolutionary GP
+        1. Hybrid Algorithms
     1. Fast Function Extraction
         1. Algorithm
         1. Limitations
