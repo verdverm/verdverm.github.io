@@ -653,7 +653,7 @@ the disruption of partial solutions.
 
 
 
-##### **Equation Redundancy **
+##### **Equation Redundancy**
 
 Bloat causes partial solutions to dominate
 the population as GP attempts to optimize
@@ -681,7 +681,7 @@ community.
 
 
 
-##### **Loss of Population Diversity **
+##### **Loss of Population Diversity**
 
 A major issue through the course of evolution
 is maintaining the proper diversity 
@@ -715,7 +715,7 @@ which could be useful to GP for
 measuring diversity.
 
 
-##### **Premature Convergence **
+##### **Premature Convergence**
 
 Premature convergence is the result 
 of a loss of diversity within the population.
@@ -1535,7 +1535,7 @@ A disjoint-set data structure can be used
 to effeciently determine this condition.
 [ [Kruskal:1956:Shortest](http://www.ams.org/journals/proc/1956-007-01/S0002-9939-1956-0078686-7/home.html) ]
 
-#### Single-source Shaortest Path
+#### Single-source Shortest Path
 
 The single-source shortest path (SSSP) problem
 is to find the shortest path to all nodes,

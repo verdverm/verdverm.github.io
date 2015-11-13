@@ -6,24 +6,21 @@ prev: 04-pge
 next: 06-experiments
 nextname: Experiments
 sections:
-  - name: Algorithm
-    tag: algorithm
-    brief: Improving the components and progressive evaluation
-  - name: Memoization
-    tag: memoization
-    brief: Adding abstractions and relationships
-  - name: Searching
-    tag: searching
-    brief: Viewing the search as a graph problem
   - name: Decoupling
     tag: decoupling
-    brief: Separating into services and independent scaling
-  - name: Remaining limitations
-    tag: limitations
-    brief: 
-  - name: Reproducibility
-    tag: reproducibility
-    brief:
+    brief: Separating into scalable services
+  - name: Evaluation
+    tag: evaluation
+    brief: Progressively refining models
+  - name: Selection
+    tag: selection
+    brief: Improvements to selection
+  - name: Expansion
+    tag: expansion
+    brief: New policies, progressive expansion
+  - name: Enhanced PGE
+    tag: enhanced
+    brief: Enhanced PGE summarization
 ---
 
 
@@ -48,13 +45,194 @@ and the limitations that then came to light.
 
 
 
+
+
+
+
+<br>
+
+<div id="decoupling">
+<a class="right" href="#top">top</a>
+</div>
+
+### Decoupling into Services
+
+Evaluation is the most time consuming process
+in any SR implementation, 
+generally exceeding 90% of the total time.
+
+The main reasons for this are:
+
+1. Floating point calculations take longer
+1. Implementations generate many candidate models
+1. Volume of data for training is increasing
+1. The other phases tend not to require much time
+
+One of the nice properties of SR, and evaluation,
+is that it has both data and functional parallelism.
+As a result, research into 
+parallel and distributed GP has been 
+extensive and fruitful (see Chapter 3).
+
+We follow suit with PGE by splitting the algorithm
+into a set of services and deploying them to
+cloud infrastucture. 
+We decoupled the PGE algorithm
+into three services:
+
+1. Main Search Loop
+1. Evaluation (for parallel benefits)
+1. Algebra (for a mature CAS)
+
+We elected for the additional algebra service 
+so that a mature Computer Algebra System (CAS)
+could be used. We chose SymPy because
+it had the desired functionality
+and was simple to integrate.
+We believe it also possible
+to decouple the expansion and
+memoization functionality into
+their own services.
+This is however, beyound the scope of this work.
+This enhancement was also made in conjunction
+with the last enhancement, waterfall evaluation.
+
+
+<div class="center-align">
+<span><b>Figure #</b> - Decoupled PGE</span>
+<img class="responsive-img" src="/sr/img/impl_diags/PGE_Decoupled.png" />
+</div>
+
+#### The Three Services
+
+
+##### **Algebra Service**
+
+The original PGE algorithm
+internally implemented
+basic algebra operations to
+collect terms and perform
+simple rewrites.
+While decoupling this service,
+we opted to replace the internal algorithms
+with a third-party library.
+We chose Sympy for algebraic manipulations
+as it offers more mature
+and well tested set of functionalities.
+
+Initially we used the string representation
+of an equation when sending messages between services.
+To alleviate some of the overhead
+we converted to using the same
+integer serialization as is used in the
+memoization process.
+
+
+
+##### **Evaluation Service**
+
+As evaluation is the most resource
+intensive part of the search,
+this was the first natural choice
+to decouple. Each PGE search
+will require several evaluator instances
+and so we chose to have them only
+concerned with a single data set
+at a time.
+
+PGE uses a third-party library, Levmar,
+to perform non-linear fitting
+of a model's parameters.
+PGE uses the analytical jacobian
+fitting function and thus requires
+the jacobian, w.r.t. the parameters,
+to be calculated.
+The evaluator service calls upon
+the algebra service to perform this
+operation on its behalf.
+Since both the subset and fullfit
+evaluation phases make use of
+the non-linear regression,
+they thus both require the jacobian
+to be available.
+
+Each evaluation service instance
+is first sent the necessary information
+for setup, including the parameters
+and the dataset to be used for evaluation.
+They then sit in an event loop waiting for
+a request to evaluate a model.
+
+
+
+##### **Search Service**
+
+The search loop exists
+as its own service and is the main
+control-flow structure.
+It remains basically the same
+as the original search loop.
+The main difference is 
+that function calls to the 
+algebra and evalutation service
+now require network activity.
+During each iteration, PGE delegates
+to the appropriate services
+at the neccessary times.
+
+
+##### **Service Interactions**
+
+The algebra service is independent and does not
+depend on the other two services.
+The evaluation service depends upon
+the algebra service for calculating
+the analytical jacobian of a model
+w.r.t. the parameters.
+The search service depends upon both
+the algebra and evaluation service.
+
+Each search service has its own set
+of evaluation service instances.
+The algebra services are more flexible,
+as they are independent.
+Several variations we explore are:
+1) each service instance having its own dedicated
+algebra instance (additionally the search process
+can have multiple instances)
+2) a search instance and its evaluator instances
+can share a pool of algebra services
+3) multiple PGE search processes can
+share a larger pool of algebra service instances.
+We explore the trade-offs and appropriate situations
+for each case in the evaluation phase.
+The best setups are tied to both the problem at
+hand and the current implementation.
+
+Our preliminary experiences in decoupling allowed us
+to reduce the original count of algebra service instances after converting messages to use
+the serialization of a model, as opposed to
+the human readable versions of the model.
+This was most likely the result of removing
+the string processing necessary in tokenization and parsing into the syntax tree. 
+
+
+
+
+
+
+
+
+
+
+
 <br>
 
 <div id="evaluation">
 <a class="right" href="#top">top</a>
 </div>
 
-### Waterfall Evaluation
+### Progressive Evaluation
 
 One of the issues in PGE is that 
 a significant amount of effort
@@ -65,6 +243,11 @@ on a subset of the data. This method has
 been shown to provide good estimates
 with as few as just 8 data points
 [ [hod:08:coevo_fp]() ].
+
+<div class="center-align">
+<span><b>Figure #</b> - PGE Progressive Evaluation</span>
+<img class="responsive-img" src="/sr/img/impl_diags/PGE_Refinement.png" />
+</div>
 
 We use this idea of subsampling and
 introduce an extra stage of processing,
@@ -134,183 +317,17 @@ Under this scheme, a single model can pass
 through all phases
 in a single iteration.
 
-
-
-
-
-
-
-
-
-<br>
-
-<div id="decoupling">
-<a class="right" href="#top">top</a>
-</div>
-
-### Decoupling into Services
-
-Evaluation is the most time consuming process
-in any SR implementation, 
-generally exceeding 90% of the total time.
-
-The main reasons for this are:
-
-1. Floating point calculations take longer
-1. Implementations generate many candidate models
-1. Volume of data for training is increasing
-1. The other phases tend not to require much time
-
-One of the nice properties of SR, and evaluation,
-is that it has both data and functional parallelism.
-As a result, research into 
-parallel and distributed GP has been 
-extensive and fruitful (see Chapter 3).
-
-We follow suit with PGE by splitting the algorithm
-into a set of services and deploying them to
-cloud infrastucture. 
-We decoupled the PGE algorithm
-into three services:
-
-1. Main Search Loop
-1. Evaluation (for parallel benefits)
-1. Algebra (for a mature CAS)
-
-We elected for the additional algebra service 
-so that a mature Computer Algebra System (CAS)
-could be used. We chose SymPy because
-it had the desired functionality
-and was simple to integrate.
-We believe it also possible
-to decouple the expansion and
-memoization functionality into
-their own services.
-This is however, beyound the scope of this work.
-This enhancement was also made in conjunction
-with the last enhancement, waterfall evaluation.
-
-
-<div class="center-align">
-<span><b>Figure #</b> - Decoupled PGE</span>
-<img class="responsive-img" src="/sr/img/cPGE-diagram.png" />
-</div>
-
-#### The Three Services
-
-
-**Algebra Service**
-
-The original PGE algorithm
-internally implemented
-basic algebra operations to
-collect terms and perform
-simple rewrites.
-While decoupling this service,
-we opted to replace the internal algorithms
-with a third-party library.
-We chose Sympy for algebraic manipulations
-as it offers more mature
-and well tested set of functionalities.
-
-Initially we used the string representation
-of an equation when sending messages between services.
-To alleviate some of the overhead
-we converted to using the same
-integer serialization as is used in the
-memoization process.
-
-
-
-**Evaluation Service**
-
-As evaluation is the most resource
-intensive part of the search,
-this was the first natural choice
-to decouple. Each PGE search
-will require several evaluator instances
-and so we chose to have them only
-concerned with a single data set
-at a time.
-
-PGE uses a third-party library, Levmar,
-to perform non-linear fitting
-of a model's parameters.
-PGE uses the analytical jacobian
-fitting function and thus requires
-the jacobian, w.r.t. the parameters,
-to be calculated.
-The evaluator service calls upon
-the algebra service to perform this
-operation on its behalf.
-Since both the subset and fullfit
-evaluation phases make use of
-the non-linear regression,
-they thus both require the jacobian
-to be available.
-
-Each evaluation service instance
-is first sent the necessary information
-for setup, including the parameters
-and the dataset to be used for evaluation.
-They then sit in an event loop waiting for
-a request to evaluate a model.
-
-
-
-**Search Service**
-
-The search loop exists
-as its own service and is the main
-control-flow structure.
-It remains basically the same
-as the original search loop.
-The main difference is 
-that function calls to the 
-algebra and evalutation service
-now require network activity.
-During each iteration, PGE delegates
-to the appropriate services
-at the neccessary times.
-
-
-**Service Interactions**
-
-The algebra service is independent and does not
-depend on the other two services.
-The evaluation service depends upon
-the algebra service for calculating
-the analytical jacobian of a model
-w.r.t. the parameters.
-The search service depends upon both
-the algebra and evaluation service.
-
-Each search service has its own set
-of evaluation service instances.
-The algebra services are more flexible,
-as they are independent.
-Several variations we explore are:
-1) each service instance having its own dedicated
-algebra instance (additionally the search process
-can have multiple instances)
-2) a search instance and its evaluator instances
-can share a pool of algebra services
-3) multiple PGE search processes can
-share a larger pool of algebra service instances.
-We explore the trade-offs and appropriate situations
-for each case in the evaluation phase.
-The best setups are tied to both the problem at
-hand and the current implementation.
-
-Our preliminary experiences in decoupling allowed us
-to reduce the original count of algebra service instances after converting messages to use
-the serialization of a model, as opposed to
-the human readable versions of the model.
-This was most likely the result of removing
-the string processing necessary in tokenization and parsing into the syntax tree. 
-
-
-
+One interesting consequence is that
+the majority of coefficient tuning
+can happen in the peek evaluation phase.
+Initially, we make a guess of `1` for the
+coefficient values. Peek evaluation
+makes the best estimates on limited data.
+However, when a model makes it to full evaluation,
+it has much better starting points for
+the coefficient values.
+Often, the full fitting procedures 
+need fewer passes because of this situation.
 
 
 
@@ -340,7 +357,7 @@ the string processing necessary in tokenization and parsing into the syntax tree
 <a class="right" href="#top">top</a>
 </div>
 
-### Metrics, Fitness, and Selection
+### Selection Improvements
 
 The original PGE algorithm used
 tree size and an error metric
@@ -354,7 +371,7 @@ to the metrics,
 fitness, and selection processes.
 
 
-#### More metrics for models
+#### More Model Metrics
 
 Our experience showed that
 modelling error was often 
@@ -381,6 +398,20 @@ The penalty accounts for
 increased relative computational complexity
 which we set at +2. The value, while effective,
 deserves further investigation than we provide.
+
+**Jacobian complexity** is the summed tree size
+of the jacobians for the model. 
+We also included the penalized version as well.
+This metric has multiple effect
+for minimizing complexity.
+It minimizes absolute, summed size.
+It minimizes the number of model parameters,
+because fewer terms means smaller sum.
+It also minimizes the nesting complexity of 
+the original model. When coefficients
+are dependent upon one another,
+the jacobians become quite complex
+and drastically increase the value of this metric.
 
 
 **R-squared** measures the goodness of fit
@@ -525,18 +556,18 @@ beneficial.
 
 
 
-
 <br>
 
-<div id="policies">
+<div id="expansion">
 <a class="right" href="#top">top</a>
 </div>
 
-### Expansion Policies
+### Expansion Improvements
 
-1. ** Multiple, independent complexity levels **
-1. ** Context Aware **
-    
+
+#### Configurable complexity levels
+
+
 
 
 |  method  |  level  |  result set |
@@ -573,6 +604,152 @@ beneficial.
 
 
 
+#### Context-aware
+
+The original expansion polices
+were applied recursively at
+each node in the model tree.
+This was done without regard
+for the context in which these
+operations took place.
+This led to situations where trigonimic functions
+were embedded within eachother, such as
+$$ sin(cos(x)) $$.
+It also led to the production of
+ovely complex expressions
+involving coefficients and addition.
+In example, $$C * ( C + C*X(C*X + C*(C*X + C)^2)) $$
+is more simply expressed as a single level summation.
+Additionally, it is much more difficult to
+fit the coefficients as they involve many
+nonlinear relationships.
+
+We incorporate the idea of
+context-aware expansion policies
+to deal with undesirable situations
+and consequences.
+Here we include two types of context-awareness,
+functional and depth,
+though there are generally more options.
+Context aware operators are easily
+created with state traking during
+the recursion process.
+Our experience has been that
+their use implies restriction
+based on context.
+However, there may be situations
+where certain operations
+are only permitted within
+a particular context.
+
+
+
+
+
+#### New Extension Operator
+
+The additon and multiplication
+expansion policies extend the number
+of terms to the respective operators.
+They do this by drawing from a
+predefined pool of basis functions.
+
+We make use of a new extension operator
+which only works at root level addition.
+This operator extends an addition
+with small modification to its current terms.
+First, each term is expanded with a set of basis terms.
+This is similar to the multiplication expansion.
+Then each of these terms is included in the summation,
+as opposed to replacing an existing term.
+
+This operator makes larger movements around the search space,
+effectively being the combination of smaller
+modifications with several intermediate steps.
+We chose to only use this at root level addition
+because deeper recursion
+becomes overly complex very quickly.
+
+
+
+
+
+#### New Shrinkage Operator
+
+
+Under the original policies,
+there was no explicit method to go backwards,
+or decrease the size of a model.
+This can occur when a cancelling term
+is applied through an expansion operator,
+such as $$ x^2 * x^{-1} \rightarrow x $$.
+
+We make use of a new shrinkage operator
+which removes terms from additions.
+The operator recurses over the entire tree.
+When an addition is found, it
+produces all expressions possible,
+with one term removed.
+
+The reason for adding this is
+to clean up after
+intermediary terms in models.
+During the search process,
+it is often the case that
+additonal terms are incorporated
+which either bridge a gap
+or are meant to deal with noise.
+This is particularly noticable with
+trigonimic functions whos output
+is in the range [-1:1].
+
+ADD PICTURES HERE FROM ACTUAL BENCHMARKS / PROBLEMS
+
+The shrinkage operator removes 
+excessive terms from overfitting noise
+or from the intemediary terms needed
+during search progression.
+We exclude a similar operator for multiplication
+for two reasons.
+The first is that there would be a large
+combinatorial number of models generated from this process.
+Second, in most cases the models were or can be reached
+through the usual multiplication expansion process.
+That is, this process would be to similar
+to the multiplying by a cancelling term
+to make a significant difference.
+
+
+
+
+
+
+
+
+#### Progressive expansion
+
+
+Once a model is fully fit,
+it is a candidate for expansion.
+First, however, it must be selected
+through the heap prioritization methods.
+An extension of this is to have
+a series increasingl complex expansions.
+Each step in the series has 
+its own set of expansion policies
+and its own heap for selection.
+
+<div class="center-align">
+<span><b>Figure #</b> - PGE Progressive Expansion</span>
+<img class="responsive-img" src="/sr/img/impl_diags/PGE_Expansion.png" />
+</div>
+
+
+ex 1. increasing complexity of modifications
+
+ex 2. reducing contextual restrictions
+
+ex 3. delaying incorporation of functions
 
 
 
@@ -582,40 +759,19 @@ beneficial.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br>
-
-<div id="expansion">
+<div id="enhanced">
 <a class="right" href="#top">top</a>
 </div>
 
-### Waterfall Expansion
-
-1. ** Multiple tiers of increased expansion **
-1. ** Removes parameters and choices with policies **
+### Enhanced PGE
 
 
 
 
-
-
-
-
-
-
+<div class="center-align">
+<span><b>Figure #</b> - PGE Progressive Expansion</span>
+<img class="responsive-img" src="/sr/img/impl_diags/PGE_Enhanced.png" />
+</div>
 
 
 

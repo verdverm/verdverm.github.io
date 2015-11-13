@@ -81,7 +81,6 @@ which are later determined with non-linear regression,
 PGE additionally separates the search for model form
 from the optimization of any given form.
 
-
 PGE takes reductionism one step further,
 fully optimizing an equation in the search space
 the first time it is encountered
@@ -1082,7 +1081,6 @@ PGE reverses a grammar's rules into productions
 to expand simple basis functions 
 into increasingly complex expressions. 
 To expand a candidate equation,
-%the currently discovered, most promising equations,
 PGE uses generating functions 
 derived from the grammar's production rules.
 Generating functions are the deterministic replacement 
