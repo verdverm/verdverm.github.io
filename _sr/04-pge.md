@@ -673,8 +673,15 @@ the successive non-dominated sets of equations.
 SR is a multi-objective optimization task
 seeks to maximize accuracy
 while minimizing complexity.
+To search over equation space
+PGE must move within the space
+and decide where and to to move.
 
-
+PGE uses exploration operators derived
+from the rules of the grammar.
+The exploration operators input one equation
+and output a set of equations
+which result from small edits.
 PGE uses a priority queue to express
 which points in the search space
 to expand next. 
@@ -739,13 +746,13 @@ current node's type and applies the appropriate
 production function. 
 Each production function corresponds to
 one or more of the grammar's production rules. 
-\textit{AddTerm} increases
+*AddTerm* increases
 the number of terms in a summation, such as
 $$aX + bY \Rightarrow aX + bY + cZ$$. 
-\textit{WidenTerm} increases
+*WidenTerm* increases
 the number of terms in a product, such as
 $$aXY^2 \Rightarrow aX^2Y^2$$ or $$aXY^2 \Rightarrow aXY^2Z$$.
-\textit{DeepenTerm} increases
+*DeepenTerm* increases
 the complexity of a term, such as
 $$aXY \Rightarrow a(X+bZ)Y$$ or $$aSin(X) \Rightarrow aSin(X+Y)$$.
 
@@ -785,8 +792,6 @@ Our experimentations have not shown this to
 be prohibitive. Consumed memory
 never exceeded 500Mb, even in the face of
 hundreds of thousands of unique equations. 
-% \dken{It stores all explored equations, right?  Is space an issue?
-% Maybe some ballpark calculations to show that it is not.}
 
 To construct the PPQ, successive 
 Pareto frontiers are appended onto a linear structure.
@@ -811,8 +816,6 @@ the space of equations is searched.
 The PPQ gives equations which expand the
 branches of the search space
 towards small equations with low error.
-
-% \tony{show how pareto fronts turn into an array or queue}
 
 To construct the PPQ,
 successive Pareto fronts are 
@@ -839,9 +842,9 @@ PGE uses the PPQ and a pop count to
 control the amount of regularization.
 
 During processing, we remove the top 
-*p* equations (3 in our experiments)
+$$p$$ equations (3 in our experiments)
 when selecting the next areas to search.
-By doing so, we select the $p$ smallest 
+By doing so, we select the $$p$$ smallest 
 equations from the first Pareto frontier.
 This gives variation across the trade-offs
 for the equations to be expanded,
@@ -1042,190 +1045,6 @@ class Node:
   
 ### The Search Loop
 
-
-Initially, PGE starts with 
-a set of basis functions.
-Each basis function is 
-fit to the training data,
-evaluated on the testing data,
-and placed into the Pareto Priority Queue (PPQ).
-The PGE algorithm iteratively
-pops equations from the top of the queue for processing.
-Each of these equations is expanded
-by applying the grammar's production rules recursively.
-The new equations are memoized using
-a specialized structure, the Integer Prefix Tree (IPT).
-The IPT uses an equation's serialized representation
-to track which solutions have been processed already.
-The IPT ensures that we only consider 
-an equation form once.
-This allows PGE to eliminate duplication of effort
-in evaluation and expansion.
-Unique equations are
-fit to the training data, 
-evaluated on the test data, 
-and pushed into the priority queue.
-PGE continues until
-a model of desired accuracy is discovered
-or a computational threshold is reached.
-
-
-
-<div class="center-align">
-<span><b>Figure #</b> - PGE Flow Diagram</span>
-<img class="responsive-img" src="/sr/img/PGE_flow_diagram.png" />
-</div>
-
-
-PGE reverses a grammar's rules into productions
-to expand simple basis functions 
-into increasingly complex expressions. 
-To expand a candidate equation,
-PGE uses generating functions 
-derived from the grammar's production rules.
-Generating functions are the deterministic replacement 
-for the non-deterministic genetic operators,
-crossover and mutation.
-Each generation function corresponds to
-one or more of the grammar's production rules. 
-The generation functions are policies
-for how to expand and modify
-an equation's parse tree to obtain 
-functions `close' to the current one.
-New equations are produced by recursively applying
-the generating functions over the parse tree.
-From a single tree, this process produces
-a set of reachable equations within
-one step of the input equation.
-As the production rules are applied recursively,
-the current node's type determines
-the appropriate generation function(s) to apply.
-
-
-Use expansion operators to grow 
-current best equations. One for
-ADD,MUL and one for substitution.
-
-Listing \ref{expand} shows some example generation functions. 
-\textit{AddTerm} increases
-the number of terms in a summation, such as
-$aX + bY \Rightarrow aX + bY + cZ$. 
-\textit{WidenTerm} increases
-the number of terms in a multiplication, such as
-$aXY^2 \Rightarrow aX^2Y^2$ or $aXY^2 \Rightarrow aXY^2Z$.
-\textit{DeepenTerm} increases
-the complexity of a term, such as
-$aXY \Rightarrow a(X+bZ)Y$ or $aSin(X) \Rightarrow aSin(X+Y)$.
-
-
-
-Directing the Search
-    Pareto Priority Queue (PPQ)
-       -  Balance size and fitness
-       -  Select from the frontier
-
-During processing, PGE removes the top 
-$p$ equations from the PPQ in order to select
-the next areas to expand.
-By doing so, PGE selects the $p$ smallest 
-equations from the first Pareto frontier.
-This gives variation across the trade-offs
-for which equations to expand,
-exploiting multiple paths in the space simultaneously.
-If only the first (smallest) equation is removed,
-search would progress through the space by size.
-If $p$ is too large,
-then overly complex equations are produced, 
-over fitting the data and
-causing bloat to ensue.
-Bloat in PGE is the result
-of good solutions
-crowding the front of the PPQ.
-As the search progresses,
-extraneous material is added
-to candidates which has little
-effect on the accuracy of the equation.
-This has a compounding effect, whereby 
-the extra material increases the 
-number of expansion points of the tree,
-creating even more similarly accurate
-expressions with ineffectual sub-expressions.
-
-
-The PGE search proceeds as follows.
-Initialization generates
-a set of basis functions for each variable.
-These basis functions are then
-memoized by the IPT, 
-fit to the training data,
-evaluated on the testing data,
-and pushed into the PPQ.
-The main PGE loop iteratively
-pops $p$ equations from the top of 
-the PPQ for processing.
-Each of these equations is expanded
-through recursive application of the generation functions.
-The resulting equations are memoized using the IPT.
-If the equation has been encountered before,
-it is discarded.
-The remaining unique equations are
-fit to the training data
-with non-linear regression,
-evaluated on the testing data,
-and pushed into the PPQ.
-PGE continues until
-a model of desired accuracy is discovered
-or a computational threshold is reached.
-Theoretically, PGE could 
-explore the entire space of representable equations
-given infinite space and unlimited time.
-
-<div class="center-align"><b>Figure #</b>: PGE Search Loop</div>
-{% highlight python linenos %}
-
-def loop(iterations):
-  for I in range(iterations):
-    popd = pop()
-
-    # expand popd models, they are now fully processed
-    expanded = expand(popd)
-
-    # filter and memoize expanded models
-    to_memo = filter(expanded)      
-    to_eval = memoize(to_memo)
-
-    # fit and evaluate these models
-    eval(to_eval)
-
-    # push fully fit models into the queue
-    push(to_eval)
-
-{% endhighlight %}
-
-
-The main PGE loop 
-makes the following steps (line numbers):
-(9) $p$ equations are from the top of the PPQ.
-(10) The $p$ equations are expanded to create
-more complex equations \textit{new\_eqns}
-by applying the grammar's production rules 
-recursively to an equation's parse tree.
-(12-19) Each equation $e \in $ \textit{new\_eqns} is processed.\\
-(13) The IPT uses an equation's serialized representation
-to checks if $e$ has been seen before.
-If it has, $e$ is discarded, otherwise $e$ is unique and
-(15) fit to the training data
-(16) evaluated on the test data
-and (17) pushed into the PPQ.
-The main PGE loop continues until 
-the stopping criteria is reached (8).
-Theoretically, PGE would 
-explore the entire space of representable expressions
-given infinite space and an unlimited amount of time.
-
-
-
-
 PGE iteratively refines equations
 by applying the grammar's 
 production rules recursively.
@@ -1246,22 +1065,76 @@ in this way until the
 stopping criteria is reached.
 
 
+<div class="center-align">
+<span><b>Figure #</b> - PGE Flow Diagram</span>
+<img class="responsive-img" src="/sr/img/impl_diags/PGE_Basic.png" />
+</div>
 
 
+The PGE search proceeds as follows.
+Initialization generates
+a set of basis functions for each variable.
+These basis functions are then
+memoized by the IPT, 
+fit to the training data
+and pushed into the PPQ.
+The main PGE loop iteratively
+pops $$p$$ equations from the top of 
+the PPQ for processing.
+Each of these equations is expanded
+through recursive application of the generation functions.
+The resulting equations are memoized using the IPT.
+If the equation has been encountered before,
+it is discarded.
+The remaining unique equations are
+fit to the training data
+with non-linear regression
+and pushed into the PPQ.
+PGE continues until
+a model of desired accuracy is discovered
+or a computational threshold is reached.
+Theoretically, PGE could 
+explore the entire space of representable equations
+given infinite space and unlimited time.
 
 
+<div class="center-align"><b>Figure #</b>: PGE Search Loop</div>
+{% highlight python linenos %}
 
-Prioritization Strategies
-    Pareto Priority Queue
-       -  L2-norm
-       -  Information Gain
- 
-Reducing Waste
-    Candidate equations are evaluated
-    on all training data. Most are poor
-    quality, thus wasting cycles.
+def loop(iterations):
+  for I in range(iterations):
+    popd = pop(p)
+
+    # expand popd models, they are now fully processed
+    expanded = expand(popd)
+
+    # filter and memoize expanded models
+    to_memo = filter(expanded)      
+    to_eval = memoize(to_memo)
+
+    # fit and evaluate these models
+    eval(to_eval)
+
+    # push fully fit models into the queue
+    push(to_eval)
+
+{% endhighlight %}
 
 
+The main PGE loop 
+makes the following steps (line numbers):
+(3) $$p$$ equations are from the top of the PPQ.
+(6) The $$p$$ equations are expanded to create
+the more complex equations 'expanded'
+by applying the grammar's production rules 
+recursively to an equation's parse tree.
+(9) Each equation $$e \in $$ 'expanded' is potentially filtered
+for excessive size or illegal operations.
+(10) The IPT uses an equation's serialized representation
+to checks if $$e$$ has been seen before.
+If it has, $$e$$ is discarded, otherwise $e$ is unique and
+(13) fit to the training data
+and (16) pushed into the PPQ.
 
 
 Variations on the PGE algorithm
@@ -1283,8 +1156,8 @@ In this paper,
 we used three different expansion methods.
 The basic method (PGE-1) restricts the grammar 
 by removing productions which result in
-non-distributed expressions like $ax*(b+cx*(d+x^2))$.
-It only uses \textit{AddTerm} and \textit{WidenTerm}
+non-distributed expressions like $$ax*(b+cx*(d+x^2))$$.
+It only uses *AddTerm* and *WidenTerm*
 during the recursive expansion.
 The second method (PGE-2) adds back the previously mentioned restriction,
 using all three generation functions from Listing \ref{expand}.
@@ -1294,53 +1167,29 @@ for simplification rules to consider the same.
 Despite being equivalent,
 these isomorphic forms can produce very different offspring,
 and represent separate areas of the search space.
-% which may be discovered
-% at different stages of the search.
-% \ken{So then why test it? Does it have some potential advantage?}
 The third method (PGE-3) is FFX inspired,
 but starts with only a set of univariate bases.
 These bases are iteratively 
 grown into a summation of multiplications
-by applying \textit{AddTerm} and \textit{WidenTerm},
+by applying *AddTerm* and *WidenTerm*,
 creating candidates with more and increasingly complex bases.
 PGE-3 differs from the PGE-1 method by
 explicitly defining the root node to be addition
 and placing stricter limitations on the complexity
 of each term in the summation.
-% \ken{If there is time/space, it would probably be good to add details on these PGE methods.}
-
-% \dken{Is every expansion applied to every node?}
 
 
 
 
 
-To determine the SR starting points,
-GP uses methods like grow, full, and ramped half-and-half 
-to randomly generate initial equations.
-In contrast, PGE initializes a search with 
-a set of basis functions, such as
-$c_0*x_i$, $c_0 + c_1*x_i$, $\frac{c_0}{x_i}$, and $c_0*f(x_i)$.
-These starting points are the simplest functions
-and are predetermined by the usable building blocks.
-Instead of growing equations at the beginning,
-PGE starts with simple functions,
-expanding them to reach 
-new, unseen areas of the search space.
-% PGE may be seeded with an even richer set of basis function,
-% and even allow complete sub-trees to become building blocks.
 
-The initialization and generating functions,
-determine the set of reachable expressions in a SR search.
-As with the equations themselves,
-there is a trade-off between
-space and complexity;
-how wide and how deep a search can explore.
-The expansion methods discussed above
-enable PGE to remove 
-non-determinism at the individual level.
-To fully remove non-determinism, and give direction to the search,
-the selection strategy still needs to be replaced.
+
+
+
+
+
+
+
 
 
 
@@ -1363,131 +1212,14 @@ the selection strategy still needs to be replaced.
   
 ### Limitations
 
-
-Exponential to |{Features}|
-    Recursive expansion function at all
-    valid points creates a compounding
-    growth in new candidates over time.
- 
-Parameter Optimization
-    Non-linear regression is not
-    guaranteed to find optimal solution.
-    There are also questions as to where
-    parameters should be included.
-Bloat in PGE
-    The exponential growth in candidates
-    the offspring of good partial solutions
-    to dominate the selection process.
- 
-Memoization & Relationships
-    Memoization only matched entire
-    equations. Relationships were not
-    incorporated or used. Opportunity
-    for caching algebraic manipulations.
-
-
-
-
-
-PGE limitations and opportunities
-
-
-Addressed
-
-- all models are completely trained
-  [expensive with large data sets]
-  (pass through multiple heaps and increased data)
-- custom algebra lacks features \& has errors
-  (use a mature system SYMPY, and provide as a service)
-
-Unaddressed
-
-- ordering is arbitrary
-- when / where to put coefficients
-  (complex)
-- un-dealt with exponential w.r.t. input feature size
-  (due to nature of production functions)
-  also determines which equations are reachable
-  what is the minimalistic set of generators
-  which will produce all equations eventually
-  (very complex)
-
-
-
-
-Though a full realization of PGE may be complex,
-the original formulation is simple
-and modular by design,
-using simple or naive components.
-There exist ample opportunities to
-replace components with more advanced algorithms
-as well as in distributing these components
-and making them internally parallel.
-
-
-\subsection{Model Parameters}
-
-Fitting
-
-Amount of Data (fully trained) -> tiered
-
-\subsection{Input Features}
-
-Exponential Explosion
-
-
-% PGE main ideas / key features
-%   Deterministic
-%     - consistent \& reproducible results
-%     - allows components to be studied in greater isolation
-
-%   Search Space Reductions
-%     - $n$-ary tree
-%     - communativity \& associativity
-%       of addition \& multiplication
-%     - overlapping sub-problems
-%     - Memoization
-
-%   Evaluating Form Once
-%     - Separate form from optimization
-
-% PGE specifics which are relevant
-
-%   Non-linear regression
-%     - abstract coeff
-%     - Levmar
-%     - analytic Jacobian
-%     - data \& functional parallelism
-%       (usual point of parallelization)
-
-%   Pareto Priority Queue
-%     - Like a heap
-%     - provides the direction
-
-%   Search Loop
-%     - pop-expand-eval-push
-
-%     => (pop-eval-push)+ -> pop-expand-push
-%     => (pop-FUNC)++ -> (push)++
-
-% PGE limitations and opportunities
-
-
-% Addressed
-% - all models are completely trained
-%   (pass through multiple heaps and increased data)
-% - custom algebra lacks features \& has errors
-
-% Unaddressed
-% - when / where to put coefficients
-% - un-dealt with exponential w.r.t. input feature size
-%   (due to production functions)
-
-
-
 During the development of PGE,
 we encountered some of the limitations
 with our current implementation and reasoning.
+
+
+
+#### Exponential to |{Features}|
+    
 
 PGE does not handle dimensionality well.
 As the number of variables increases,
@@ -1507,37 +1239,85 @@ represent different areas of the search space,
 and different forms are producible from
 these points in the space.
 
-Another issues relates to poor partial
-solution fitness early in the search process.
-Some benchmarks are difficult to approximate
-with small functions. Others have good
-approximations which experience bloat,
-though not for the same reason as GP.
-PGE bloat occurs because the extra
+
+
+#### Algebra Policies
+    
+Expansion and simplification policies 
+are difficult to establish and generalize.
+There is no free lunch.
+The policies determine the reachable search space
+and how local changes are made.
+If too much expansion is unrestrained,
+the complexity grows quickly,
+often creating equations which
+have a simpler version.
+
+Additionally, the originial implementation
+used a custom algebra system and lacked many
+features and capabilities.
+We advise, and will in the next chapter,
+move to using a mature Computer Algebra System (CAS).
+
+
+
+#### Bloat in PGE
+
+Bloat in PGE is when
+good partial solutions dominate
+the selection pool and create
+an expansion cycle.
+Consider $$F(x)$$ as a good partial solution.
+PGE makes all possible modifications to this expression,
+PGE will produce $$F(x) + c*g(x)$$
+where either $$c$$ is very small
+or $$g(x)$$ produces near zero values.
+In both cases, bloat occurs because the extra
 terms of the expression have little effect
 on the fitness of the equation.
-However, each node in the excess is
+Adding to this, each node in the bloated portion is
 expanded upon, further exasperating the situation.
 
 
 
+#### Similar Selection
+
+Due to the bloat and all inclusive expansion,
+the bloated partial solutions can quickly
+dominate the selection pool.
+These similar solutions have similar fitness,
+causing the selection process to have
+difficulty distinguishing between them.
+They can create a situation where
+similar models are selected and expanded,
+with bloated terms and fitness incomparability, 
+and PGE getting stuck in a local optima.s
 
 
-<div id="reproducibility">
-<a class="right" href="#top">top</a>
-</div>
-  
-### Reproducibility
+
+#### Parameter Optimization
+
+Parameter optimization is the portion of any SR implementation
+which takes the longest time.
+In many cases, the parameters are linearly dependent
+and we get an exact best solution for a model.
+In the nonlinear cases we may not, as
+nonlinear regression is not guaranteed to find an optimal solution.
+There are also questions as to where parameters should be included.
+If excessive parameters are added to a model
+it can take a comparatively long time to fit
+and in many cases may be overfitting to the 
+noise in the data.
 
 
 
 
 
-By design, as an algorithm
 
-Importance of Open Sourcing
 
-Python & Scikit-Learn code
+
+
+
 
 
 

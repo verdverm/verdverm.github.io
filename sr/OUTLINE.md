@@ -6,7 +6,6 @@ Outline for Online Dissertation
     1. **Motivation**
     1. **Contributions**
     1. **Results**
-    1. **Reproducibility**
 
 1. ### Symbolic Regression
     1. The Problem
@@ -82,7 +81,7 @@ Outline for Online Dissertation
             1. Dijkstra
             1. A\* search
 
-1. ### *Prioritized Grammar Enumeration*
+1. ### Prioritized Grammar Enumeration
     1. Theory
         1. Removing Non-determinism
         1. Search Space Organization
@@ -90,7 +89,7 @@ Outline for Online Dissertation
             1. Dynamic Programming
             1. Non-linear Regression
             1. Memoization
-    1. **Components**
+    1. Components
         1. Representation
             1. N-ary trie
             1. Prefix notation
@@ -99,33 +98,26 @@ Outline for Online Dissertation
             1. Non-linear parameter fitting
             1. Modeling Metrics
             1. Fitness Values
-        1. **Optimization**
-            1. **Exploration Operators**
-            1. **Prioritization Strategies**
-            1. **Selection Mechanisms**
-        1. **Memoization**
-            1. **Detecting Overlapping Subproblems**
-            1. **Integer Prefix Tree**
-    1. **The Search Loop**
-        1. **Diagram**
-        1. **Code listing**
-        1. **Explanation**
-    1. **Limitations**
-        1. **Exponential to {Features}**
-            1. **Compounds with next issue**
-        1. **Exploration operators**
-            1. **Determine reachable parts of space**
-            1. **Recursive nature part of Exponential problem**
-        1. **Equation Bloat**
-            1. **From recursive production rules**
-        1. **Parameter Optimization**
-            1. **Difficult as eqns get bigger**
-            1. **Becomes time-consuming**
-            1. **Nonlinear regression issues**
-    1. **Reproducibility**
+        1. Optimization
+            1. Exploration Operators
+            1. Prioritization Strategies
+            1. Selection Mechanisms
+        1. Memoization
+            1. Detecting Overlapping Subproblems
+            1. Integer Prefix Tree
+    1. The Search Loop
+        1. Diagram
+        1. Code listing
+        1. Explanation
+    1. Limitations
+        1. Exponential to {Features}
+        1. Algebra Policies
+        1. Equation Bloat
+        1. Selection Similarity
+        1. Parameter Optimization
     1. Relation to GP
 
-1. ### *PGE Enhancements*
+1. ### PGE Enhancements
     1. Decoupling into Services 
         1. Evaluation generally > 90% of time
         1. Data and Function parallelism
@@ -143,14 +135,14 @@ Outline for Online Dissertation
         1. More accuracy metrics
         1. More parsimony metrics
         1. Use two together
-    1. **Expansion Improvements**
-        1. **Configurable complexity levels**
-        1. **Context-aware**
-        1. **New Extension Operator**
-        1. **New Shrinkage Operator**
-        1. **Progressive expansion**
-    1. **PGE Enhanced Description**
-        1. **Summarize the f.l.o.w.**
+    1. Expansion Improvements
+        1. Configurable complexity levels
+        1. Context-aware
+        1. New Extension Operator
+        1. New Shrinkage Operator
+        1. Progressive expansion
+    1. PGE Enhanced Description
+        1. Summarize the f.l.o.w.
 
 1. ### *PGE Experiments*
     1. **Overview**

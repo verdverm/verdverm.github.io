@@ -98,10 +98,10 @@ This enhancement was also made in conjunction
 with the last enhancement, waterfall evaluation.
 
 
-<div class="center-align">
+<div class="center-align row"><div class="col s10 offset-s1">
 <span><b>Figure #</b> - Decoupled PGE</span>
 <img class="responsive-img" src="/sr/img/impl_diags/PGE_Decoupled.png" />
-</div>
+</div></div>
 
 #### The Three Services
 
@@ -244,10 +244,10 @@ been shown to provide good estimates
 with as few as just 8 data points
 [ [hod:08:coevo_fp]() ].
 
-<div class="center-align">
+<div class="center-align row"><div class="col s10 offset-s1">
 <span><b>Figure #</b> - PGE Progressive Evaluation</span>
 <img class="responsive-img" src="/sr/img/impl_diags/PGE_Refinement.png" />
-</div>
+</div></div>
 
 We use this idea of subsampling and
 introduce an extra stage of processing,
@@ -528,6 +528,8 @@ a simlistic Pareto sorting algorithm.
 Research in GP has shown that 
 accounting for denisity along
 the frontier, better choices can be made.
+Section ? in Chapter 3 discussed
+the various improved algorithms for Pareto selection.
 We settled on the NSGA-II algorithm
 for its good balance between
 effectiveness and computational complexity.
@@ -564,38 +566,79 @@ beneficial.
 
 ### Expansion Improvements
 
+This section describes improvements to
+the expansion phase and functionality.
+The first changes enable multiple
+levels of complexity and
+context awareness when appling
+the expanions operators.
+We then describe two new
+expansion operators which
+were designed to work on summations.
+Finally, we enable multiple tiers
+of model expansion, thereby applying
+progressively complex expansion operations
+to progressively fewer models at a time.
+
+
 
 #### Configurable complexity levels
 
+The original PGE algorithm had a three
+different sets of expansion functions.
+They encompased three different complexities
+or scenarios. We alter this idea 
+for greater grainularity.
+Each of the four operators can have its own complexity level.
+The *low*, *medium*, and *high* options 
+provide flexibility while simplifying
+the choices for an end-user.
+
+The following tables describe the 
+the basis functions used for each
+of the operators. Their application
+remains the same as the original PGE algorithm.
+
+<br>
+
+**Initialization**
+
+|  level  |  result set |
+| ------- | ------------|
+| low     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| med     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_3 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
+| high    |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_4 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:3]} \Big) + C $$ |
 
 
+<br>
 
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| init     | low     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
-| init     | med     |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_3 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:2]} \Big) + C $$ |
-| init     | high    |  $$ \sum \Big( \Big\{ \big\{ \vec{x}C_4 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \} \Big \} C_{[1:3]} \Big) + C $$ |
+**Variable Substitution**
 
+|  level  |  result set |
+| ------- | ------------|
+| low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| high    |  $$ \big \{Add Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
 
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Var sub  | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Var sub  | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Var sub  | high    |  $$ \big \{Add Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
+<br>
 
+**Multiplication Extension**
 
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Mul grow | low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Mul grow | med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
-| Mul grow | high    |  $$ \big \{Mul Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \}$$ |
+|  level  |  result set |
+| ------- | ------------|
+| low     |  $$ \big \{ \vec{x}C_1 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| med     |  $$ \big \{ \vec{x}C_2 \big \} \bigcup \big \{ F(\vec{x}C_1) \big \}$$ |
+| high    |  $$ \big \{Mul Med \big \} \bigcup \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \}$$ |
 
+<br>
 
-|  method  |  level  |  result set |
-| -------- | ------- | ------------|
-| Add grow | low     |  $$ \big \{ a * \vec{x}C_1 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
-| Add grow | med     |  $$ \big \{ a * \vec{x}C_2 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
-| Add grow | high    |  $$ \big \{Add Med \big \} \bigcup a* \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ |
+**Addition Extension**
+
+|  level  |  result set |
+| ------- | ------------|
+| low     |  $$ \big \{ a * \vec{x}C_1 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| med     |  $$ \big \{ a * \vec{x}C_2 +b \big \} \bigcup \big \{ a * F(\vec{x}C_1) +b \big \}$$ |
+| high    |  $$ \big \{Add Med \big \} \bigcup a* \Big \{ \big \{ \vec{x}C_1 \big \} \times \big \{ F(\vec{x}C_1) \big \} \Big \} +b $$ 
 
 
 
@@ -728,34 +771,45 @@ to make a significant difference.
 
 #### Progressive expansion
 
+Progressive expansion is an idea that
+a series of increasingly complex
+expansion schemes can be applied
+to a decreasing number of models.
+This follows along with the 
+multiple tiers of refinement motif.
 
-Once a model is fully fit,
-it is a candidate for expansion.
-First, however, it must be selected
-through the heap prioritization methods.
-An extension of this is to have
-a series increasingl complex expansions.
-Each step in the series has 
-its own set of expansion policies
-and its own heap for selection.
+Once a model is fully fit
+during a search,
+it becomes a candidate for expansion.
+If selected through the heap prioritization,
+it then has the expansion methods applied.
 
-<div class="center-align">
+Under the progressive expansion design,
+each step in the series has 
+its own selection heap and
+its own set of expansion policies.
+When a model has been selected and expanded
+it is pushed into the next tier's heap.
+
+<div class="center-align row"><div class="col s10 offset-s1">
 <span><b>Figure #</b> - PGE Progressive Expansion</span>
 <img class="responsive-img" src="/sr/img/impl_diags/PGE_Expansion.png" />
-</div>
+</div></div>
 
 
-ex 1. increasing complexity of modifications
+Example schemes for progressive expansion are:
 
-ex 2. reducing contextual restrictions
-
-ex 3. delaying incorporation of functions
-
-
-
+1. Increasing complexity of modifications
+1. Limiting variables available at early tiers
+1. Reducing contextual restrictions
+1. Delaying incorporation of functions
 
 
 
+
+
+
+<br>
 
 
 
@@ -765,13 +819,24 @@ ex 3. delaying incorporation of functions
 
 ### Enhanced PGE
 
+This chapter has described many enhancements
+to the original PGE algorithm.
+The diagram below depicts
+PGE with these enhancements.
+The loop remains the same
+however several phases
+have been internally extended
+with progressive application
+and intemediate heaps.
+The next chapter will
+show their effectiveness
+over a range of experiments.
 
 
-
-<div class="center-align">
+<div class="center-align row"><div class="col s10 offset-s1">
 <span><b>Figure #</b> - PGE Progressive Expansion</span>
 <img class="responsive-img" src="/sr/img/impl_diags/PGE_Enhanced.png" />
-</div>
+</div></div>
 
 
 
