@@ -145,14 +145,17 @@ Outline for Online Dissertation
         1. Summarize the f.l.o.w.
 
 1. ### *PGE Experiments*
-    1. **Overview**
-    1. **Experimental Settings**
     1. **Proof of Concept**
         1. **Original Algorithm**
         1. **Explicit Bencmarks**
+    1. **Data Related Issues**
         1. **Diffeq Benchmarks**
+        1. **Progressive Refinement**
     1. **Data Related Issues**
     1. **PGE Enhancements**
+        1. **Fitness Metrics**
+        1. **Expansion Policies**
+        1. **Progressive Expansion**
 
 1. ### *Conclusions*
     1. **Linguistic Perspective**

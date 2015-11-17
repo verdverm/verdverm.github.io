@@ -76,91 +76,6 @@ A comparative evaluation against other SR implementations
 
 #### Proof of Concept
 
-The first set of experiments use
-the noise-free data for the one-dimensional problems.
-The purpose is to see if learning
-is possible and 
-under what parameter settings
-each problem is additionally feasible.
-
-
-
-Settings:
-
-| Parameter      | Value     |
-| -------------  |-------    |
-| Functions      | none      |
-| Function Level | n/a       |
-| Initial Level  | low       |
-| Growing Level  | low       |
-
-<br>
-
-<div class="center-align">
-<span><b>Figure #</b> - 1D, Group 1</span>
-<img class="responsive-img" src="/sr/img/experiments/basic_stage1_group1.png" />
-</div>
-
-<div class="center-align">
-<span><b>Figure #</b> - 1D, Group 2</span>
-<img class="responsive-img" src="/sr/img/experiments/basic_stage1_group2.png" />
-</div>
-
-
-<br>
-
-Settings:
-
-| Parameter      | Value     |
-| -------------  |-------    |
-| Functions      | sin,cos   |
-| Function Level | linear    |
-| Initial Level  | low       |
-| Growing Level  | low       |
-
-
-<br>
-
-#### Explicit Problems
-
-| Problem        | Solved | Iters  | Models    | Evals     | I-Level | G-Level | F-Level | Functions |
-| -------------- |:------:|:------:|:---------:|:---------:|:-------:|:-------:|:-------:|:---------:|
-| koza_01        | yes    | 6      | 90        | 1.092M    | low     | low     | -       | -         |
-| koza_02        | yes    | 7      | 112       | 1.075M    | low     | low     | -       | -         |
-| koza_03        | yes    | 8      | 114       | 1.349M    | low     | low     | -       | -         |
-| lipson_01      | yes    | 2      | 48        | 0.408M    | low     | low     | -       | -         |
-| lipson_02      | -      | -      | -         | -         | -       | -       | -       | trig,extra|
-| lipson_03      | -      | -      | -         | -         | -       | -       | -       | exp,trig  |
-| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
-| nguyen_01      | yes    | 3      | 60        | 0.557M    | low     | low     | -       | -         |
-| nguyen_02      | yes    | 6      | 85        | 0.900M    | low     | low     | -       | -         |
-| nguyen_03      | -      | -      | -         | -         | -       | -       | -       | -         |
-| nguyen_04      | -      | -      | -         | -         | -       | -       | -       | -         |
-| nguyen_05      | -      | -      | -         | -         | -       | -       | -       | trig      |
-| nguyen_06      | -      | -      | -         | -         | -       | -       | -       | trig      |
-| nguyen_07      | -      | -      | -         | -         | -       | -       | -       | exp,extra |
-| nguyen_08      | -      | -      | -         | -         | -       | -       | -       | exp,extra |
-| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
-| nguyen_09      | -      | -      | -         | -         | -       | -       | -       | trig      |
-| nguyen_10      | -      | -      | -         | -         | -       | -       | -       | trig      |
-| nguyen_11      | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
-| nguyen_12      | yes    | 6      | 447       | 10.03M    | low     | low     | -       | -         |
-| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
-| korns_01       | yes    | 0      | 210       | 1.316M    | low     | low     | -       | -         |
-| korns_02       | yes    | 6      | 1575      | 38.87M    | low     | low     | -       | -         |
-| korns_03       | yes    | 5      | 1491      | 43.48M    | low     | low     | -       | -         |
-| korns_04       | -      | -      | -         | -         | -       | -       | -       | trig      |
-| korns_05       | -      | -      | -         | -         | -       | -       | -       | exp       |
-| korns_06       | -      | -      | -         | -         | -       | -       | -       | sqrt      |
-| korns_07       | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
-| korns_08       | -      | -      | -         | -         | -       | -       | -       | sqrt      |
-| korns_09       | -      | -      | -         | -         | -       | -       | -       | exp,sqrt  |
-| korns_10       | -      | -      | -         | -         | -       | -       | -       | -         |
-| korns_11       | -      | -      | -         | -         | -       | -       | -       | trig      |
-| korns_12       | -      | -      | -         | -         | -       | -       | -       | trig      |
-| korns_13       | -      | -      | -         | -         | -       | -       | -       | trig,tan  |
-| korns_14       | NO     | -      | -         | -         | -       | -       | -       | tanh      |
-| korns_15       | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
 
 
 #### Differential Equations
@@ -416,6 +331,8 @@ can be found in [Appendix 3](/sr/A3-benchmarks/).
  
 
 
+
+
 Diffeq Comparisons
 
 
@@ -435,6 +352,53 @@ Diffeq Comparisons
 |  VanDerPol-y  |    0.859   |       90M   |     0.354   |    0.089M   |
 |  LotkaVolt-x  |    4.250   |      430M   |     0.336   |    0.938M   |
 |  LotkaVolt-y  |    1.063   |      110M   |     0.449   |    0.952M   |
+
+<br>
+
+<div class="center-align">
+<span><b>Figure #</b> - Diffeq Results</span>
+<img class="responsive-img" src="/sr/img/experiments/diffeq_results.png" />
+</div>
+
+
+
+#### Decoupling Into Services
+
+
+After decoupling the services,
+the expansion phase became the
+most time-consuming part of the algorithm.
+The surmise reason for this is two-fold,
+though it warrants further investigation.
+First, the time required to process a
+model in the algebra and services
+became less than the time required
+to send messages, even when the other services
+are co-located.
+In addition to the network latency,
+there was additional overhead in our
+original messages due to using
+a human readable format for the equation
+over the wire. This required the equations
+to be printed and then parsed at both service ends.
+After converting the message to
+use the same integer serialization
+used in the memoization process,
+we saw a 20\% reduction
+in overall runtimes.
+%
+% Need to also parse int-sequence at python end
+%
+
+
+
+
+<div class="center-align">
+<span><b>Figure #</b> - Percent in each Phase</span>
+<img class="responsive-img" src="/sr/img/experiments/PercentPhase.png" />
+</div>
+
+
 
 
 
@@ -472,33 +436,6 @@ between different solutions.
 
 
 
-#### Decoupling Into Services
-
-
-After decoupling the services,
-the expansion phase became the
-most time-consuming part of the algorithm.
-The surmise reason for this is two-fold,
-though it warrants further investigation.
-First, the time required to process a
-model in the algebra and services
-became less than the time required
-to send messages, even when the other services
-are co-located.
-In addition to the network latency,
-there was additional overhead in our
-original messages due to using
-a human readable format for the equation
-over the wire. This required the equations
-to be printed and then parsed at both service ends.
-After converting the message to
-use the same integer serialization
-used in the memoization process,
-we saw a 20\% reduction
-in overall runtimes.
-%
-% Need to also parse int-sequence at python end
-%
 
 
 
@@ -508,10 +445,82 @@ in overall runtimes.
 
 
 
+Settings:
+
+| Parameter      | Value     |
+| -------------  |-------    |
+| Functions      | none      |
+| Function Level | n/a       |
+| Initial Level  | low       |
+| Growing Level  | low       |
+
+<br>
+
+<div class="center-align">
+<span><b>Figure #</b> - 1D, Group 1</span>
+<img class="responsive-img" src="/sr/img/experiments/basic_stage1_group1.png" />
+</div>
+
+<div class="center-align">
+<span><b>Figure #</b> - 1D, Group 2</span>
+<img class="responsive-img" src="/sr/img/experiments/basic_stage1_group2.png" />
+</div>
 
 
+<br>
+
+Settings:
+
+| Parameter      | Value     |
+| -------------  |-------    |
+| Functions      | sin,cos   |
+| Function Level | linear    |
+| Initial Level  | low       |
+| Growing Level  | low       |
 
 
+<br>
+
+#### Explicit Problems
+
+| Problem        | Solved | Iters  | Models    | Evals     | I-Level | G-Level | F-Level | Functions |
+| -------------- |:------:|:------:|:---------:|:---------:|:-------:|:-------:|:-------:|:---------:|
+| koza_01        | yes    | 6      | 90        | 1.092M    | low     | low     | -       | -         |
+| koza_02        | yes    | 7      | 112       | 1.075M    | low     | low     | -       | -         |
+| koza_03        | yes    | 8      | 114       | 1.349M    | low     | low     | -       | -         |
+| lipson_01      | yes    | 2      | 48        | 0.408M    | low     | low     | -       | -         |
+| lipson_02      | -      | -      | -         | -         | -       | -       | -       | trig,extra|
+| lipson_03      | -      | -      | -         | -         | -       | -       | -       | exp,trig  |
+| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
+| nguyen_01      | yes    | 3      | 60        | 0.557M    | low     | low     | -       | -         |
+| nguyen_02      | yes    | 6      | 85        | 0.900M    | low     | low     | -       | -         |
+| nguyen_03      | -      | -      | -         | -         | -       | -       | -       | -         |
+| nguyen_04      | -      | -      | -         | -         | -       | -       | -       | -         |
+| nguyen_05      | -      | -      | -         | -         | -       | -       | -       | trig      |
+| nguyen_06      | -      | -      | -         | -         | -       | -       | -       | trig      |
+| nguyen_07      | -      | -      | -         | -         | -       | -       | -       | exp,extra |
+| nguyen_08      | -      | -      | -         | -         | -       | -       | -       | exp,extra |
+| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
+| nguyen_09      | -      | -      | -         | -         | -       | -       | -       | trig      |
+| nguyen_10      | -      | -      | -         | -         | -       | -       | -       | trig      |
+| nguyen_11      | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
+| nguyen_12      | yes    | 6      | 447       | 10.03M    | low     | low     | -       | -         |
+| -------------- | ------ | ------ | --------- | --------- | ------- | ------- | ------- | -------   |
+| korns_01       | yes    | 0      | 210       | 1.316M    | low     | low     | -       | -         |
+| korns_02       | yes    | 6      | 1575      | 38.87M    | low     | low     | -       | -         |
+| korns_03       | yes    | 5      | 1491      | 43.48M    | low     | low     | -       | -         |
+| korns_04       | -      | -      | -         | -         | -       | -       | -       | trig      |
+| korns_05       | -      | -      | -         | -         | -       | -       | -       | exp       |
+| korns_06       | -      | -      | -         | -         | -       | -       | -       | sqrt      |
+| korns_07       | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
+| korns_08       | -      | -      | -         | -         | -       | -       | -       | sqrt      |
+| korns_09       | -      | -      | -         | -         | -       | -       | -       | exp,sqrt  |
+| korns_10       | -      | -      | -         | -         | -       | -       | -       | -         |
+| korns_11       | -      | -      | -         | -         | -       | -       | -       | trig      |
+| korns_12       | -      | -      | -         | -         | -       | -       | -       | trig      |
+| korns_13       | -      | -      | -         | -         | -       | -       | -       | trig,tan  |
+| korns_14       | NO     | -      | -         | -         | -       | -       | -       | tanh      |
+| korns_15       | NO     | -      | -         | -         | -       | -       | -       | $$x^y$$   |
 
 
 
