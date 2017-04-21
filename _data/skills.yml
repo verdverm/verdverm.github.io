@@ -93,6 +93,10 @@
   items:
     - name: "Automation"
       stars: 4
+    - name: "Saltstack"
+      stars: 4
+    - name: "Ansible and Terraform"
+      stars: 3
     - name: "Jenkins"
       stars: 3
     - name: "CI, TravisCI"
