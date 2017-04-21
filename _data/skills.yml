@@ -72,6 +72,10 @@
 
 - name: "Frontend"
   items:
+    - name: "Android"
+      stars: 3
+    - name: "iOS"
+      stars: 2
     - name: "React"
       stars: 3
     - name: "AngularJS"
