@@ -1,3 +1,13 @@
+- name: "DevOps and Automation"
+  place: "IBM Watson"
+  date: "April 2016 - Present"
+  description: "Developed a tool for automatic deployment and management of Kubernetes clusters. Implemented a transitional service to enable service teams to migrate from legacy infrastructure independently. Assist service teams with day-to-day operations as well as provide guidance for modern development and design using next-gen technologies."
+
+- name: "Custom Solution"
+  place: "IBM Watson"
+  date: "Jan 2016 - April 2016"
+  description: "Understand customer use-cases and apply Watson technology to create novel solutions for industry verticals."
+
 - name: "Graduate Research Assistant"
   place: "Binghamton University"
   person: "Advisor: Kenneth Chiu"
